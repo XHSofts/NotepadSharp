@@ -141,4 +141,31 @@
   <data name="ViewMenuItem.Text" xml:space="preserve">
     <value>查看(&amp;V)</value>
   </data>
+  <data name="CopyMenuItem.Text" xml:space="preserve">
+    <value>复制(&amp;C)</value>
+  </data>
+  <data name="CopyWholeLine" xml:space="preserve">
+    <value>复制整行(&amp;C)</value>
+  </data>
+  <data name="CutMenuItem.Text" xml:space="preserve">
+    <value>剪切(&amp;T)</value>
+  </data>
+  <data name="CutWholeLine" xml:space="preserve">
+    <value>剪切整行(&amp;T)</value>
+  </data>
+  <data name="DeleteMenuItem.Text" xml:space="preserve">
+    <value>删除(&amp;L)</value>
+  </data>
+  <data name="DeleteWholeLine" xml:space="preserve">
+    <value>删除整行(&amp;L)</value>
+  </data>
+  <data name="ErrorSaving" xml:space="preserve">
+    <value>保存中发生了错误。</value>
+  </data>
+  <data name="PasteMenuItem.Text" xml:space="preserve">
+    <value>粘贴(&amp;P)</value>
+  </data>
+  <data name="textLengthStatus" xml:space="preserve">
+    <value>字数：{0}，行数：{1}</value>
+  </data>
 </root>

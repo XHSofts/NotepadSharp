@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NotepadSharp.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DefaultLanguage" Type="System.String" Scope="User">
-      <Value Profile="(Default)">en-US</Value>
-    </Setting>
     <Setting Name="font" Type="System.Drawing.Font" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">zh-CN</Value>
     </Setting>
   </Settings>
 </SettingsFile>

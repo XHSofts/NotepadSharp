@@ -104,9 +104,12 @@ namespace NotepadSharp
                 ToolStripMenuItem tsmi = (ToolStripMenuItem) item;
                 if (tsmi.DropDownItems.Count > 0)
                 {
-                    foreach (ToolStripMenuItem c in tsmi.DropDownItems)
+                    foreach (object c in tsmi.DropDownItems)
                     {
-                        Loading(c, resources);
+                        if (c is ToolStripMenuItem)
+                        {
+                            Loading((ToolStripMenuItem)c, resources);
+                        }
                     }
                 }
             }

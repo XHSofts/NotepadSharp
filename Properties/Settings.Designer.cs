@@ -25,24 +25,24 @@ namespace NotepadSharp.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
-        public string DefaultLanguage {
-            get {
-                return ((string)(this["DefaultLanguage"]));
-            }
-            set {
-                this["DefaultLanguage"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::System.Drawing.Font font {
             get {
                 return ((global::System.Drawing.Font)(this["font"]));
             }
             set {
                 this["font"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("zh-CN")]
+        public string DefaultLanguage {
+            get {
+                return ((string)(this["DefaultLanguage"]));
+            }
+            set {
+                this["DefaultLanguage"] = value;
             }
         }
     }

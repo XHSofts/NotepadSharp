@@ -141,4 +141,31 @@
   <data name="ViewMenuItem.Text" xml:space="preserve">
     <value>&amp;View</value>
   </data>
+  <data name="CopyMenuItem.Text" xml:space="preserve">
+    <value>&amp;Copy</value>
+  </data>
+  <data name="CopyWholeLine" xml:space="preserve">
+    <value>&amp;Copy Whole Line</value>
+  </data>
+  <data name="CutMenuItem.Text" xml:space="preserve">
+    <value>Cu&amp;t</value>
+  </data>
+  <data name="CutWholeLine" xml:space="preserve">
+    <value>Cu&amp;t Whole Line</value>
+  </data>
+  <data name="DeleteMenuItem.Text" xml:space="preserve">
+    <value>De&amp;lete</value>
+  </data>
+  <data name="DeleteWholeLine" xml:space="preserve">
+    <value>De&amp;lete Whole Line</value>
+  </data>
+  <data name="ErrorSaving" xml:space="preserve">
+    <value>An error occured while saving file.</value>
+  </data>
+  <data name="PasteMenuItem.Text" xml:space="preserve">
+    <value>&amp;Paste</value>
+  </data>
+  <data name="textLengthStatus" xml:space="preserve">
+    <value>Length: {0}, Lines: {1}</value>
+  </data>
 </root>

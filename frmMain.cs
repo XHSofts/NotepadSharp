@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -76,20 +78,26 @@ namespace NotepadSharp
         }
 
         private float orgFontSize;
-        private int _currZoomSize=100;
+        private int   _currZoomSize = 100;
+
         private int currZoomSize
         {
             get { return _currZoomSize; }
             set
             {
-                if (value > 500 || value < 50)
-                {
-                    return;
-                }
-                _currZoomSize = value;
+                //No need to set limitation
+//                if (value > 500 || value < 50)
+//                {
+//                    return;
+//                }
+
+                _currZoomSize   = value;
                 zoomStatus.Text = value + "%";
-                Font newFont = new Font(edit.Font.FontFamily, Convert.ToInt32(Math.Round(orgFontSize * ((double)value/100))), edit.Font.Style, edit.Font.Unit, edit.Font.GdiCharSet);
-                edit.Font = newFont;
+                //No need to control this by ourselves.
+//                Font newFont = new Font(edit.Font.FontFamily,
+//                                        Convert.ToInt32(Math.Round(orgFontSize * ((double) value / 100))),
+//                                        edit.Font.Style, edit.Font.Unit, edit.Font.GdiCharSet);
+//                edit.Font = newFont;
             }
         }
 
@@ -112,7 +120,7 @@ namespace NotepadSharp
             {
                 edit.Font                        = value;
                 _currFont                        = value;
-                orgFontSize = value.Size;
+                orgFontSize                      = value.Size;
                 Properties.Settings.Default.font = value;
                 Properties.Settings.Default.Save();
             }
@@ -125,7 +133,7 @@ namespace NotepadSharp
             get { return _currCaretLine; }
             set
             {
-                _currCaretLine = value+1;
+                _currCaretLine = value + 1;
                 cursorStatus.Text = string.Format(LocRM.GetString("LineColumnStatus"), _currCaretLine.ToString(),
                                                   _currCaretColumn.ToString());
             }
@@ -138,9 +146,47 @@ namespace NotepadSharp
             get { return _currCaretColumn; }
             set
             {
-                _currCaretColumn = value+1;
+                _currCaretColumn = value + 1;
                 cursorStatus.Text = string.Format(LocRM.GetString("LineColumnStatus"), _currCaretLine.ToString(),
                                                   _currCaretColumn.ToString());
+            }
+        }
+
+        private int _currLength = 0;
+
+        private int currLength
+        {
+            get { return _currLength; }
+            set
+            {
+                _currLength = value;
+                textLengthStatus.Text = string.Format(LocRM.GetString("textLengthStatus"), _currLength.ToString(),
+                                                      _currLines.ToString());
+            }
+        }
+
+        private int _currLines = 0;
+
+        private int currLines
+        {
+            get { return _currLines; }
+            set
+            {
+                _currLines = value;
+                textLengthStatus.Text = string.Format(LocRM.GetString("textLengthStatus"), _currLength.ToString(),
+                                                      _currLines.ToString());
+            }
+        }
+
+        private string _currReturnStyle = "Windows (CRLF)";
+
+        private string currReturnStyle
+        {
+            get { return _currReturnStyle; }
+            set
+            {
+                _currReturnStyle       = value;
+                returnStyleStatus.Text = value;
             }
         }
 
@@ -150,13 +196,20 @@ namespace NotepadSharp
 
             //            edit                  =  new TextEditor();
             //            editHost.Child        =  edit;
-            edit.TextChanged                            += Edit_TextChanged;
-            edit.ActiveTextAreaControl.TextArea.Click   += Edit_Click;
-            edit.ActiveTextAreaControl.TextArea.KeyDown += TextArea_KeyDown;
-            edit.ActiveTextAreaControl.TextArea.KeyUp += TextArea_KeyUp;
-            edit.ActiveTextAreaControl.Scroll           += ActiveTextAreaControl_Scroll;
-            edit.FileNameChanged                        += Edit_FileNameChanged;
-            edit.MouseWheel += Edit_MouseWheel;
+            edit.TextChanged                              += Edit_TextChanged;
+            edit.ActiveTextAreaControl.TextArea.Click     += Edit_Click;
+            edit.ActiveTextAreaControl.TextArea.MouseMove += TextArea_MouseMove;
+            edit.ActiveTextAreaControl.TextArea.KeyDown   += TextArea_KeyDown;
+            edit.ActiveTextAreaControl.TextArea.KeyUp     += TextArea_KeyUp;
+            edit.ActiveTextAreaControl.Scroll             += ActiveTextAreaControl_Scroll;
+            edit.FileNameChanged                          += Edit_FileNameChanged;
+            edit.MouseWheel                               += Edit_MouseWheel;
+        }
+
+        private void TextArea_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            updateStatusBar();
+            UpdateMenuItem();
         }
 
         private void Edit_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -176,26 +229,27 @@ namespace NotepadSharp
 
         private void Edit_FileNameChanged(object sender, EventArgs e)
         {
-            FileStream   fs = new FileStream(edit.FileName, FileMode.Open);
-            BinaryReader br = new BinaryReader(fs);
-
-            currFileEncoding = AutoEncoding(br.ReadBytes(4)).EncodingName;
-
-            br.Close();
-            fs.Close();
-            currOpenedFIle = new FileObject(System.IO.Path.GetFileName(edit.FileName), edit.FileName, System.IO.Path.GetExtension(edit.FileName));
+            if (edit.FileName == "\\Untitled\\") return;
+            currFileEncoding = edit.Encoding.EncodingName;
+            currOpenedFIle = new FileObject(System.IO.Path.GetFileName(edit.FileName), edit.FileName,
+                                            System.IO.Path.GetExtension(edit.FileName));
+            currReturnStyle = determineReturnStyle();
         }
 
         private void TextArea_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             currPressedKey = e.KeyCode.ToString();
             updateStatusBar();
+            UpdateMenuItem();
         }
+
         private void TextArea_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             currPressedKey = "";
             updateStatusBar();
+            UpdateMenuItem();
         }
+
         private void ActiveTextAreaControl_Scroll(object sender, ScrollEventArgs e)
         {
             updateStatusBar();
@@ -204,62 +258,41 @@ namespace NotepadSharp
         private void Edit_Click(object sender, EventArgs e)
         {
             updateStatusBar();
+            UpdateMenuItem();
         }
 
         private void Edit_TextChanged(object sender, EventArgs e)
         {
             updateStatusBar();
+            UpdateMenuItem();
+        }
+
+        private string determineReturnStyle()
+        {
+            if (edit.ActiveTextAreaControl.TextArea.Document.TextContent.Contains("\r\n"))
+            {
+                return "Windows (CRLF)";
+            }
+            else if (edit.ActiveTextAreaControl.TextArea.Document.TextContent.Contains("\n"))
+            {
+                return "Unix (LF)";
+            }
+            else if (edit.ActiveTextAreaControl.TextArea.Document.TextContent.Contains("\r"))
+            {
+                return "Macintosh (CR)";
+            }
+            else
+            {
+                return "Mixed";
+            }
         }
 
         private void updateStatusBar()
         {
             currCaretLine   = edit.ActiveTextAreaControl.Caret.Line;
             currCaretColumn = edit.ActiveTextAreaControl.Caret.Column;
-
-        }
-
-        public static byte[] FileToByte(string fileUrl)
-        {
-            try
-            {
-                using (FileStream fs = new FileStream(fileUrl, FileMode.Open, FileAccess.Read))
-                {
-                    byte[] byteArray = new byte[fs.Length];
-                    fs.Read(byteArray, 0, byteArray.Length);
-                    return byteArray;
-                }
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private static Encoding AutoEncoding(byte[] bom)
-        {
-            if (bom.Length != 4)
-            {
-                throw new ArgumentException("EncodingScrutator.AutoEncoding 参数大小不等于4");
-            }
-
-            // Analyze the BOM
-
-            if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76)
-                return Encoding.UTF7; //85 116 102 55    //utf7 aa 97 97 0 0
-            //utf7 编码 = 43 102 120 90
-
-            if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf)
-                return Encoding.UTF8; //无签名 117 116 102 56
-            // 130 151 160 231
-            if (bom[0] == 0xff && bom[1] == 0xfe)
-                return Encoding.Unicode; //UTF-16LE
-
-            if (bom[0] == 0xfe && bom[1] == 0xff)
-                return Encoding.BigEndianUnicode; //UTF-16BE
-
-            if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
-
-            return Encoding.ASCII; //如果返回ASCII可能是GBK、无签名 utf8
+            currLength      = edit.ActiveTextAreaControl.TextArea.Document.TextLength;
+            currLines       = edit.ActiveTextAreaControl.TextArea.Document.TotalNumberOfLines;
         }
 
         private void initHighlight()
@@ -285,7 +318,93 @@ namespace NotepadSharp
             }
         }
 
-        private void rearrangeControl()
+        private void UpdateMenuItem()
+        {
+            if (edit.ActiveTextAreaControl.TextArea.Document.UndoStack.CanUndo)
+            {
+                UndoMenuItem.Enabled = true;
+            }
+            else
+            {
+                UndoMenuItem.Enabled = false;
+            }
+
+            if (edit.ActiveTextAreaControl.TextArea.Document.UndoStack.CanRedo)
+            {
+                RedoMenuItem.Enabled = true;
+            }
+            else
+            {
+                RedoMenuItem.Enabled = false;
+            }
+
+            if (HaveSelection())
+            {
+                CutMenuItem.Enabled = true;
+                CopyMenuItem.Enabled = true;
+                CutMenuItem.Text    = LocRM.GetString("CutMenuItem.Text");
+                CopyMenuItem.Text   = LocRM.GetString("CopyMenuItem.Text");
+                DeleteMenuItem.Text = LocRM.GetString("DeleteMenuItem.Text");
+            }
+            else
+            {
+                CutMenuItem.Enabled = false;
+                CopyMenuItem.Enabled   = false;
+                CutMenuItem.Text    = LocRM.GetString("CutWholeLine");
+                CopyMenuItem.Text   = LocRM.GetString("CopyWholeLine");
+                DeleteMenuItem.Text = LocRM.GetString("DeleteWholeLine");
+            }
+        }
+
+        /// <summary>Performs an action encapsulated in IEditAction.</summary>
+        /// <remarks>
+        /// There is an implementation of IEditAction for every action that 
+        /// the user can invoke using a shortcut key (arrow keys, Ctrl+X, etc.)
+        /// The editor control doesn't provide a public funciton to perform one
+        /// of these actions directly, so I wrote DoEditAction() based on the
+        /// code in TextArea.ExecuteDialogKey(). You can call ExecuteDialogKey
+        /// directly, but it is more fragile because it takes a Keys value (e.g.
+        /// Keys.Left) instead of the action to perform.
+        /// <para/>
+        /// Clipboard commands could also be done by calling methods in
+        /// editor.ActiveTextAreaControl.TextArea.ClipboardHandler.
+        /// </remarks>
+        private void DoEditAction(TextEditorControl editor, ICSharpCode.TextEditor.Actions.IEditAction action)
+        {
+            if (editor != null && action != null)
+            {
+                TextArea area = editor.ActiveTextAreaControl.TextArea;
+                editor.BeginUpdate();
+                try
+                {
+                    lock (editor.Document)
+                    {
+                        action.Execute(area);
+                        if (area.SelectionManager.HasSomethingSelected && area.AutoClearSelection /*&& caretchanged*/)
+                        {
+                            if (area.Document.TextEditorProperties.DocumentSelectionMode ==
+                                DocumentSelectionMode.Normal)
+                            {
+                                area.SelectionManager.ClearSelection();
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    editor.EndUpdate();
+                    area.Caret.UpdateCaretPosition();
+                }
+            }
+        }
+
+        private bool HaveSelection()
+        {
+            return edit.ActiveTextAreaControl.TextArea.SelectionManager.HasSomethingSelected;
+        }
+
+
+        private void reArrangeControl()
         {
             foreach (ToolStripItem c in bottomStatusBar.Items)
             {
@@ -293,9 +412,50 @@ namespace NotepadSharp
             }
         }
 
+        private void saveFile()
+        {
+            try
+            {
+                if ((edit.FileName is null) || edit.FileName == "" || (edit.FileName == "\\Untitled\\"))
+                {
+                    saveAsFile();
+                }
+                else
+                {
+                    edit.SaveFile(edit.FileName);
+                }
+            }
+            catch (Exception eX)
+            {
+                MessageBox.Show(LocRM.GetString("ErrorSaving") + "\r\n" + eX.Message, LocRM.GetString("$this.Text"),
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void saveAsFile()
+        {
+            try
+            {
+                saveFileDialog.ShowDialog();
+                if (saveFileDialog.FileName != "")
+                {
+                    edit.SaveFile(saveFileDialog.FileName);
+                }
+            }
+            catch (Exception eX)
+            {
+                MessageBox.Show(LocRM.GetString("ErrorSaving") + "\r\n" + eX.Message, LocRM.GetString("$this.Text"),
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private Boolean checkUnsave()
+        {
+            return true;
+        }
         private void frmMain_Load(object sender, EventArgs e)
         {
-            rearrangeControl();
+            reArrangeControl();
             MultiLanguage.LoadLanguage(this, typeof(frmMain));
             //Load TextEditor default settings
             if (currFont is null)
@@ -316,9 +476,13 @@ namespace NotepadSharp
             }
 
             initHighlight();
-            currOpenedFIle = new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
+            edit.FileName        = "\\Untitled\\";
+            currOpenedFIle       = new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
             edit.ShowLineNumbers = true;
+            edit.Encoding        = System.Text.Encoding.UTF8;
 
+            updateStatusBar();
+            UpdateMenuItem();
         }
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
@@ -326,8 +490,93 @@ namespace NotepadSharp
             openFileDialog.ShowDialog();
             if (openFileDialog.FileName != "" && File.Exists(openFileDialog.FileName))
             {
-
+                edit.FileName = "\\Untitled\\";
                 edit.LoadFile(openFileDialog.FileName);
+            }
+        }
+
+        private void SaveMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFile();
+        }
+
+        private void UndoMenuItem_Click(object sender, EventArgs e)
+        {
+            if (edit.ActiveTextAreaControl.TextArea.Document.UndoStack.CanUndo)
+            {
+                DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Undo());
+            }
+        }
+
+        private void RedoMenuItem_Click(object sender, EventArgs e)
+        {
+            if (edit.ActiveTextAreaControl.TextArea.Document.UndoStack.CanRedo)
+            {
+                DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Redo());
+            }
+        }
+
+        private void CutMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+                DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Cut());
+        }
+
+        private void CopyMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+                DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Copy());
+        }
+
+        private void PasteMenuItem_Click(object sender, EventArgs e)
+        {
+            DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Paste());
+        }
+
+        private void DeleteMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+                DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Delete());
+            else
+                DoEditAction(edit, new ICSharpCode.TextEditor.Actions.DeleteLine());
+        }
+
+        private void NewFileMenuItem_Click(object sender, EventArgs e)
+        {
+            currOpenedFIle = new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
+            edit.FileName  = "\\Untitled\\";
+            edit.ActiveTextAreaControl.TextArea.Document.TextContent="";
+            edit.Refresh();
+            edit.ActiveTextAreaControl.TextArea.Document.UndoStack.ClearAll();
+        }
+
+        private void SelectAllMenuItem_Click(object sender, EventArgs e)
+        {
+            DoEditAction(edit, new ICSharpCode.TextEditor.Actions.SelectWholeDocument());
+            edit.ActiveTextAreaControl.TextArea.Caret.Position = edit.Document.OffsetToPosition(edit
+                                                                                                .Document
+                                                                                                .TextLength);
+        }
+
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            if (checkUnsave())
+            {
+                edit.ActiveTextAreaControl.TextArea.Text = "";
+                Application.Exit();
+            }
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (checkUnsave())
+            {
+                edit.ActiveTextAreaControl.TextArea.Text = "";
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
             }
         }
     }
