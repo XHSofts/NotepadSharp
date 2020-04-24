@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.titleMenu = new System.Windows.Forms.MenuStrip();
             this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,12 +66,14 @@
             this.returnStyleStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.zoomStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.cursorStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.textLengthStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.textEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.textLengthStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Container = new NotepadSharp.PanelEx(this.components);
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
+            this.Container.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleMenu
@@ -406,12 +409,26 @@
             this.cursorStatus.Text = "第 1 行，第 1 列";
             this.cursorStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // textLengthStatus
+            // 
+            this.textLengthStatus.AutoSize = false;
+            this.textLengthStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.textLengthStatus.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.textLengthStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textLengthStatus.Name = "textLengthStatus";
+            this.textLengthStatus.Padding = new System.Windows.Forms.Padding(20);
+            this.textLengthStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.textLengthStatus.Size = new System.Drawing.Size(200, 25);
+            this.textLengthStatus.Text = "字数：0，行数：0";
+            this.textLengthStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // textEditorControl
             // 
+            this.textEditorControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textEditorControl.EnableFolding = false;
             this.textEditorControl.IsReadOnly = false;
-            this.textEditorControl.Location = new System.Drawing.Point(0, 24);
+            this.textEditorControl.Location = new System.Drawing.Point(0, 0);
             this.textEditorControl.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.textEditorControl.Name = "textEditorControl";
             this.textEditorControl.Padding = new System.Windows.Forms.Padding(10, 5, 0, 0);
@@ -428,18 +445,16 @@
             // 
             this.saveFileDialog.Filter = "文本文件(*.txt)|*.txt|所有文件|*.*";
             // 
-            // textLengthStatus
+            // Container
             // 
-            this.textLengthStatus.AutoSize = false;
-            this.textLengthStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.textLengthStatus.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.textLengthStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textLengthStatus.Name = "textLengthStatus";
-            this.textLengthStatus.Padding = new System.Windows.Forms.Padding(20);
-            this.textLengthStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.textLengthStatus.Size = new System.Drawing.Size(200, 25);
-            this.textLengthStatus.Text = "字数：0，行数：0";
-            this.textLengthStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Container.BorderColor = System.Drawing.SystemColors.Control;
+            this.Container.BorderSize = 1;
+            this.Container.Controls.Add(this.textEditorControl);
+            this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Container.Location = new System.Drawing.Point(0, 24);
+            this.Container.Name = "Container";
+            this.Container.Size = new System.Drawing.Size(1021, 514);
+            this.Container.TabIndex = 4;
             // 
             // frmMain
             // 
@@ -447,7 +462,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1021, 563);
-            this.Controls.Add(this.textEditorControl);
+            this.Controls.Add(this.Container);
             this.Controls.Add(this.bottomStatusBar);
             this.Controls.Add(this.titleMenu);
             this.MainMenuStrip = this.titleMenu;
@@ -459,6 +474,7 @@
             this.titleMenu.PerformLayout();
             this.bottomStatusBar.ResumeLayout(false);
             this.bottomStatusBar.PerformLayout();
+            this.Container.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -507,6 +523,7 @@
         private System.Windows.Forms.ToolStripMenuItem SelectAllMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DateTimeMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel textLengthStatus;
+        private PanelEx Container;
     }
 }
 

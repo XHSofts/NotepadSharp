@@ -455,6 +455,11 @@ namespace NotepadSharp
         }
         private void frmMain_Load(object sender, EventArgs e)
         {
+            //Try to fix high-dpi blurry
+            this.AutoScaleMode = AutoScaleMode.Font;
+            edit.AutoScaleMode = AutoScaleMode.Font;
+            //Finally I upgrade to .Net 4.7 to solve this...
+
             reArrangeControl();
             MultiLanguage.LoadLanguage(this, typeof(frmMain));
             //Load TextEditor default settings
