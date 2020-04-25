@@ -45,5 +45,17 @@ namespace NotepadSharp.Properties {
                 this["DefaultLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool wordWrap {
+            get {
+                return ((bool)(this["wordWrap"]));
+            }
+            set {
+                this["wordWrap"] = value;
+            }
+        }
     }
 }

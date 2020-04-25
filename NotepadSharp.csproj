@@ -62,6 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileObject.cs" />
+    <Compile Include="frmGoto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGoto.Designer.cs">
+      <DependentUpon>frmGoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmGoto.en-US.resx">
+      <DependentUpon>frmGoto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGoto.resx">
+      <DependentUpon>frmGoto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGoto.zh-CN.resx">
+      <DependentUpon>frmGoto.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.en-US.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

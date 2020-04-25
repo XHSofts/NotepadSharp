@@ -117,64 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Text" xml:space="preserve">
-    <value>NotepadSharp</value>
-  </data>
-  <data name="defaultTitle" xml:space="preserve">
-    <value>Untitled</value>
-  </data>
-  <data name="EditMenuItem.Text" xml:space="preserve">
-    <value>&amp;Edit</value>
-  </data>
-  <data name="FileMenuItem.Text" xml:space="preserve">
-    <value>&amp;File</value>
-  </data>
-  <data name="FormatMenuItem.Text" xml:space="preserve">
-    <value>F&amp;ormat</value>
-  </data>
-  <data name="HelpMenuItem.Text" xml:space="preserve">
-    <value>&amp;Help</value>
-  </data>
-  <data name="LineColumnStatus" xml:space="preserve">
-    <value>Ln {0}, Col {1}</value>
-  </data>
-  <data name="ViewMenuItem.Text" xml:space="preserve">
-    <value>&amp;View</value>
-  </data>
-  <data name="CopyMenuItem.Text" xml:space="preserve">
-    <value>&amp;Copy</value>
-  </data>
-  <data name="CopyWholeLine" xml:space="preserve">
-    <value>&amp;Copy Whole Line</value>
-  </data>
-  <data name="CutMenuItem.Text" xml:space="preserve">
-    <value>Cu&amp;t</value>
-  </data>
-  <data name="CutWholeLine" xml:space="preserve">
-    <value>Cu&amp;t Whole Line</value>
-  </data>
-  <data name="DeleteMenuItem.Text" xml:space="preserve">
-    <value>De&amp;lete</value>
-  </data>
-  <data name="DeleteWholeLine" xml:space="preserve">
-    <value>De&amp;lete Whole Line</value>
-  </data>
-  <data name="ErrorSaving" xml:space="preserve">
-    <value>An error occured while saving file.</value>
-  </data>
-  <data name="PasteMenuItem.Text" xml:space="preserve">
-    <value>&amp;Paste</value>
-  </data>
-  <data name="textLengthStatus" xml:space="preserve">
-    <value>Length: {0}, Lines: {1}</value>
-  </data>
-  <data name="FileNotExistWhenCheck" xml:space="preserve">
-    <value>The file {0} you have opened was missing or deleted, do you want to save the opened content?</value>
-  </data>
-  <data name="saveQuestion" xml:space="preserve">
-    <value>Do you want to save changes to {0} ?</value>
-  </data>
-  <data name="LineNumAboveTotalError" xml:space="preserve">
-    <value>The line number is beyond the total number of lines.</value>
-  </data>
+  <metadata name="controlToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

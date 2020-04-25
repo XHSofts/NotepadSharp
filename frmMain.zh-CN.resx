@@ -174,4 +174,7 @@
   <data name="saveQuestion" xml:space="preserve">
     <value>你想将更改保存到 {0} 吗？</value>
   </data>
+  <data name="LineNumAboveTotalError" xml:space="preserve">
+    <value>你输入的行号多于总共的行数。</value>
+  </data>
 </root>

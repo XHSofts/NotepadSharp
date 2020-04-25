@@ -67,10 +67,13 @@
             this.zoomStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.cursorStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.textLengthStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.textEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.Container = new NotepadSharp.PanelEx(this.components);
+            this.host = new System.Windows.Forms.Integration.ElementHost();
+            this.WordWarpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FontMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fontDialog = new System.Windows.Forms.FontDialog();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
             this.Container.SuspendLayout();
@@ -161,6 +164,7 @@
             this.PrintMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
             this.PrintMenuItem.Size = new System.Drawing.Size(252, 26);
             this.PrintMenuItem.Text = "打印(&P)...";
+            this.PrintMenuItem.Click += new System.EventHandler(this.PrintMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -263,6 +267,7 @@
             this.UseBingMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.UseBingMenuItem.Size = new System.Drawing.Size(245, 26);
             this.UseBingMenuItem.Text = "使用 Bing 搜索...";
+            this.UseBingMenuItem.Click += new System.EventHandler(this.UseBingMenuItem_Click);
             // 
             // FindMenuItem
             // 
@@ -298,6 +303,7 @@
             this.GotoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.GotoMenuItem.Size = new System.Drawing.Size(245, 26);
             this.GotoMenuItem.Text = "转到(&G)...";
+            this.GotoMenuItem.Click += new System.EventHandler(this.GotoMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
@@ -318,9 +324,13 @@
             this.DateTimeMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.DateTimeMenuItem.Size = new System.Drawing.Size(245, 26);
             this.DateTimeMenuItem.Text = "时间/日期(&D)";
+            this.DateTimeMenuItem.Click += new System.EventHandler(this.DateTimeMenuItem_Click);
             // 
             // FormatMenuItem
             // 
+            this.FormatMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.WordWarpMenuItem,
+            this.FontMenuItem});
             this.FormatMenuItem.Name = "FormatMenuItem";
             this.FormatMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.FormatMenuItem.Size = new System.Drawing.Size(67, 24);
@@ -423,21 +433,6 @@
             this.textLengthStatus.Text = "字数：0，行数：0";
             this.textLengthStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textEditorControl
-            // 
-            this.textEditorControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textEditorControl.EnableFolding = false;
-            this.textEditorControl.IsReadOnly = false;
-            this.textEditorControl.Location = new System.Drawing.Point(0, 0);
-            this.textEditorControl.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.textEditorControl.Name = "textEditorControl";
-            this.textEditorControl.Padding = new System.Windows.Forms.Padding(10, 5, 0, 0);
-            this.textEditorControl.ShowVRuler = false;
-            this.textEditorControl.Size = new System.Drawing.Size(1021, 514);
-            this.textEditorControl.TabIndex = 3;
-            this.textEditorControl.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-            // 
             // openFileDialog
             // 
             this.openFileDialog.Filter = "文本文件|*.txt|所有文件|*.*";
@@ -450,12 +445,44 @@
             // 
             this.Container.BorderColor = System.Drawing.SystemColors.Control;
             this.Container.BorderSize = 1;
-            this.Container.Controls.Add(this.textEditorControl);
+            this.Container.Controls.Add(this.host);
             this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Container.Location = new System.Drawing.Point(0, 24);
             this.Container.Name = "Container";
             this.Container.Size = new System.Drawing.Size(1021, 514);
             this.Container.TabIndex = 4;
+            // 
+            // host
+            // 
+            this.host.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.host.Location = new System.Drawing.Point(0, 0);
+            this.host.Name = "host";
+            this.host.Size = new System.Drawing.Size(1021, 514);
+            this.host.TabIndex = 0;
+            this.host.Text = "elementHost1";
+            this.host.Child = null;
+            // 
+            // WordWarpMenuItem
+            // 
+            this.WordWarpMenuItem.Checked = true;
+            this.WordWarpMenuItem.CheckOnClick = true;
+            this.WordWarpMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.WordWarpMenuItem.Name = "WordWarpMenuItem";
+            this.WordWarpMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.WordWarpMenuItem.Text = "自动换行(&W)";
+            this.WordWarpMenuItem.CheckedChanged += new System.EventHandler(this.WordWarpMenuItem_CheckedChanged);
+            this.WordWarpMenuItem.Click += new System.EventHandler(this.WordWarpMenuItem_Click);
+            // 
+            // FontMenuItem
+            // 
+            this.FontMenuItem.Name = "FontMenuItem";
+            this.FontMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.FontMenuItem.Text = "字体(&F)...";
+            this.FontMenuItem.Click += new System.EventHandler(this.FontMenuItem_Click);
+            // 
+            // fontDialog
+            // 
+            this.fontDialog.ShowApply = true;
             // 
             // frmMain
             // 
@@ -494,7 +521,6 @@
         private System.Windows.Forms.ToolStripStatusLabel returnStyleStatus;
         private System.Windows.Forms.ToolStripStatusLabel zoomStatus;
         private System.Windows.Forms.ToolStripStatusLabel cursorStatus;
-        private ICSharpCode.TextEditor.TextEditorControl textEditorControl;
         private System.Windows.Forms.ToolStripMenuItem openFileMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
@@ -525,6 +551,10 @@
         private System.Windows.Forms.ToolStripMenuItem DateTimeMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel textLengthStatus;
         private PanelEx Container;
+        private System.Windows.Forms.Integration.ElementHost host;
+        private System.Windows.Forms.ToolStripMenuItem WordWarpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FontMenuItem;
+        private System.Windows.Forms.FontDialog fontDialog;
     }
 }
 
