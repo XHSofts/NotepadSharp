@@ -142,6 +142,7 @@
             | System.Windows.Forms.Keys.S)));
             this.SaveAsMenuItem.Size = new System.Drawing.Size(252, 26);
             this.SaveAsMenuItem.Text = "另存为(&A)...";
+            this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -366,7 +367,7 @@
             this.encodingStatus.Name = "encodingStatus";
             this.encodingStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
             this.encodingStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.encodingStatus.Size = new System.Drawing.Size(110, 25);
+            this.encodingStatus.Size = new System.Drawing.Size(120, 25);
             this.encodingStatus.Text = "Unicode (UTF-8)";
             this.encodingStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 

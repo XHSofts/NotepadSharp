@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
+using ICSharpCode.TextEditor.Util;
 using FontFamily = System.Windows.Media.FontFamily;
 
 //using ICSharpCode.AvalonEdit;
@@ -190,6 +191,21 @@ namespace NotepadSharp
             }
         }
 
+        private Boolean _hasSave = true;
+
+        private Boolean hasSave
+        {
+            get { return _hasSave; }
+            set
+            {
+                _hasSave = value;
+                UpdateTitle();
+            }
+        }
+
+        private Boolean isLoadFile = false; //To determine whether it's loading a new file or
+
+        //    text typing that results to TextChange.
         public frmMain()
         {
             InitializeComponent();
@@ -234,10 +250,17 @@ namespace NotepadSharp
             currOpenedFIle = new FileObject(System.IO.Path.GetFileName(edit.FileName), edit.FileName,
                                             System.IO.Path.GetExtension(edit.FileName));
             currReturnStyle = determineReturnStyle();
+            hasSave         = true;
+            isLoadFile      = true;
         }
 
         private void TextArea_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
+            if (isLoadFile)
+            {
+                isLoadFile = false; //Restore to default
+            }
+
             currPressedKey = e.KeyCode.ToString();
             updateStatusBar();
             UpdateMenuItem();
@@ -263,6 +286,15 @@ namespace NotepadSharp
 
         private void Edit_TextChanged(object sender, EventArgs e)
         {
+            if (edit.FileName == "\\Untitled\\" && edit.ActiveTextAreaControl.TextArea.Document.TextContent == "")
+            {
+                hasSave = true;
+            }
+            else
+            {
+                hasSave = false;
+            }
+
             updateStatusBar();
             UpdateMenuItem();
         }
@@ -310,11 +342,12 @@ namespace NotepadSharp
         {
             if (currTitleName != "")
             {
-                this.Text = currTitleName + " - " + LocRM.GetString("$this.Text");
+                this.Text = (hasSave ? "" : "*") + currTitleName + " - " + LocRM.GetString("$this.Text");
             }
             else
             {
-                this.Text = LocRM.GetString("defaultTitle") + " - " + LocRM.GetString("$this.Text");
+                this.Text = (hasSave ? "" : "*") + LocRM.GetString("defaultTitle") + " - " +
+                            LocRM.GetString("$this.Text");
             }
         }
 
@@ -340,19 +373,19 @@ namespace NotepadSharp
 
             if (HaveSelection())
             {
-                CutMenuItem.Enabled = true;
+                CutMenuItem.Enabled  = true;
                 CopyMenuItem.Enabled = true;
-                CutMenuItem.Text    = LocRM.GetString("CutMenuItem.Text");
-                CopyMenuItem.Text   = LocRM.GetString("CopyMenuItem.Text");
-                DeleteMenuItem.Text = LocRM.GetString("DeleteMenuItem.Text");
+                CutMenuItem.Text     = LocRM.GetString("CutMenuItem.Text");
+                CopyMenuItem.Text    = LocRM.GetString("CopyMenuItem.Text");
+                DeleteMenuItem.Text  = LocRM.GetString("DeleteMenuItem.Text");
             }
             else
             {
-                CutMenuItem.Enabled = false;
-                CopyMenuItem.Enabled   = false;
-                CutMenuItem.Text    = LocRM.GetString("CutWholeLine");
-                CopyMenuItem.Text   = LocRM.GetString("CopyWholeLine");
-                DeleteMenuItem.Text = LocRM.GetString("DeleteWholeLine");
+                CutMenuItem.Enabled  = false;
+                CopyMenuItem.Enabled = false;
+                CutMenuItem.Text     = LocRM.GetString("CutWholeLine");
+                CopyMenuItem.Text    = LocRM.GetString("CopyWholeLine");
+                DeleteMenuItem.Text  = LocRM.GetString("DeleteWholeLine");
             }
         }
 
@@ -416,13 +449,15 @@ namespace NotepadSharp
         {
             try
             {
-                if ((edit.FileName is null) || edit.FileName == "" || (edit.FileName == "\\Untitled\\"))
+                if (!File.Exists(edit.FileName) || (edit.FileName is null) || edit.FileName == "" ||
+                    (edit.FileName == "\\Untitled\\"))
                 {
                     saveAsFile();
                 }
                 else
                 {
                     edit.SaveFile(edit.FileName);
+                    hasSave = true;
                 }
             }
             catch (Exception eX)
@@ -436,10 +471,11 @@ namespace NotepadSharp
         {
             try
             {
-                saveFileDialog.ShowDialog();
-                if (saveFileDialog.FileName != "")
+                DialogResult dr = saveFileDialog.ShowDialog();
+                if (dr == DialogResult.OK && saveFileDialog.FileName != "")
                 {
                     edit.SaveFile(saveFileDialog.FileName);
+                    hasSave = true;
                 }
             }
             catch (Exception eX)
@@ -451,8 +487,48 @@ namespace NotepadSharp
 
         private Boolean checkUnsave()
         {
-            return true;
+            Boolean      result = true;
+            DialogResult dr     = DialogResult.Cancel;
+            if ((edit.FileName != "\\Untitled\\" && edit.FileName != "" && !(edit.FileName is null)) &&
+                !File.Exists(edit.FileName))
+            {
+                //If the file is missing when checking...
+                dr =
+                    MessageBox.Show(string.Format(LocRM.GetString("FileNotExistWhenCheck"), currOpenedFIle.fileName),
+                                    LocRM.GetString("$this.Text"),
+                                    MessageBoxButtons.YesNoCancel);
+            }
+            else if (!hasSave)
+            {
+                //If file is unsaved....
+                dr =
+                    MessageBox.Show(string.Format(LocRM.GetString("saveQuestion"), currOpenedFIle.fileName),
+                                    LocRM.GetString("$this.Text"),
+                                    MessageBoxButtons.YesNoCancel);
+            }
+            else
+            {
+                //Otherwise, the result is true...
+                return result;
+            }
+
+            switch (dr)
+            {
+                case DialogResult.Yes:
+                    saveFile();
+                    result = true;
+                    break;
+                case DialogResult.No:
+                    result = true;
+                    break;
+                case DialogResult.Cancel:
+                    result = false;
+                    break;
+            }
+
+            return result;
         }
+
         private void frmMain_Load(object sender, EventArgs e)
         {
             //Try to fix high-dpi blurry
@@ -492,11 +568,14 @@ namespace NotepadSharp
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog.ShowDialog();
-            if (openFileDialog.FileName != "" && File.Exists(openFileDialog.FileName))
+            if (checkUnsave())
             {
-                edit.FileName = "\\Untitled\\";
-                edit.LoadFile(openFileDialog.FileName);
+                DialogResult dr = openFileDialog.ShowDialog();
+                if ((dr == DialogResult.OK) && (openFileDialog.FileName != "" && File.Exists(openFileDialog.FileName)))
+                {
+                    edit.FileName = "\\Untitled\\";
+                    edit.LoadFile(openFileDialog.FileName);
+                }
             }
         }
 
@@ -524,7 +603,13 @@ namespace NotepadSharp
         private void CutMenuItem_Click(object sender, EventArgs e)
         {
             if (HaveSelection())
+            {
                 DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Cut());
+                if (isLoadFile)
+                {
+                    isLoadFile = false; //Restore to default
+                }
+            }
         }
 
         private void CopyMenuItem_Click(object sender, EventArgs e)
@@ -536,6 +621,10 @@ namespace NotepadSharp
         private void PasteMenuItem_Click(object sender, EventArgs e)
         {
             DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Paste());
+            if (isLoadFile)
+            {
+                isLoadFile = false; //Restore to default
+            }
         }
 
         private void DeleteMenuItem_Click(object sender, EventArgs e)
@@ -544,15 +633,28 @@ namespace NotepadSharp
                 DoEditAction(edit, new ICSharpCode.TextEditor.Actions.Delete());
             else
                 DoEditAction(edit, new ICSharpCode.TextEditor.Actions.DeleteLine());
+            if (isLoadFile)
+            {
+                isLoadFile = false; //Restore to default
+            }
         }
 
         private void NewFileMenuItem_Click(object sender, EventArgs e)
         {
-            currOpenedFIle = new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
-            edit.FileName  = "\\Untitled\\";
-            edit.ActiveTextAreaControl.TextArea.Document.TextContent="";
-            edit.Refresh();
-            edit.ActiveTextAreaControl.TextArea.Document.UndoStack.ClearAll();
+            if (checkUnsave())
+            {
+                currOpenedFIle =
+                    new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
+                edit.BeginUpdate();
+                edit.FileName                                   = "\\Untitled\\";
+                edit.ActiveTextAreaControl.Document.TextContent = string.Empty;
+                edit.ActiveTextAreaControl.Document.UndoStack.ClearAll();
+                edit.ActiveTextAreaControl.Document.BookmarkManager.Clear();
+                edit.ActiveTextAreaControl.Document.UpdateQueue.Clear();
+                edit.EndUpdate();
+                edit.OptionsChanged();
+                this.Refresh();
+            }
         }
 
         private void SelectAllMenuItem_Click(object sender, EventArgs e)
@@ -577,12 +679,17 @@ namespace NotepadSharp
             if (checkUnsave())
             {
                 edit.ActiveTextAreaControl.TextArea.Text = "";
-                Application.Exit();
+                e.Cancel                                 = false;
             }
             else
             {
                 e.Cancel = true;
             }
+        }
+
+        private void SaveAsMenuItem_Click(object sender, EventArgs e)
+        {
+            saveAsFile();
         }
     }
 }

@@ -168,4 +168,10 @@
   <data name="textLengthStatus" xml:space="preserve">
     <value>Length: {0}, Lines: {1}</value>
   </data>
+  <data name="FileNotExistWhenCheck" xml:space="preserve">
+    <value>The file {0} you have opened was missing or deleted, do you want to save the opened content?</value>
+  </data>
+  <data name="saveQuestion" xml:space="preserve">
+    <value>Do you want to save changes to {0} ?</value>
+  </data>
 </root>

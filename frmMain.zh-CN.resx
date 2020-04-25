@@ -168,4 +168,10 @@
   <data name="textLengthStatus" xml:space="preserve">
     <value>字数：{0}，行数：{1}</value>
   </data>
+  <data name="FileNotExistWhenCheck" xml:space="preserve">
+    <value>你已经打开的文件 {0} 丢失或被删除，你是否想保存已经打开的文件内容？</value>
+  </data>
+  <data name="saveQuestion" xml:space="preserve">
+    <value>你想将更改保存到 {0} 吗？</value>
+  </data>
 </root>
