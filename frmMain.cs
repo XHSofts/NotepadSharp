@@ -25,6 +25,7 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Search;
 using Application = System.Windows.Forms.Application;
 using Color = System.Drawing.Color;
 using FoldingManager = ICSharpCode.AvalonEdit.Folding.FoldingManager;
@@ -45,7 +46,119 @@ namespace NotepadSharp
 
         ResourceManager LocRM = new ResourceManager("NotepadSharp.frmMain", typeof(frmMain).Assembly);
 
-        private string currPressedKey = "";
+
+        #region Editor Settings
+
+        private Boolean _isShowTab;
+
+        private Boolean isShowTab
+        {
+            get { return _isShowTab; }
+            set
+            {
+                _isShowTab                          = value;
+                TabMenuItem.Checked                 = value;
+                edit.TextArea.Options.ShowTabs      = value;
+                Properties.Settings.Default.showTab = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private Boolean _isShowStatusBar;
+
+        private Boolean isShowStatusBar
+        {
+            get { return _isShowStatusBar; }
+            set
+            {
+                _isShowStatusBar                = value;
+                IsShowStatusBarMenuItem.Checked = value;
+                bottomStatusBar.Visible         = value;
+                edit.BringIntoView();
+                edit.TextArea.Caret.BringCaretToView();
+                Properties.Settings.Default.showStatusBar = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private Boolean _isShowSpace;
+
+        private Boolean isShowSpace
+        {
+            get { return _isShowSpace; }
+            set
+            {
+                _isShowSpace                          = value;
+                SpaceMenuItem.Checked                 = value;
+                edit.TextArea.Options.ShowSpaces      = value;
+                Properties.Settings.Default.showSpace = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private Boolean _isShowEOL;
+
+        private Boolean isShowEOL
+        {
+            get { return _isShowEOL; }
+            set
+            {
+                _isShowEOL                          = value;
+                EOLMenuItem.Checked                 = value;
+                edit.TextArea.Options.ShowEndOfLine = value;
+                Properties.Settings.Default.showEOL = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private Boolean _isShowControlChar;
+
+        private Boolean isShowControlChar
+        {
+            get { return _isShowControlChar; }
+            set
+            {
+                _isShowControlChar                                = value;
+                ControlCharMenuItem.Checked                       = value;
+                edit.TextArea.Options.ShowBoxForControlCharacters = value;
+                Properties.Settings.Default.showControlChar       = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private Boolean _isShowColRuler;
+
+        private Boolean isShowColRuler
+        {
+            get { return _isShowColRuler; }
+            set
+            {
+                _isShowColRuler                          = value;
+                ColRulerMenuItem.Checked                 = value;
+                edit.TextArea.Options.ShowColumnRuler    = value;
+                Properties.Settings.Default.showColRuler = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private Boolean _isWordWrap;
+
+        private Boolean isWordWrap
+        {
+            get { return _isWordWrap; }
+            set
+            {
+                _isWordWrap                          = value;
+                WordWarpMenuItem.Checked             = value;
+                edit.WordWrap                        = value;
+                Properties.Settings.Default.wordWrap = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        #endregion
+
+        #region Current Props
 
         private string _currFileEncoding;
 
@@ -91,8 +204,15 @@ namespace NotepadSharp
             get { return _currZoomSize; }
             set
             {
-                if (value > 500 || value < 50)
+                if (value > 500)
                 {
+                    value = 500;
+                    return;
+                }
+
+                if (value < 50)
+                {
+                    value = 50;
                     return;
                 }
 
@@ -127,21 +247,6 @@ namespace NotepadSharp
                 fontDialog.Font                  = value;
                 _currFont                        = value;
                 Properties.Settings.Default.font = value;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        private Boolean _isWordWrap;
-
-        private Boolean isWordWrap
-        {
-            get { return _isWordWrap; }
-            set
-            {
-                _isWordWrap                          = value;
-                WordWarpMenuItem.Checked             = value;
-                edit.WordWrap                        = value;
-                Properties.Settings.Default.wordWrap = value;
                 Properties.Settings.Default.Save();
             }
         }
@@ -223,15 +328,19 @@ namespace NotepadSharp
         }
 
         private Boolean isLoadFile = false; //To determine whether it's loading a new file or
-
         //    text typing that results to TextChange.
+
+        #endregion
+
+
         public frmMain()
         {
             InitializeComponent();
 
-            edit                                =  new TextEditor();
-            edit.BorderBrush=new SolidColorBrush(System.Windows.Media.Color.FromRgb(160,160,160));
-            edit.BorderThickness=new Thickness(0,1,0,1);
+            edit = new TextEditor();
+            edit.BorderBrush =
+                new SolidColorBrush(System.Windows.Media.Color.FromRgb(160, 160, 160));
+            edit.BorderThickness                =  new Thickness(0, 1, 0, 1);
             host.Child                          =  edit;
             edit.TextChanged                    += Edit_TextChanged;
             edit.MouseDown                      += Edit_Click;
@@ -247,16 +356,17 @@ namespace NotepadSharp
             fontDialog.Apply += FontDialog_Apply;
         }
 
-        private void Caret_PositionChanged(object sender, EventArgs e)
-        {
-            updateStatusBar();
-            UpdateMenuItem();
-        }
-
         private void FontDialog_Apply(object sender, EventArgs e)
         {
             currFont    = fontDialog.Font;
             orgFontSize = currFont.Size;
+        }
+
+        #region Editor Events
+        private void Caret_PositionChanged(object sender, EventArgs e)
+        {
+            updateStatusBar();
+            UpdateMenuItem();
         }
 
         private void Document_UpdateFinished(object sender, EventArgs e)
@@ -285,7 +395,7 @@ namespace NotepadSharp
 
         private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (currPressedKey.Contains("Ctrl"))
+            if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
                 if (e.Delta > 0)
                 {
@@ -302,7 +412,6 @@ namespace NotepadSharp
 
         private void TextArea_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            currPressedKey = "";
             updateStatusBar();
             UpdateMenuItem();
         }
@@ -314,7 +423,6 @@ namespace NotepadSharp
                 isLoadFile = false; //Restore to default
             }
 
-            currPressedKey = e.Key.ToString();
             updateStatusBar();
             UpdateMenuItem();
         }
@@ -365,6 +473,10 @@ namespace NotepadSharp
             updateStatusBar();
             UpdateMenuItem();
         }
+
+        #endregion
+
+        #region Util Functions
 
         private string determineReturnStyle()
         {
@@ -426,6 +538,17 @@ namespace NotepadSharp
             else
             {
                 RedoMenuItem.Enabled = false;
+            }
+
+            if (!File.Exists(edit.Document.FileName) || (edit.Document.FileName is null) ||
+                edit.Document.FileName == ""         ||
+                (edit.Document.FileName == "\\Untitled\\"))
+            {
+                reOpenMenuItem.Enabled = false;
+            }
+            else
+            {
+                reOpenMenuItem.Enabled = true;
             }
 
             if (HaveSelection())
@@ -551,6 +674,8 @@ namespace NotepadSharp
             return result;
         }
 
+        #endregion
+
         private void frmMain_Load(object sender, EventArgs e)
         {
             //Try to fix high-dpi blurry
@@ -559,6 +684,9 @@ namespace NotepadSharp
 
             reArrangeControl();
             MultiLanguage.LoadLanguage(this, typeof(frmMain));
+
+            #region DefaultSettings
+
             //Load TextEditor default settings
             if (currFont is null)
             {
@@ -577,14 +705,24 @@ namespace NotepadSharp
                 currFont = Properties.Settings.Default.font;
             }
 
-            orgFontSize            = currFont.Size;
-            edit.Document.FileName = "\\Untitled\\";
-            edit.TextArea.Options.ShowTabs = true;
+            orgFontSize                                      = currFont.Size;
+            edit.TextArea.Options.EnableTextDragDrop         = true;
+            edit.Document.FileName                           = "\\Untitled\\";
             edit.ShowLineNumbers                             = true;
             edit.Encoding                                    = System.Text.Encoding.UTF8;
             edit.TextArea.Options.EnableRectangularSelection = true;
+            SearchPanel.Install(edit.TextArea);
 
-            isWordWrap = Properties.Settings.Default.wordWrap;
+            isWordWrap        = Properties.Settings.Default.wordWrap;
+            isShowColRuler    = Properties.Settings.Default.showColRuler;
+            isShowControlChar = Properties.Settings.Default.showControlChar;
+            isShowEOL         = Properties.Settings.Default.showEOL;
+            isShowSpace       = Properties.Settings.Default.showSpace;
+            isShowStatusBar   = Properties.Settings.Default.showStatusBar;
+            isShowTab         = Properties.Settings.Default.showTab;
+
+            #endregion
+
             updateStatusBar();
             UpdateMenuItem();
 
@@ -596,6 +734,8 @@ namespace NotepadSharp
                 edit.Load(Environment.GetCommandLineArgs()[1]);
             }
         }
+
+        #region UI Events
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
         {
@@ -780,5 +920,81 @@ namespace NotepadSharp
         private void PrintMenuItem_Click(object sender, EventArgs e)
         {
         }
+
+        private void reOpenMenuItem_Click(object sender, EventArgs e)
+        {
+            String preOpenedDocName = edit.Document.FileName;
+            edit.Document.FileName = "\\Untitled\\"; //To ensure triggering FileNameChanged event
+            edit.SelectionLength   = 0;
+            edit.Document.FileName =
+                preOpenedDocName; //If not, open the same name file again, will not trigger this event.
+            edit.Load(preOpenedDocName);
+        }
+
+        private void ShowHelpMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://docs.cadou-tech.xyz/");
+        }
+
+        private void SendIssusMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/XHSofts/NotepadSharp/issues/new");
+        }
+
+        private void IsShowStatusBarMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void IsShowStatusBarMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            isShowStatusBar = IsShowStatusBarMenuItem.Checked;
+        }
+
+        private void ColRulerMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            isShowColRuler = ColRulerMenuItem.Checked;
+        }
+
+        private void ControlCharMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            isShowControlChar = ControlCharMenuItem.Checked;
+        }
+
+        private void EOLMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void EOLMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            isShowEOL = EOLMenuItem.Checked;
+        }
+
+        private void SpaceMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            isShowSpace = SpaceMenuItem.Checked;
+        }
+
+        private void TabMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            isShowTab = TabMenuItem.Checked;
+        }
+
+        private void ZoomInMenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize += 10;
+        }
+
+        private void ZoomOutMenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize -= 10;
+        }
+
+        private void RestoreZoomMenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize = 100;
+        }
+
+        #endregion
+
     }
 }

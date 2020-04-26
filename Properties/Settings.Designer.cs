@@ -57,5 +57,77 @@ namespace NotepadSharp.Properties {
                 this["wordWrap"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool showTab {
+            get {
+                return ((bool)(this["showTab"]));
+            }
+            set {
+                this["showTab"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool showStatusBar {
+            get {
+                return ((bool)(this["showStatusBar"]));
+            }
+            set {
+                this["showStatusBar"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool showSpace {
+            get {
+                return ((bool)(this["showSpace"]));
+            }
+            set {
+                this["showSpace"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool showEOL {
+            get {
+                return ((bool)(this["showEOL"]));
+            }
+            set {
+                this["showEOL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool showControlChar {
+            get {
+                return ((bool)(this["showControlChar"]));
+            }
+            set {
+                this["showControlChar"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool showColRuler {
+            get {
+                return ((bool)(this["showColRuler"]));
+            }
+            set {
+                this["showColRuler"] = value;
+            }
+        }
     }
 }
