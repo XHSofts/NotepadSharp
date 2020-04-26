@@ -227,18 +227,25 @@ namespace NotepadSharp
         {
             InitializeComponent();
 
-            edit                          =  new TextEditor();
-            host.Child                    =  edit;
-            edit.TextChanged              += Edit_TextChanged;
-            edit.MouseDown                += Edit_Click;
-            edit.TextArea.MouseMove       += TextArea_MouseMove;
-            edit.TextArea.KeyDown         += TextArea_KeyDown;
-            edit.TextArea.KeyUp           += TextArea_KeyUp;
-            edit.Document.FileNameChanged += Edit_FileNameChanged;
-            edit.TextArea.MouseWheel      += TextArea_MouseWheel;
-            edit.Document.UpdateStarted   += Document_UpdateStarted;
-            edit.Document.UpdateFinished  += Document_UpdateFinished;
-            fontDialog.Apply              += FontDialog_Apply;
+            edit                                =  new TextEditor();
+            host.Child                          =  edit;
+            edit.TextChanged                    += Edit_TextChanged;
+            edit.MouseDown                      += Edit_Click;
+            edit.TextArea.MouseMove             += TextArea_MouseMove;
+            edit.TextArea.KeyDown               += TextArea_KeyDown;
+            edit.TextArea.KeyUp                 += TextArea_KeyUp;
+            edit.Document.FileNameChanged       += Edit_FileNameChanged;
+            edit.TextArea.MouseWheel            += TextArea_MouseWheel;
+            edit.Document.UpdateStarted         += Document_UpdateStarted;
+            edit.Document.UpdateFinished        += Document_UpdateFinished;
+            edit.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+            fontDialog.Apply                    += FontDialog_Apply;
+        }
+
+        private void Caret_PositionChanged(object sender, EventArgs e)
+        {
+            updateStatusBar();
+            UpdateMenuItem();
         }
 
         private void FontDialog_Apply(object sender, EventArgs e)
@@ -282,6 +289,7 @@ namespace NotepadSharp
                 {
                     currZoomSize -= 10;
                 }
+
                 e.Handled = true;
             }
         }
@@ -574,7 +582,7 @@ namespace NotepadSharp
                 if ((dr == DialogResult.OK) && (openFileDialog.FileName != "" && File.Exists(openFileDialog.FileName)))
                 {
                     edit.Document.FileName = "\\Untitled\\"; //To ensure triggering FileNameChanged event
-                    edit.SelectionLength = 0;
+                    edit.SelectionLength   = 0;
                     edit.Document.FileName =
                         openFileDialog.FileName; //If not, open the same name file again, will not trigger this event.
                     edit.Load(openFileDialog.FileName);
@@ -665,7 +673,7 @@ namespace NotepadSharp
             if (checkUnsave())
             {
                 edit.Document.Text = "";
-                hasSave = true;
+                hasSave            = true;
                 Application.Exit();
             }
         }
@@ -718,12 +726,13 @@ namespace NotepadSharp
             {
                 searchText = edit.Text;
             }
-            System.Diagnostics.Process.Start("https://www.bing.com/search?q="+searchText);
+
+            System.Diagnostics.Process.Start("https://www.bing.com/search?q=" + searchText);
         }
 
         private void DateTimeMenuItem_Click(object sender, EventArgs e)
         {
-            edit.Document.Insert(edit.Document.TextLength,DateTime.Now.ToString());
+            edit.Document.Insert(edit.TextArea.Caret.Offset, DateTime.Now.ToString());
         }
 
         private void GotoMenuItem_Click(object sender, EventArgs e)
@@ -738,7 +747,8 @@ namespace NotepadSharp
 
             if (TargetLineIndex > edit.Document.LineCount)
             {
-                MessageBox.Show(this, LocRM.GetString("LineNumAboveTotalError"),LocRM.GetString("$this.Text"),MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                MessageBox.Show(this, LocRM.GetString("LineNumAboveTotalError"), LocRM.GetString("$this.Text"),
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
@@ -748,7 +758,6 @@ namespace NotepadSharp
 
         private void PrintMenuItem_Click(object sender, EventArgs e)
         {
-            
         }
     }
 }
