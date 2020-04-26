@@ -59,6 +59,8 @@
             this.SelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DateTimeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FormatMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.WordWarpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FontMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bottomStatusBar = new System.Windows.Forms.StatusStrip();
@@ -71,8 +73,6 @@
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.Container = new NotepadSharp.PanelEx(this.components);
             this.host = new System.Windows.Forms.Integration.ElementHost();
-            this.WordWarpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FontMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
@@ -336,6 +336,24 @@
             this.FormatMenuItem.Size = new System.Drawing.Size(67, 24);
             this.FormatMenuItem.Text = "格式(&O)";
             // 
+            // WordWarpMenuItem
+            // 
+            this.WordWarpMenuItem.Checked = true;
+            this.WordWarpMenuItem.CheckOnClick = true;
+            this.WordWarpMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.WordWarpMenuItem.Name = "WordWarpMenuItem";
+            this.WordWarpMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.WordWarpMenuItem.Text = "自动换行(&W)";
+            this.WordWarpMenuItem.CheckedChanged += new System.EventHandler(this.WordWarpMenuItem_CheckedChanged);
+            this.WordWarpMenuItem.Click += new System.EventHandler(this.WordWarpMenuItem_Click);
+            // 
+            // FontMenuItem
+            // 
+            this.FontMenuItem.Name = "FontMenuItem";
+            this.FontMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.FontMenuItem.Text = "字体(&F)...";
+            this.FontMenuItem.Click += new System.EventHandler(this.FontMenuItem_Click);
+            // 
             // ViewMenuItem
             // 
             this.ViewMenuItem.Name = "ViewMenuItem";
@@ -377,7 +395,7 @@
             this.encodingStatus.Name = "encodingStatus";
             this.encodingStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
             this.encodingStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.encodingStatus.Size = new System.Drawing.Size(120, 25);
+            this.encodingStatus.Size = new System.Drawing.Size(150, 25);
             this.encodingStatus.Text = "Unicode (UTF-8)";
             this.encodingStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -390,7 +408,7 @@
             this.returnStyleStatus.Name = "returnStyleStatus";
             this.returnStyleStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
             this.returnStyleStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.returnStyleStatus.Size = new System.Drawing.Size(120, 25);
+            this.returnStyleStatus.Size = new System.Drawing.Size(150, 25);
             this.returnStyleStatus.Text = "Windows（CRLF）";
             this.returnStyleStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -459,26 +477,7 @@
             this.host.Name = "host";
             this.host.Size = new System.Drawing.Size(1021, 514);
             this.host.TabIndex = 0;
-            this.host.Text = "elementHost1";
             this.host.Child = null;
-            // 
-            // WordWarpMenuItem
-            // 
-            this.WordWarpMenuItem.Checked = true;
-            this.WordWarpMenuItem.CheckOnClick = true;
-            this.WordWarpMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.WordWarpMenuItem.Name = "WordWarpMenuItem";
-            this.WordWarpMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.WordWarpMenuItem.Text = "自动换行(&W)";
-            this.WordWarpMenuItem.CheckedChanged += new System.EventHandler(this.WordWarpMenuItem_CheckedChanged);
-            this.WordWarpMenuItem.Click += new System.EventHandler(this.WordWarpMenuItem_Click);
-            // 
-            // FontMenuItem
-            // 
-            this.FontMenuItem.Name = "FontMenuItem";
-            this.FontMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.FontMenuItem.Text = "字体(&F)...";
-            this.FontMenuItem.Click += new System.EventHandler(this.FontMenuItem_Click);
             // 
             // fontDialog
             // 

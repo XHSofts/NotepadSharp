@@ -18,6 +18,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Xml;
 using FontFamily = System.Windows.Media.FontFamily;
 using ICSharpCode.AvalonEdit;
@@ -25,6 +26,7 @@ using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Folding;
 using Application = System.Windows.Forms.Application;
+using Color = System.Drawing.Color;
 using FoldingManager = ICSharpCode.AvalonEdit.Folding.FoldingManager;
 using FontStyle = System.Drawing.FontStyle;
 using HighlightingManager = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager;
@@ -69,14 +71,14 @@ namespace NotepadSharp
             }
         }
 
-        private FileObject _currOpenedFIle;
+        private FileObject _currOpenedFile;
 
-        private FileObject currOpenedFIle
+        private FileObject currOpenedFile
         {
-            get { return _currOpenedFIle; }
+            get { return _currOpenedFile; }
             set
             {
-                _currOpenedFIle = value;
+                _currOpenedFile = value;
                 currTitleName   = value.fileName;
             }
         }
@@ -228,6 +230,8 @@ namespace NotepadSharp
             InitializeComponent();
 
             edit                                =  new TextEditor();
+            edit.BorderBrush=new SolidColorBrush(System.Windows.Media.Color.FromRgb(160,160,160));
+            edit.BorderThickness=new Thickness(0,1,0,1);
             host.Child                          =  edit;
             edit.TextChanged                    += Edit_TextChanged;
             edit.MouseDown                      += Edit_Click;
@@ -239,7 +243,8 @@ namespace NotepadSharp
             edit.Document.UpdateStarted         += Document_UpdateStarted;
             edit.Document.UpdateFinished        += Document_UpdateFinished;
             edit.TextArea.Caret.PositionChanged += Caret_PositionChanged;
-            fontDialog.Apply                    += FontDialog_Apply;
+
+            fontDialog.Apply += FontDialog_Apply;
         }
 
         private void Caret_PositionChanged(object sender, EventArgs e)
@@ -258,7 +263,8 @@ namespace NotepadSharp
         {
             if (isLoadFile)
             {
-                isLoadFile = false;
+                currFileEncoding = edit.Encoding?.EncodingName;
+                isLoadFile       = false;
             }
 
             if (edit.Document.FileName == "\\Untitled\\" || edit.Document.FileName == "" ||
@@ -321,15 +327,22 @@ namespace NotepadSharp
 
         private void Edit_FileNameChanged(object sender, EventArgs e)
         {
-            if (edit.Document.FileName == "\\Untitled\\") return;
-            currFileEncoding = edit.Encoding.EncodingName;
-            currOpenedFIle = new FileObject(System.IO.Path.GetFileName(edit.Document.FileName), edit.Document.FileName,
-                                            System.IO.Path.GetExtension(edit.Document.FileName));
-            edit.SyntaxHighlighting =
-                HighlightingManager
-                    .Instance.GetDefinitionByExtension(System.IO.Path.GetExtension(edit.Document.FileName));
-            hasSave    = true;
-            isLoadFile = true;
+            if (edit.Document.FileName == "\\Untitled\\")
+            {
+                currOpenedFile =
+                    new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
+            }
+            else
+            {
+                currOpenedFile = new FileObject(System.IO.Path.GetFileName(edit.Document.FileName),
+                                                edit.Document.FileName,
+                                                System.IO.Path.GetExtension(edit.Document.FileName));
+                edit.SyntaxHighlighting =
+                    HighlightingManager
+                        .Instance.GetDefinitionByExtension(System.IO.Path.GetExtension(edit.Document.FileName));
+                hasSave    = true;
+                isLoadFile = true;
+            }
         }
 
         private void Edit_Click(object sender, EventArgs e)
@@ -369,16 +382,17 @@ namespace NotepadSharp
             }
             else
             {
-                return "Mixed";
+                return "Windows (CRLF)";
             }
         }
 
         private void updateStatusBar()
         {
-            currCaretLine   = edit.TextArea.Caret.Line;
-            currCaretColumn = edit.TextArea.Caret.Column;
-            currLength      = edit.Document.TextLength;
-            currLines       = edit.Document.LineCount;
+            currFileEncoding = edit.Encoding?.EncodingName;
+            currCaretLine    = edit.TextArea.Caret.Line;
+            currCaretColumn  = edit.TextArea.Caret.Column;
+            currLength       = edit.Document.TextLength;
+            currLines        = edit.Document.LineCount;
         }
 
         private void UpdateTitle()
@@ -478,7 +492,9 @@ namespace NotepadSharp
                 if (dr == DialogResult.OK && saveFileDialog.FileName != "")
                 {
                     edit.Save(saveFileDialog.FileName);
-                    hasSave = true;
+                    edit.Load(saveFileDialog.FileName);
+                    edit.Document.FileName = saveFileDialog.FileName;
+                    hasSave                = true;
                     return true;
                 }
             }
@@ -501,7 +517,7 @@ namespace NotepadSharp
             {
                 //If the file is missing when checking...
                 dr =
-                    MessageBox.Show(string.Format(LocRM.GetString("FileNotExistWhenCheck"), currOpenedFIle.fileName),
+                    MessageBox.Show(string.Format(LocRM.GetString("FileNotExistWhenCheck"), currOpenedFile.fileName),
                                     LocRM.GetString("$this.Text"),
                                     MessageBoxButtons.YesNoCancel);
             }
@@ -509,7 +525,7 @@ namespace NotepadSharp
             {
                 //If file is unsaved....
                 dr =
-                    MessageBox.Show(string.Format(LocRM.GetString("saveQuestion"), currOpenedFIle.fileName),
+                    MessageBox.Show(string.Format(LocRM.GetString("saveQuestion"), currOpenedFile.fileName),
                                     LocRM.GetString("$this.Text"),
                                     MessageBoxButtons.YesNoCancel);
             }
@@ -563,8 +579,7 @@ namespace NotepadSharp
 
             orgFontSize            = currFont.Size;
             edit.Document.FileName = "\\Untitled\\";
-            currOpenedFIle =
-                new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
+            edit.TextArea.Options.ShowTabs = true;
             edit.ShowLineNumbers                             = true;
             edit.Encoding                                    = System.Text.Encoding.UTF8;
             edit.TextArea.Options.EnableRectangularSelection = true;
@@ -572,6 +587,14 @@ namespace NotepadSharp
             isWordWrap = Properties.Settings.Default.wordWrap;
             updateStatusBar();
             UpdateMenuItem();
+
+            if (Environment.GetCommandLineArgs().Length > 1    && Environment.GetCommandLineArgs()[1] != "" &&
+                !(Environment.GetCommandLineArgs()[1] is null) && File.Exists(Environment.GetCommandLineArgs()[1]))
+            {
+                edit.SelectionLength   = 0;
+                edit.Document.FileName = Environment.GetCommandLineArgs()[1];
+                edit.Load(Environment.GetCommandLineArgs()[1]);
+            }
         }
 
         private void openFileMenuItem_Click(object sender, EventArgs e)
@@ -653,8 +676,6 @@ namespace NotepadSharp
         {
             if (checkUnsave())
             {
-                currOpenedFIle =
-                    new FileObject(LocRM.GetString("defaultTitle"), "", ".txt");
                 edit.Document.FileName = "\\Untitled\\";
                 edit.Document.Text     = string.Empty;
                 edit.Document.UndoStack.ClearAll();

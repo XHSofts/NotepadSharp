@@ -177,4 +177,10 @@
   <data name="LineNumAboveTotalError" xml:space="preserve">
     <value>你输入的行号多于总共的行数。</value>
   </data>
+  <data name="OutOfMemory" xml:space="preserve">
+    <value>你的文字过于长，程序遇到内存溢出错误。</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>系统错误</value>
+  </data>
 </root>

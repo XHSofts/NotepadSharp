@@ -177,4 +177,10 @@
   <data name="LineNumAboveTotalError" xml:space="preserve">
     <value>The line number is beyond the total number of lines.</value>
   </data>
+  <data name="OutOfMemory" xml:space="preserve">
+    <value>Your text's length is too long. Program got OutOfMemory.</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>System Error</value>
+  </data>
 </root>
