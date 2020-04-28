@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Resources;
 using System.Text;
@@ -14,16 +15,16 @@ namespace NotepadSharp
         private static extern bool SetProcessDPIAware();
 
         private static ResourceManager LocRM = new ResourceManager("NotepadSharp.frmMain", typeof(frmMain).Assembly);
-
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
         static void Main()
         {
+#if !DEBUG
             try
             {
-#if !DEBUG
+
                 //设置应用程序处理异常方式：ThreadException处理
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                 //处理UI线程异常
@@ -33,17 +34,19 @@ namespace NotepadSharp
                 AppDomain.CurrentDomain.UnhandledException +=
                     new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 #endif
-                if (Environment.OSVersion.Version.Major <= 6)
+            if (Environment.OSVersion.Version.Major <= 6)
                     SetProcessDPIAware();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new frmMain());
+#if !DEBUG
             }
             catch (Exception ex)
             {
                 string str = GetExceptionMsg(ex, string.Empty);
                 MessageBox.Show(str, LocRM.GetString("SystemError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#endif
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)

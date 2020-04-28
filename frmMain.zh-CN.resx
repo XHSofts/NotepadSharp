@@ -183,4 +183,7 @@
   <data name="SystemError" xml:space="preserve">
     <value>系统错误</value>
   </data>
+  <data name="LoadTime" xml:space="preserve">
+    <value>加载时间</value>
+  </data>
 </root>

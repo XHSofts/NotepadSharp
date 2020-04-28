@@ -1,35 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Text;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Xml;
 using FontFamily = System.Windows.Media.FontFamily;
 using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.AvalonEdit.Editing;
-using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Search;
+using ICSharpCode.AvalonEdit.Utils;
 using Application = System.Windows.Forms.Application;
-using Color = System.Drawing.Color;
-using FoldingManager = ICSharpCode.AvalonEdit.Folding.FoldingManager;
-using FontStyle = System.Drawing.FontStyle;
 using HighlightingManager = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -157,6 +143,12 @@ namespace NotepadSharp
         }
 
         #endregion
+
+        private class TextWithEncoding
+        {
+            public string   Content      { get; set; }
+            public Encoding TextEncoding { get; set; }
+        }
 
         #region Current Props
 
@@ -332,28 +324,24 @@ namespace NotepadSharp
 
         #endregion
 
+        private static Task<Stream>           test;
+        private static List<byte>             content = new List<byte>();
+        private static Task<TextWithEncoding> textReaderTask;
+        private        Stopwatch              sw  = new Stopwatch();
+        private static TextWithEncoding       txt = new TextWithEncoding();
 
         public frmMain()
         {
             InitializeComponent();
-
-            edit = new TextEditor();
-            edit.BorderBrush =
-                new SolidColorBrush(System.Windows.Media.Color.FromRgb(160, 160, 160));
-            edit.BorderThickness                =  new Thickness(0, 1, 0, 1);
-            host.Child                          =  edit;
-            edit.TextChanged                    += Edit_TextChanged;
-            edit.MouseDown                      += Edit_Click;
-            edit.TextArea.MouseMove             += TextArea_MouseMove;
-            edit.TextArea.KeyDown               += TextArea_KeyDown;
-            edit.TextArea.KeyUp                 += TextArea_KeyUp;
-            edit.Document.FileNameChanged       += Edit_FileNameChanged;
-            edit.TextArea.MouseWheel            += TextArea_MouseWheel;
-            edit.Document.UpdateStarted         += Document_UpdateStarted;
-            edit.Document.UpdateFinished        += Document_UpdateFinished;
-            edit.TextArea.Caret.PositionChanged += Caret_PositionChanged;
-
             fontDialog.Apply += FontDialog_Apply;
+
+            if (Environment.GetCommandLineArgs().Length > 1    && Environment.GetCommandLineArgs()[1] != "" &&
+                !(Environment.GetCommandLineArgs()[1] is null) && File.Exists(Environment.GetCommandLineArgs()[1]))
+            {
+                sw.Start();
+                //                test = ReadTextAsync(Environment.GetCommandLineArgs()[1]);
+                textReaderTask = ReadFileAsync(Environment.GetCommandLineArgs()[1]);
+            }
         }
 
         private void FontDialog_Apply(object sender, EventArgs e)
@@ -363,6 +351,7 @@ namespace NotepadSharp
         }
 
         #region Editor Events
+
         private void Caret_PositionChanged(object sender, EventArgs e)
         {
             updateStatusBar();
@@ -480,21 +469,28 @@ namespace NotepadSharp
 
         private string determineReturnStyle()
         {
-            if (edit.TextArea.Document.Text.Contains("\r\n"))
+            try
             {
-                return "Windows (CRLF)";
+                if (edit.TextArea.Document.Text.Contains("\r\n"))
+                {
+                    return "Windows (CRLF)";
+                }
+                else if (edit.TextArea.Document.Text.Contains("\n"))
+                {
+                    return "Unix (LF)";
+                }
+                else if (edit.TextArea.Document.Text.Contains("\r"))
+                {
+                    return "Macintosh (CR)";
+                }
+                else
+                {
+                    return "Windows (CRLF)";
+                }
             }
-            else if (edit.TextArea.Document.Text.Contains("\n"))
+            catch
             {
-                return "Unix (LF)";
-            }
-            else if (edit.TextArea.Document.Text.Contains("\r"))
-            {
-                return "Macintosh (CR)";
-            }
-            else
-            {
-                return "Windows (CRLF)";
+                return "Error";
             }
         }
 
@@ -676,14 +672,48 @@ namespace NotepadSharp
 
         #endregion
 
+        protected override void OnLoad(System.EventArgs e)
+        {
+            base.OnLoad(e);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+        }
+
+        #region UI Events
+
         private void frmMain_Load(object sender, EventArgs e)
         {
+            this.SuspendLayout();
             //Try to fix high-dpi blurry
             this.AutoScaleMode = AutoScaleMode.Font;
             //Finally I upgrade to .Net 4.7 to solve this...
 
             reArrangeControl();
+        }
+
+        private async void frmMain_Shown(object sender, EventArgs e)
+        {
             MultiLanguage.LoadLanguage(this, typeof(frmMain));
+
+            #region TextEditor ctor
+
+            edit = new TextEditor();
+            edit.BorderBrush =
+                new SolidColorBrush(System.Windows.Media.Color.FromRgb(160, 160, 160));
+            edit.BorderThickness                =  new Thickness(0, 1, 0, 1);
+            edit.TextChanged                    += Edit_TextChanged;
+            edit.MouseDown                      += Edit_Click;
+            edit.TextArea.MouseMove             += TextArea_MouseMove;
+            edit.TextArea.KeyDown               += TextArea_KeyDown;
+            edit.TextArea.KeyUp                 += TextArea_KeyUp;
+            edit.Document.FileNameChanged       += Edit_FileNameChanged;
+            edit.TextArea.MouseWheel            += TextArea_MouseWheel;
+            edit.Document.UpdateStarted         += Document_UpdateStarted;
+            edit.Document.UpdateFinished        += Document_UpdateFinished;
+            edit.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+
+            #endregion
 
             #region DefaultSettings
 
@@ -711,7 +741,6 @@ namespace NotepadSharp
             edit.ShowLineNumbers                             = true;
             edit.Encoding                                    = System.Text.Encoding.UTF8;
             edit.TextArea.Options.EnableRectangularSelection = true;
-            SearchPanel.Install(edit.TextArea);
 
             isWordWrap        = Properties.Settings.Default.wordWrap;
             isShowColRuler    = Properties.Settings.Default.showColRuler;
@@ -726,18 +755,59 @@ namespace NotepadSharp
             updateStatusBar();
             UpdateMenuItem();
 
+            ElementHost host = new ElementHost
+            {
+                Dock  = DockStyle.Fill,
+                Child = edit
+            };
+            Container.Controls.Add(host);
+            this.ResumeLayout(true);
+            this.WindowState = FormWindowState.Normal;
+
+
             if (Environment.GetCommandLineArgs().Length > 1    && Environment.GetCommandLineArgs()[1] != "" &&
                 !(Environment.GetCommandLineArgs()[1] is null) && File.Exists(Environment.GetCommandLineArgs()[1]))
             {
                 edit.SelectionLength   = 0;
                 edit.Document.FileName = Environment.GetCommandLineArgs()[1];
-                edit.Load(Environment.GetCommandLineArgs()[1]);
+                readFileToEdit(await textReaderTask);
+
+                //edit.Load(await test);
             }
         }
 
-        #region UI Events
+        private void readFileToEdit(TextWithEncoding t)
+        {
+            edit.Text     = t.Content;
+            LoadTime.Text = LocRM.GetString("LoadTime") + ":" + sw.ElapsedMilliseconds.ToString() + " ms";
+            sw.Reset();
+            edit.SetCurrentValue(TextEditor.IsModifiedProperty, false);
+            edit.SetCurrentValue(TextEditor.EncodingProperty, (object) t.TextEncoding);
+        }
 
-        private void openFileMenuItem_Click(object sender, EventArgs e)
+        async Task<TextWithEncoding> ReadFileAsync(string filePath)
+        {
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                using (BufferedStream bufferStream = new BufferedStream(fileStream))
+                {
+                    using (StreamReader streamReader = FileReader.OpenStream(bufferStream, Encoding.UTF8))
+                    {
+                        string result = await streamReader.ReadToEndAsync();
+                        txt.Content      = result;
+                        txt.TextEncoding = streamReader.CurrentEncoding;
+                        return txt;
+                    }
+                }
+            }
+        }
+
+        private void anotherVoid()
+        {
+            SearchPanel.Install(edit.TextArea);
+        }
+
+        private async void openFileMenuItem_Click(object sender, EventArgs e)
         {
             if (checkUnsave())
             {
@@ -748,7 +818,10 @@ namespace NotepadSharp
                     edit.SelectionLength   = 0;
                     edit.Document.FileName =
                         openFileDialog.FileName; //If not, open the same name file again, will not trigger this event.
-                    edit.Load(openFileDialog.FileName);
+                    sw.Start();
+                    textReaderTask = ReadFileAsync(openFileDialog.FileName);
+                    readFileToEdit(await textReaderTask);
+                    //                    edit.Load(openFileDialog.FileName);
                 }
             }
         }
@@ -921,14 +994,17 @@ namespace NotepadSharp
         {
         }
 
-        private void reOpenMenuItem_Click(object sender, EventArgs e)
+        private async void reOpenMenuItem_Click(object sender, EventArgs e)
         {
             String preOpenedDocName = edit.Document.FileName;
             edit.Document.FileName = "\\Untitled\\"; //To ensure triggering FileNameChanged event
             edit.SelectionLength   = 0;
             edit.Document.FileName =
                 preOpenedDocName; //If not, open the same name file again, will not trigger this event.
-            edit.Load(preOpenedDocName);
+            sw.Start();
+            textReaderTask = ReadFileAsync(preOpenedDocName);
+            readFileToEdit(await textReaderTask);
+            //            edit.Load(preOpenedDocName);
         }
 
         private void ShowHelpMenuItem_Click(object sender, EventArgs e)
@@ -995,6 +1071,5 @@ namespace NotepadSharp
         }
 
         #endregion
-
     }
 }
