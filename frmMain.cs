@@ -672,6 +672,18 @@ namespace NotepadSharp
 
         #endregion
 
+        //To solve the repaint problem, but, sometimes it doesn't show the 
+        //text at startup until I click or something else about UI changing happened,
+        //this is not good.
+//        protected override CreateParams CreateParams
+//        {
+//            get
+//            {
+//                CreateParams cp = base.CreateParams;
+//                cp.ExStyle |= 0x02000000;
+//                return cp;
+//            }
+//        }
         protected override void OnLoad(System.EventArgs e)
         {
             base.OnLoad(e);
@@ -774,6 +786,7 @@ namespace NotepadSharp
 
                 //edit.Load(await test);
             }
+            this.Refresh();
         }
 
         private void readFileToEdit(TextWithEncoding t)
@@ -783,6 +796,7 @@ namespace NotepadSharp
             sw.Reset();
             edit.SetCurrentValue(TextEditor.IsModifiedProperty, false);
             edit.SetCurrentValue(TextEditor.EncodingProperty, (object) t.TextEncoding);
+            this.Refresh();
         }
 
         async Task<TextWithEncoding> ReadFileAsync(string filePath)

@@ -17,6 +17,7 @@ namespace NotepadSharp
         public PanelEx()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor, true);
         }
 
         public PanelEx(IContainer container)
