@@ -186,4 +186,13 @@
   <data name="LoadTime" xml:space="preserve">
     <value>加载时间</value>
   </data>
+  <data name="LoadFail" xml:space="preserve">
+    <value>加载失败</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>普通文本</value>
+  </data>
+  <data name="TabSize" xml:space="preserve">
+    <value>Tab 宽度</value>
+  </data>
 </root>

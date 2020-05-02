@@ -186,4 +186,13 @@
   <data name="LoadTime" xml:space="preserve">
     <value>Load time</value>
   </data>
+  <data name="LoadFail" xml:space="preserve">
+    <value>Load Failed</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>Normal Text</value>
+  </data>
+  <data name="TabSize" xml:space="preserve">
+    <value>Tab Size</value>
+  </data>
 </root>

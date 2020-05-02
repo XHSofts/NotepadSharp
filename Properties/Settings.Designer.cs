@@ -129,5 +129,29 @@ namespace NotepadSharp.Properties {
                 this["showColRuler"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int IndentMode {
+            get {
+                return ((int)(this["IndentMode"]));
+            }
+            set {
+                this["IndentMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool isSpaceAsTab {
+            get {
+                return ((bool)(this["isSpaceAsTab"]));
+            }
+            set {
+                this["isSpaceAsTab"] = value;
+            }
+        }
     }
 }

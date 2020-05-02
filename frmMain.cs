@@ -13,6 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using FontFamily = System.Windows.Media.FontFamily;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Indentation.CSharp;
 using ICSharpCode.AvalonEdit.Search;
 using ICSharpCode.AvalonEdit.Utils;
 using Application = System.Windows.Forms.Application;
@@ -32,6 +34,15 @@ namespace NotepadSharp
 
         ResourceManager LocRM = new ResourceManager("NotepadSharp.frmMain", typeof(frmMain).Assembly);
 
+        private ICSharpCode.AvalonEdit.Indentation.CSharp.CSharpIndentationStrategy css =
+            new CSharpIndentationStrategy();
+
+        private enum IndentMode
+        {
+            Mode2,
+            Mode4,
+            Mode8
+        }
 
         #region Editor Settings
 
@@ -46,6 +57,21 @@ namespace NotepadSharp
                 TabMenuItem.Checked                 = value;
                 edit.TextArea.Options.ShowTabs      = value;
                 Properties.Settings.Default.showTab = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private Boolean _isSpaceAsTab;
+
+        private Boolean isSpaceAsTab
+        {
+            get { return _isSpaceAsTab; }
+            set
+            {
+                _isSpaceAsTab                             = value;
+                UseSpaceAsTabMenuItem.Checked             = value;
+                edit.TextArea.Options.ConvertTabsToSpaces = value;
+                Properties.Settings.Default.isSpaceAsTab  = value;
                 Properties.Settings.Default.Save();
             }
         }
@@ -243,6 +269,81 @@ namespace NotepadSharp
             }
         }
 
+        private Boolean currIsAutoIndent;
+
+        private IndentMode _currIndentMode;
+
+        private IndentMode currIndentMode
+        {
+            get { return _currIndentMode; }
+            set
+            {
+                _currIndentMode = value;
+                int indentValue = 0;
+                switch (value)
+                {
+                    case IndentMode.Mode2:
+                        edit.Options.IndentationSize = 2;
+                        TabWidthStatus.Text          = LocRM.GetString("TabSize") + ": 2";
+                        Indent2MenuItem.Checked      = true;
+                        Indent4MenuItem.Checked      = false;
+                        Indent8MenuItem.Checked      = false;
+                        indentValue                  = 1;
+                        break;
+                    case IndentMode.Mode4:
+                        edit.Options.IndentationSize = 4;
+                        TabWidthStatus.Text          = LocRM.GetString("TabSize") + ": 4";
+                        Indent2MenuItem.Checked      = false;
+                        Indent4MenuItem.Checked      = true;
+                        Indent8MenuItem.Checked      = false;
+                        indentValue                  = 2;
+                        break;
+                    case IndentMode.Mode8:
+                        edit.Options.IndentationSize = 8;
+                        TabWidthStatus.Text          = LocRM.GetString("TabSize") + ": 8";
+                        Indent2MenuItem.Checked      = false;
+                        Indent4MenuItem.Checked      = false;
+                        Indent8MenuItem.Checked      = true;
+                        indentValue                  = 3;
+                        break;
+                }
+
+
+                Properties.Settings.Default.IndentMode = indentValue;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private String _currSyntaxHighlighting;
+
+        private String currSyntaxHighlighting
+        {
+            get { return _currSyntaxHighlighting; }
+            set
+            {
+                _currSyntaxHighlighting = value;
+                foreach (ToolStripMenuItem tsmi in HighLightTypeMenuItem.DropDownItems)
+                {
+                    if (tsmi.Text == value)
+                    {
+                        tsmi.Checked = true;
+                    }
+                    else
+                    {
+                        tsmi.Checked = false;
+                    }
+                }
+
+                IHighlightingDefinition currDefine =
+                    ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition(value);
+                HighLightTypeMenuItem.Text = (value != LocRM.GetString("NormalText") && currDefine is null)
+                    ? LocRM.GetString("LoadFail")
+                    : value;
+                edit.SyntaxHighlighting = currDefine;
+            }
+        }
+
+
         private int _currCaretLine = 1;
 
         private int currCaretLine
@@ -324,8 +425,6 @@ namespace NotepadSharp
 
         #endregion
 
-        private static Task<Stream>           test;
-        private static List<byte>             content = new List<byte>();
         private static Task<TextWithEncoding> textReaderTask;
         private        Stopwatch              sw  = new Stopwatch();
         private static TextWithEncoding       txt = new TextWithEncoding();
@@ -352,8 +451,42 @@ namespace NotepadSharp
 
         #region Editor Events
 
+        private Boolean inTheBrackets = false;
+
         private void Caret_PositionChanged(object sender, EventArgs e)
         {
+            if (edit.TextArea.Caret.Line >= 2)
+            {
+                int lastLine  = edit.Document.Lines[edit.TextArea.Caret.Line - 2].EndOffset - 1;
+                int currCaret = edit.TextArea.Caret.Offset;
+
+                if (currCaret + 1 <= edit.Document.Text.Length && lastLine >= 0)
+                {
+                    if ((edit.Document.Text.Substring(lastLine, 1)  == "{" &&
+                         edit.Document.Text.Substring(currCaret, 1) == "}") ||
+                        (edit.Document.Text.Substring(lastLine, 1)  == "[" &&
+                         edit.Document.Text.Substring(currCaret, 1) == "]") ||
+                        (edit.Document.Text.Substring(lastLine, 1)  == "(" &&
+                         edit.Document.Text.Substring(currCaret, 1) == ")")
+                    )
+                    {
+                        inTheBrackets = true;
+                    }
+                    else
+                    {
+                        inTheBrackets = false;
+                    }
+                }
+                else
+                {
+                    inTheBrackets = false;
+                }
+            }
+            else
+            {
+                inTheBrackets = false;
+            }
+
             updateStatusBar();
             UpdateMenuItem();
         }
@@ -362,8 +495,16 @@ namespace NotepadSharp
         {
             if (isLoadFile)
             {
-                currFileEncoding = edit.Encoding?.EncodingName;
-                isLoadFile       = false;
+                currFileEncoding       = edit.Encoding?.EncodingName;
+                currSyntaxHighlighting = (edit.SyntaxHighlighting is null ? "普通文本" : edit.SyntaxHighlighting.Name);
+                if (!(currSyntaxHighlighting is null) &&
+                    (currSyntaxHighlighting.Contains("C") || currSyntaxHighlighting.Contains("PHP") ||
+                     currSyntaxHighlighting.Contains("Java")))
+                {
+                    AutoIndentMenuItem.Checked = true;
+                }
+
+                isLoadFile = false;
             }
 
             if (edit.Document.FileName == "\\Untitled\\" || edit.Document.FileName == "" ||
@@ -412,8 +553,89 @@ namespace NotepadSharp
                 isLoadFile = false; //Restore to default
             }
 
+            if (e.Key == Key.F6)
+            {
+                if (inTheBrackets && isCoding())
+                {
+                    String retChar   = "\r\n";
+                    int    currCaret = 0;
+                    switch (determineReturnStyle())
+                    {
+                        case "Error":
+                        case "Windows (CRLF)":
+                            retChar = "\r\n";
+                            break;
+                        case "Unix (LF)":
+                            retChar = "\n";
+                            break;
+                        case "Macintosh (CR)":
+                            retChar = "\r";
+                            break;
+                    }
+
+                    currCaret = edit.TextArea.Caret.Offset;
+                    edit.Document.Insert(currCaret, retChar);
+                    edit.TextArea.Caret.Line--;
+                    edit.Document.Insert(currCaret, "	");
+                    edit.TextArea.Caret.Offset = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
+                }
+            }
+
+            if (e.Key == Key.F5)
+            {
+            }
+
             updateStatusBar();
             UpdateMenuItem();
+        }
+
+        private void TextArea_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (isCoding())
+            {
+                String retChar   = "\r\n";
+                int    currCaret = 0;
+                int    currIndex = edit.TextArea.Caret.Offset - 1;
+                switch (e.Text)
+                {
+                    case "{":
+                        edit.Document.Insert(currIndex + 1, "}");
+                        edit.TextArea.Caret.Offset--;
+                        break;
+                    case "[":
+                        edit.Document.Insert(currIndex + 1, "]");
+                        edit.TextArea.Caret.Offset--;
+                        break;
+                    case "(":
+                        edit.Document.Insert(currIndex + 1, ")");
+                        edit.TextArea.Caret.Offset--;
+                        break;
+                    case " ":
+                        if (inTheBrackets)
+                        {
+                            switch (determineReturnStyle())
+                            {
+                                case "Error":
+                                case "Windows (CRLF)":
+                                    retChar = "\r\n";
+                                    break;
+                                case "Unix (LF)":
+                                    retChar = "\n";
+                                    break;
+                                case "Macintosh (CR)":
+                                    retChar = "\r";
+                                    break;
+                            }
+
+                            currCaret = edit.TextArea.Caret.Offset;
+                            edit.Document.Insert(currCaret, retChar);
+                            edit.TextArea.Caret.Line--;
+                            edit.Document.Insert(currCaret, "	");
+                        }
+
+                        break;
+                }
+            }
         }
 
         private void TextArea_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -459,6 +681,11 @@ namespace NotepadSharp
                 hasSave = false;
             }
 
+            if (isCoding() && currIsAutoIndent)
+            {
+                css.IndentLines(edit.Document, 0, edit.LineCount);
+            }
+
             updateStatusBar();
             UpdateMenuItem();
         }
@@ -466,6 +693,11 @@ namespace NotepadSharp
         #endregion
 
         #region Util Functions
+
+        private Boolean isCoding()
+        {
+            return !(edit.SyntaxHighlighting is null);
+        }
 
         private string determineReturnStyle()
         {
@@ -717,6 +949,7 @@ namespace NotepadSharp
             edit.TextChanged                    += Edit_TextChanged;
             edit.MouseDown                      += Edit_Click;
             edit.TextArea.MouseMove             += TextArea_MouseMove;
+            edit.TextArea.PreviewTextInput      += TextArea_PreviewTextInput;
             edit.TextArea.KeyDown               += TextArea_KeyDown;
             edit.TextArea.KeyUp                 += TextArea_KeyUp;
             edit.Document.FileNameChanged       += Edit_FileNameChanged;
@@ -754,6 +987,20 @@ namespace NotepadSharp
             edit.Encoding                                    = System.Text.Encoding.UTF8;
             edit.TextArea.Options.EnableRectangularSelection = true;
 
+            switch (Properties.Settings.Default.IndentMode)
+            {
+                case 1:
+                    currIndentMode = IndentMode.Mode2;
+                    break;
+                case 2:
+                    currIndentMode = IndentMode.Mode4;
+                    break;
+                case 3:
+                    currIndentMode = IndentMode.Mode8;
+                    break;
+            }
+
+            isSpaceAsTab      = Properties.Settings.Default.isSpaceAsTab;
             isWordWrap        = Properties.Settings.Default.wordWrap;
             isShowColRuler    = Properties.Settings.Default.showColRuler;
             isShowControlChar = Properties.Settings.Default.showControlChar;
@@ -761,6 +1008,28 @@ namespace NotepadSharp
             isShowSpace       = Properties.Settings.Default.showSpace;
             isShowStatusBar   = Properties.Settings.Default.showStatusBar;
             isShowTab         = Properties.Settings.Default.showTab;
+            //Add the default highlighting defines in AvalonEdit to the status bar DropDownMenu
+            foreach (IHighlightingDefinition hr in ICSharpCode
+                                                   .AvalonEdit.Highlighting.HighlightingManager.Instance
+                                                   .HighlightingDefinitions)
+            {
+                ToolStripMenuItem subMenu = new ToolStripMenuItem();
+                subMenu.Name         =  "MenuItem" + hr.Name;
+                subMenu.Text         =  hr.Name;
+                subMenu.CheckOnClick =  true;
+                subMenu.Click        += SyntaxMenuItem_Click;
+                HighLightTypeMenuItem.DropDownItems.Add(subMenu);
+            }
+
+            //Don't forget to add the normal text
+            ToolStripMenuItem subMenuLast = new ToolStripMenuItem();
+            subMenuLast.Name         =  "MenuItemNormal";
+            subMenuLast.Text         =  LocRM.GetString("NormalText");
+            subMenuLast.CheckOnClick =  true;
+            subMenuLast.Click        += SyntaxMenuItem_Click;
+            HighLightTypeMenuItem.DropDownItems.Add(subMenuLast);
+            //And don't forget to set the default one...
+            currSyntaxHighlighting = LocRM.GetString("NormalText");
 
             #endregion
 
@@ -786,8 +1055,10 @@ namespace NotepadSharp
 
                 //edit.Load(await test);
             }
+
             this.Refresh();
         }
+
 
         private void readFileToEdit(TextWithEncoding t)
         {
@@ -1082,6 +1353,50 @@ namespace NotepadSharp
         private void RestoreZoomMenuItem_Click(object sender, EventArgs e)
         {
             currZoomSize = 100;
+        }
+
+        private void AutoIndentMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            currIsAutoIndent = AutoIndentMenuItem.Checked;
+        }
+
+        private void SyntaxMenuItem_Click(object sender, EventArgs e)
+        {
+            currSyntaxHighlighting = ((ToolStripMenuItem) sender).Text;
+        }
+
+        private void DebugMenu_Click(object sender, EventArgs e)
+        {
+            isCoding();
+        }
+
+        private void Indent2MenuItem_Click(object sender, EventArgs e)
+        {
+            currIndentMode          = IndentMode.Mode2;
+            Indent2MenuItem.Checked = true;
+            Indent4MenuItem.Checked = false;
+            Indent8MenuItem.Checked = false;
+        }
+
+        private void Indent4MenuItem_Click(object sender, EventArgs e)
+        {
+            currIndentMode          = IndentMode.Mode4;
+            Indent2MenuItem.Checked = false;
+            Indent4MenuItem.Checked = true;
+            Indent8MenuItem.Checked = false;
+        }
+
+        private void Indent8MenuItem_Click(object sender, EventArgs e)
+        {
+            currIndentMode          = IndentMode.Mode8;
+            Indent2MenuItem.Checked = false;
+            Indent4MenuItem.Checked = false;
+            Indent8MenuItem.Checked = true;
+        }
+
+        private void UseSpaceAsTabMenuItem_Click(object sender, EventArgs e)
+        {
+            isSpaceAsTab = UseSpaceAsTabMenuItem.Checked;
         }
 
         #endregion

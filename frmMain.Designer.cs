@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.titleMenu = new System.Windows.Forms.MenuStrip();
             this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,16 +81,26 @@
             this.SendIssusMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DebugMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.bottomStatusBar = new System.Windows.Forms.StatusStrip();
             this.encodingStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.HighLightTypeMenuItem = new System.Windows.Forms.ToolStripDropDownButton();
             this.returnStyleStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.TabWidthStatus = new System.Windows.Forms.ToolStripDropDownButton();
+            this.AutoIndentMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.Indent2MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Indent4MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Indent8MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.UseSpaceAsTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.cursorStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.textLengthStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LoadTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.fontDialog = new System.Windows.Forms.FontDialog();
-            this.LoadTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.Container = new NotepadSharp.PanelEx(this.components);
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
@@ -104,7 +115,8 @@
             this.EditMenuItem,
             this.FormatMenuItem,
             this.ViewMenuItem,
-            this.HelpMenuItem});
+            this.HelpMenuItem,
+            this.DebugMenu});
             this.titleMenu.Location = new System.Drawing.Point(0, 0);
             this.titleMenu.Name = "titleMenu";
             this.titleMenu.Padding = new System.Windows.Forms.Padding(0);
@@ -530,6 +542,13 @@
             this.AboutMenuItem.Size = new System.Drawing.Size(218, 26);
             this.AboutMenuItem.Text = "关于记事本Sharp(&A)";
             // 
+            // DebugMenu
+            // 
+            this.DebugMenu.Name = "DebugMenu";
+            this.DebugMenu.Size = new System.Drawing.Size(51, 24);
+            this.DebugMenu.Text = "调试";
+            this.DebugMenu.Click += new System.EventHandler(this.DebugMenu_Click);
+            // 
             // bottomStatusBar
             // 
             this.bottomStatusBar.AutoSize = false;
@@ -537,7 +556,9 @@
             this.bottomStatusBar.ImageScalingSize = new System.Drawing.Size(20, 28);
             this.bottomStatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.encodingStatus,
+            this.HighLightTypeMenuItem,
             this.returnStyleStatus,
+            this.TabWidthStatus,
             this.zoomStatus,
             this.cursorStatus,
             this.textLengthStatus,
@@ -562,11 +583,24 @@
             this.encodingStatus.Text = "Unicode (UTF-8)";
             this.encodingStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // HighLightTypeMenuItem
+            // 
+            this.HighLightTypeMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.HighLightTypeMenuItem.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.HighLightTypeMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("HighLightTypeMenuItem.Image")));
+            this.HighLightTypeMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.HighLightTypeMenuItem.Margin = new System.Windows.Forms.Padding(0);
+            this.HighLightTypeMenuItem.Name = "HighLightTypeMenuItem";
+            this.HighLightTypeMenuItem.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.HighLightTypeMenuItem.Size = new System.Drawing.Size(83, 25);
+            this.HighLightTypeMenuItem.Text = "普通文本";
+            this.HighLightTypeMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // returnStyleStatus
             // 
             this.returnStyleStatus.AutoSize = false;
             this.returnStyleStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.returnStyleStatus.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.returnStyleStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
             this.returnStyleStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.returnStyleStatus.Name = "returnStyleStatus";
             this.returnStyleStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
@@ -575,11 +609,82 @@
             this.returnStyleStatus.Text = "Windows（CRLF）";
             this.returnStyleStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // TabWidthStatus
+            // 
+            this.TabWidthStatus.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.TabWidthStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AutoIndentMenuItem,
+            this.toolStripSeparator9,
+            this.Indent2MenuItem,
+            this.Indent4MenuItem,
+            this.Indent8MenuItem,
+            this.toolStripSeparator10,
+            this.UseSpaceAsTabMenuItem});
+            this.TabWidthStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TabWidthStatus.Image = ((System.Drawing.Image)(resources.GetObject("TabWidthStatus.Image")));
+            this.TabWidthStatus.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TabWidthStatus.Margin = new System.Windows.Forms.Padding(0);
+            this.TabWidthStatus.Name = "TabWidthStatus";
+            this.TabWidthStatus.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.TabWidthStatus.Size = new System.Drawing.Size(101, 25);
+            this.TabWidthStatus.Text = "Tab 宽度: 4";
+            this.TabWidthStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // AutoIndentMenuItem
+            // 
+            this.AutoIndentMenuItem.CheckOnClick = true;
+            this.AutoIndentMenuItem.Name = "AutoIndentMenuItem";
+            this.AutoIndentMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.AutoIndentMenuItem.Text = "输入时自动缩进";
+            this.AutoIndentMenuItem.CheckStateChanged += new System.EventHandler(this.AutoIndentMenuItem_CheckStateChanged);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(213, 6);
+            // 
+            // Indent2MenuItem
+            // 
+            this.Indent2MenuItem.CheckOnClick = true;
+            this.Indent2MenuItem.Name = "Indent2MenuItem";
+            this.Indent2MenuItem.Size = new System.Drawing.Size(216, 26);
+            this.Indent2MenuItem.Text = "2";
+            this.Indent2MenuItem.Click += new System.EventHandler(this.Indent2MenuItem_Click);
+            // 
+            // Indent4MenuItem
+            // 
+            this.Indent4MenuItem.CheckOnClick = true;
+            this.Indent4MenuItem.Name = "Indent4MenuItem";
+            this.Indent4MenuItem.Size = new System.Drawing.Size(216, 26);
+            this.Indent4MenuItem.Text = "4";
+            this.Indent4MenuItem.Click += new System.EventHandler(this.Indent4MenuItem_Click);
+            // 
+            // Indent8MenuItem
+            // 
+            this.Indent8MenuItem.CheckOnClick = true;
+            this.Indent8MenuItem.Name = "Indent8MenuItem";
+            this.Indent8MenuItem.Size = new System.Drawing.Size(216, 26);
+            this.Indent8MenuItem.Text = "8";
+            this.Indent8MenuItem.Click += new System.EventHandler(this.Indent8MenuItem_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(213, 6);
+            // 
+            // UseSpaceAsTabMenuItem
+            // 
+            this.UseSpaceAsTabMenuItem.CheckOnClick = true;
+            this.UseSpaceAsTabMenuItem.Name = "UseSpaceAsTabMenuItem";
+            this.UseSpaceAsTabMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.UseSpaceAsTabMenuItem.Text = "使用空格代替";
+            this.UseSpaceAsTabMenuItem.Click += new System.EventHandler(this.UseSpaceAsTabMenuItem_Click);
+            // 
             // zoomStatus
             // 
             this.zoomStatus.AutoSize = false;
             this.zoomStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.zoomStatus.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.zoomStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
             this.zoomStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.zoomStatus.Name = "zoomStatus";
             this.zoomStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
@@ -614,18 +719,6 @@
             this.textLengthStatus.Text = "字数：0，行数：0";
             this.textLengthStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // openFileDialog
-            // 
-            this.openFileDialog.Filter = "文本文件|*.txt|所有文件|*.*";
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.Filter = "文本文件(*.txt)|*.txt|所有文件|*.*";
-            // 
-            // fontDialog
-            // 
-            this.fontDialog.ShowApply = true;
-            // 
             // LoadTime
             // 
             this.LoadTime.AutoSize = false;
@@ -638,6 +731,18 @@
             this.LoadTime.Size = new System.Drawing.Size(130, 25);
             this.LoadTime.Text = "加载用时 0 ms";
             this.LoadTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "文本文件|*.txt|所有文件|*.*";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "文本文件(*.txt)|*.txt|所有文件|*.*";
+            // 
+            // fontDialog
+            // 
+            this.fontDialog.ShowApply = true;
             // 
             // Container
             // 
@@ -737,6 +842,16 @@
         private System.Windows.Forms.ToolStripMenuItem ZoomOutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RestoreZoomMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel LoadTime;
+        private System.Windows.Forms.ToolStripDropDownButton TabWidthStatus;
+        private System.Windows.Forms.ToolStripMenuItem AutoIndentMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripMenuItem Indent2MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Indent4MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Indent8MenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem UseSpaceAsTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DebugMenu;
+        private System.Windows.Forms.ToolStripDropDownButton HighLightTypeMenuItem;
     }
 }
 
