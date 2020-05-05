@@ -313,6 +313,7 @@
             this.FindMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
             this.FindMenuItem.Size = new System.Drawing.Size(245, 26);
             this.FindMenuItem.Text = "查找(&F)...";
+            this.FindMenuItem.Click += new System.EventHandler(this.FindMenuItem_Click);
             // 
             // FindNextMenuItem
             // 
@@ -320,6 +321,7 @@
             this.FindNextMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
             this.FindNextMenuItem.Size = new System.Drawing.Size(245, 26);
             this.FindNextMenuItem.Text = "查找下一个(&N)";
+            this.FindNextMenuItem.Click += new System.EventHandler(this.FindNextMenuItem_Click);
             // 
             // FindPrevMenuItem
             // 
@@ -327,6 +329,7 @@
             this.FindPrevMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F3)));
             this.FindPrevMenuItem.Size = new System.Drawing.Size(245, 26);
             this.FindPrevMenuItem.Text = "查找上一个(&V)";
+            this.FindPrevMenuItem.Click += new System.EventHandler(this.FindPrevMenuItem_Click);
             // 
             // ReplaceMenuItem
             // 
@@ -334,6 +337,7 @@
             this.ReplaceMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
             this.ReplaceMenuItem.Size = new System.Drawing.Size(245, 26);
             this.ReplaceMenuItem.Text = "替换(&E)...";
+            this.ReplaceMenuItem.Click += new System.EventHandler(this.ReplaceMenuItem_Click);
             // 
             // GotoMenuItem
             // 
@@ -634,20 +638,20 @@
             // 
             this.AutoIndentMenuItem.CheckOnClick = true;
             this.AutoIndentMenuItem.Name = "AutoIndentMenuItem";
-            this.AutoIndentMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.AutoIndentMenuItem.Size = new System.Drawing.Size(189, 26);
             this.AutoIndentMenuItem.Text = "输入时自动缩进";
             this.AutoIndentMenuItem.CheckStateChanged += new System.EventHandler(this.AutoIndentMenuItem_CheckStateChanged);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(213, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(186, 6);
             // 
             // Indent2MenuItem
             // 
             this.Indent2MenuItem.CheckOnClick = true;
             this.Indent2MenuItem.Name = "Indent2MenuItem";
-            this.Indent2MenuItem.Size = new System.Drawing.Size(216, 26);
+            this.Indent2MenuItem.Size = new System.Drawing.Size(189, 26);
             this.Indent2MenuItem.Text = "2";
             this.Indent2MenuItem.Click += new System.EventHandler(this.Indent2MenuItem_Click);
             // 
@@ -655,7 +659,7 @@
             // 
             this.Indent4MenuItem.CheckOnClick = true;
             this.Indent4MenuItem.Name = "Indent4MenuItem";
-            this.Indent4MenuItem.Size = new System.Drawing.Size(216, 26);
+            this.Indent4MenuItem.Size = new System.Drawing.Size(189, 26);
             this.Indent4MenuItem.Text = "4";
             this.Indent4MenuItem.Click += new System.EventHandler(this.Indent4MenuItem_Click);
             // 
@@ -663,20 +667,20 @@
             // 
             this.Indent8MenuItem.CheckOnClick = true;
             this.Indent8MenuItem.Name = "Indent8MenuItem";
-            this.Indent8MenuItem.Size = new System.Drawing.Size(216, 26);
+            this.Indent8MenuItem.Size = new System.Drawing.Size(189, 26);
             this.Indent8MenuItem.Text = "8";
             this.Indent8MenuItem.Click += new System.EventHandler(this.Indent8MenuItem_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(213, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(186, 6);
             // 
             // UseSpaceAsTabMenuItem
             // 
             this.UseSpaceAsTabMenuItem.CheckOnClick = true;
             this.UseSpaceAsTabMenuItem.Name = "UseSpaceAsTabMenuItem";
-            this.UseSpaceAsTabMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.UseSpaceAsTabMenuItem.Size = new System.Drawing.Size(189, 26);
             this.UseSpaceAsTabMenuItem.Text = "使用空格代替";
             this.UseSpaceAsTabMenuItem.Click += new System.EventHandler(this.UseSpaceAsTabMenuItem_Click);
             // 

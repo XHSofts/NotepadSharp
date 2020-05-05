@@ -153,5 +153,65 @@ namespace NotepadSharp.Properties {
                 this["isSpaceAsTab"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool findCaseSensitive {
+            get {
+                return ((bool)(this["findCaseSensitive"]));
+            }
+            set {
+                this["findCaseSensitive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool findWholeWord {
+            get {
+                return ((bool)(this["findWholeWord"]));
+            }
+            set {
+                this["findWholeWord"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool findUseRegex {
+            get {
+                return ((bool)(this["findUseRegex"]));
+            }
+            set {
+                this["findUseRegex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool findUseWildcards {
+            get {
+                return ((bool)(this["findUseWildcards"]));
+            }
+            set {
+                this["findUseWildcards"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool findSearchUp {
+            get {
+                return ((bool)(this["findSearchUp"]));
+            }
+            set {
+                this["findSearchUp"] = value;
+            }
+        }
     }
 }

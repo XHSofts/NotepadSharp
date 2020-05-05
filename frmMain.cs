@@ -779,6 +779,20 @@ namespace NotepadSharp
                 reOpenMenuItem.Enabled = true;
             }
 
+            if (edit.Text != "")
+            {
+                FindMenuItem.Enabled = true;
+                FindNextMenuItem.Enabled = true;
+                FindPrevMenuItem.Enabled = true;
+                ReplaceMenuItem.Enabled = true;
+            }
+            else
+            {
+                FindMenuItem.Enabled     = false;
+                FindNextMenuItem.Enabled = false;
+                FindPrevMenuItem.Enabled = false;
+                ReplaceMenuItem.Enabled = false;
+            }
             if (HaveSelection())
             {
                 CutMenuItem.Enabled  = true;
@@ -1399,6 +1413,62 @@ namespace NotepadSharp
             isSpaceAsTab = UseSpaceAsTabMenuItem.Checked;
         }
 
+        static frmFindReplace frmFind = null;
+        private void ReplaceMenuItem_Click(object sender, EventArgs e)
+        {
+            if (frmFind is null)
+            {
+                frmFind = new frmFindReplace(edit);
+                frmFind.Left = this.Left + 5;
+                frmFind.Top  = this.Top  + 44;
+            }
+           
+            frmFindReplace.ShowForReplace(frmFind,edit);
+        }
+       
+        private void FindMenuItem_Click(object sender, EventArgs e)
+        {
+            if (frmFind is null)
+            {
+                frmFind = new frmFindReplace(edit);
+                frmFind.Left = this.Left + 5;
+                frmFind.Top  = this.Top  + 44;
+            }
+            
+            frmFindReplace.ShowForFind(frmFind, edit);
+        }
+
         #endregion
+
+        private void FindNextMenuItem_Click(object sender, EventArgs e)
+        {
+            if (frmFind is null)
+            {
+                frmFind = new frmFindReplace(edit);
+                frmFind.Left = this.Left + 5;
+                frmFind.Top  = this.Top  + 44;
+                frmFindReplace.ShowForFind(frmFind, edit);
+            }
+            else
+            {
+                frmFind.FindNextClick(null,null);
+            }
+           
+        }
+
+        private void FindPrevMenuItem_Click(object sender, EventArgs e)
+        {
+            if (frmFind is null)
+            {
+                frmFind      = new frmFindReplace(edit);
+                frmFind.Left = this.Left + 5;
+                frmFind.Top  = this.Top  + 44;
+                frmFindReplace.ShowForFind(frmFind, edit);
+            }
+            else
+            {
+                frmFind.btnFindPrev_Click(null, null);
+            }
+        }
     }
 }

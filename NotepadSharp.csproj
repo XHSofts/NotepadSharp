@@ -59,6 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileObject.cs" />
+    <Compile Include="frmFindReplace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFindReplace.Designer.cs">
+      <DependentUpon>frmFindReplace.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmGoto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmFindReplace.en-US.resx">
+      <DependentUpon>frmFindReplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFindReplace.resx">
+      <DependentUpon>frmFindReplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFindReplace.zh-CN.resx">
+      <DependentUpon>frmFindReplace.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmGoto.en-US.resx">
       <DependentUpon>frmGoto.cs</DependentUpon>
     </EmbeddedResource>
