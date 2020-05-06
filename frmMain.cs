@@ -636,6 +636,27 @@ namespace NotepadSharp
                         edit.Document.Insert(currIndex + 1, ")");
                         edit.TextArea.Caret.Offset--;
                         break;
+                    case ")":
+                        if (edit.Text.Length > currIndex + 1 &&  edit.Text.Substring(currIndex+1, 1) == ")")
+                        {
+                            edit.TextArea.Caret.Offset++;
+                            e.Handled = true;
+                        }
+                        break;
+                    case "}":
+                        if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "}")
+                        {
+                            edit.TextArea.Caret.Offset++;
+                            e.Handled = true;
+                        }
+                        break;
+                    case "]":
+                        if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "]")
+                        {
+                            edit.TextArea.Caret.Offset++;
+                            e.Handled = true;
+                        }
+                        break;
                     case " ":
                         if (inTheBrackets)
                         {
