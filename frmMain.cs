@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using FontFamily = System.Windows.Media.FontFamily;
@@ -18,6 +21,8 @@ using ICSharpCode.AvalonEdit.Indentation.CSharp;
 using ICSharpCode.AvalonEdit.Search;
 using ICSharpCode.AvalonEdit.Utils;
 using Application = System.Windows.Forms.Application;
+using Color = System.Drawing.Color;
+using Control = System.Windows.Forms.Control;
 using HighlightingManager = ICSharpCode.AvalonEdit.Highlighting.HighlightingManager;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -428,12 +433,15 @@ namespace NotepadSharp
         private static Task<TextWithEncoding> textReaderTask;
         private        Stopwatch              sw  = new Stopwatch();
         private static TextWithEncoding       txt = new TextWithEncoding();
+        PrintDocument                         printDocument;
 
         public frmMain()
         {
             InitializeComponent();
             fontDialog.Apply += FontDialog_Apply;
+            printDocument    =  new PrintDocument();
 
+            printDocument.PrintPage += new PrintPageEventHandler(this.printDocument_PrintPage);
             if (Environment.GetCommandLineArgs().Length > 1    && Environment.GetCommandLineArgs()[1] != "" &&
                 !(Environment.GetCommandLineArgs()[1] is null) && File.Exists(Environment.GetCommandLineArgs()[1]))
             {
@@ -501,7 +509,25 @@ namespace NotepadSharp
                     (currSyntaxHighlighting.Contains("C") || currSyntaxHighlighting.Contains("PHP") ||
                      currSyntaxHighlighting.Contains("Java")))
                 {
-                    AutoIndentMenuItem.Checked = true;
+                    if (Properties.Settings.Default.isAutoIndent == -1)
+                    {
+                        if (MessageBox.Show(LocRM.GetString("IsAutoIndent"), LocRM.GetString("$this.Text"),
+                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            AutoIndentMenuItem.Checked               = true;
+                            Properties.Settings.Default.isAutoIndent = 1;
+                            Properties.Settings.Default.Save();
+                        }
+                        else
+                        {
+                            Properties.Settings.Default.isAutoIndent = 0;
+                            Properties.Settings.Default.Save();
+                        }
+                    }
+                    else if (Properties.Settings.Default.isAutoIndent == 1)
+                    {
+                        AutoIndentMenuItem.Checked = true;
+                    }
                 }
 
                 isLoadFile = false;
@@ -694,6 +720,33 @@ namespace NotepadSharp
 
         #region Util Functions
 
+        String s;
+        private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            StringFormat stringFormat = new StringFormat(StringFormatFlags.MeasureTrailingSpaces, 0);
+            int count, rows;
+            Graphics g = e.Graphics; //获得绘图对象
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            //像素偏移方式，像素在水平和垂直距离上均偏移若干个单位，以进行高速锯齿消除。
+            g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            //也可以通过设置Graphics对不平平滑处理方式解决，代码如下： 
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            
+
+            SizeF sf = e.Graphics.MeasureString(s, currFont, e.MarginBounds.Size, stringFormat, out count, out rows);
+            //MessageBox.Show("总长度：" + s.Length.ToString() + "#当页长度：" + count.ToString() + "#行数：" + rows.ToString());
+            e.Graphics.DrawString(s.Substring(0, count), currFont, new SolidBrush(Color.Black), e.MarginBounds, stringFormat);
+            s = s.Remove(0, count < s.Length ? count : s.Length);
+            Debug.Print(s.Length.ToString());
+            if (s.Length > 0)
+                e.HasMorePages = true;
+            else
+            {
+                e.HasMorePages = false;
+                s = edit.Text;
+            }
+        }
+
         private Boolean isCoding()
         {
             return !(edit.SyntaxHighlighting is null);
@@ -781,18 +834,19 @@ namespace NotepadSharp
 
             if (edit.Text != "")
             {
-                FindMenuItem.Enabled = true;
+                FindMenuItem.Enabled     = true;
                 FindNextMenuItem.Enabled = true;
                 FindPrevMenuItem.Enabled = true;
-                ReplaceMenuItem.Enabled = true;
+                ReplaceMenuItem.Enabled  = true;
             }
             else
             {
                 FindMenuItem.Enabled     = false;
                 FindNextMenuItem.Enabled = false;
                 FindPrevMenuItem.Enabled = false;
-                ReplaceMenuItem.Enabled = false;
+                ReplaceMenuItem.Enabled  = false;
             }
+
             if (HaveSelection())
             {
                 CutMenuItem.Enabled  = true;
@@ -827,14 +881,53 @@ namespace NotepadSharp
         {
             try
             {
-                if (!File.Exists(edit.Document.FileName) || (edit.Document.FileName is null) ||
-                    edit.Document.FileName == ""         ||
+                if ((edit.Document.FileName is null) ||
+                    edit.Document.FileName == ""     ||
                     (edit.Document.FileName == "\\Untitled\\"))
                 {
                     return saveAsFile();
                 }
                 else
                 {
+                    if (File.Exists(edit.Document.FileName) &&
+                        File.GetAttributes(edit.Document.FileName).ToString().IndexOf("ReadOnly") != -1)
+                    {
+                        DialogResult dr = MessageBox.Show(LocRM.GetString("FileReadOnly"),
+                                                          LocRM.GetString("$this.Text"), MessageBoxButtons.YesNo,
+                                                          MessageBoxIcon.Question);
+                        switch (dr)
+                        {
+                            case DialogResult.Yes:
+                                File.SetAttributes(edit.Document.FileName, FileAttributes.Normal);
+                                edit.Save(edit.Document.FileName);
+                                File.SetAttributes(edit.Document.FileName, FileAttributes.ReadOnly);
+                                hasSave = true;
+                                return true;
+                                break;
+                            case DialogResult.No:
+                                MessageBox.Show(LocRM.GetString("ReadOnlySaveAs"), LocRM.GetString("$this.Text"),
+                                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                return saveAsFile();
+                                break;
+                        }
+                    }
+
+                    if (!File.Exists(edit.Document.FileName))
+                    {
+                        if (MessageBox.Show(LocRM.GetString("FileNotExistWhileSaving"), LocRM.GetString("$this.Text"),
+                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            edit.Save(edit.Document.FileName);
+                            hasSave = true;
+                            return true;
+                        }
+                        else
+                        {
+                            return saveAsFile();
+                        }
+                    }
+
                     edit.Save(edit.Document.FileName);
                     hasSave = true;
                     return true;
@@ -853,9 +946,36 @@ namespace NotepadSharp
         {
             try
             {
+                ReSaveAs:
                 DialogResult dr = saveFileDialog.ShowDialog();
                 if (dr == DialogResult.OK && saveFileDialog.FileName != "")
                 {
+                    if (File.Exists(saveFileDialog.FileName) &&
+                        File.GetAttributes(saveFileDialog.FileName).ToString().IndexOf("ReadOnly") != -1)
+                    {
+                        DialogResult dr2 = MessageBox.Show(LocRM.GetString("FileReadOnly"),
+                                                           LocRM.GetString("$this.Text"), MessageBoxButtons.YesNo,
+                                                           MessageBoxIcon.Question);
+                        switch (dr2)
+                        {
+                            case DialogResult.Yes:
+                                File.SetAttributes(saveFileDialog.FileName, FileAttributes.Normal);
+                                edit.Save(saveFileDialog.FileName);
+                                File.SetAttributes(saveFileDialog.FileName, FileAttributes.ReadOnly);
+                                edit.Load(saveFileDialog.FileName);
+                                edit.Document.FileName = saveFileDialog.FileName;
+                                hasSave                = true;
+                                return true;
+                                break;
+                            case DialogResult.No:
+                                MessageBox.Show(LocRM.GetString("ReadOnlySaveAs"), LocRM.GetString("$this.Text"),
+                                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                goto ReSaveAs;
+                                break;
+                        }
+                    }
+
                     edit.Save(saveFileDialog.FileName);
                     edit.Load(saveFileDialog.FileName);
                     edit.Document.FileName = saveFileDialog.FileName;
@@ -884,7 +1004,7 @@ namespace NotepadSharp
                 dr =
                     MessageBox.Show(string.Format(LocRM.GetString("FileNotExistWhenCheck"), currOpenedFile.fileName),
                                     LocRM.GetString("$this.Text"),
-                                    MessageBoxButtons.YesNoCancel);
+                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             }
             else if (!hasSave)
             {
@@ -892,7 +1012,7 @@ namespace NotepadSharp
                 dr =
                     MessageBox.Show(string.Format(LocRM.GetString("saveQuestion"), currOpenedFile.fileName),
                                     LocRM.GetString("$this.Text"),
-                                    MessageBoxButtons.YesNoCancel);
+                                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             }
             else
             {
@@ -1289,8 +1409,41 @@ namespace NotepadSharp
             edit.TextArea.Caret.BringCaretToView();
         }
 
+        private void PageSetupMenuItem_Click(object sender, EventArgs e)
+        {
+            PageSetupDialog pageSetupDialog = new PageSetupDialog();
+            pageSetupDialog.EnableMetric = true;
+            pageSetupDialog.Document     = printDocument;
+            pageSetupDialog.ShowDialog();
+        }
         private void PrintMenuItem_Click(object sender, EventArgs e)
         {
+         //   This setting ruins the document printing...
+         //   printDocument.OriginAtMargins = true;
+            printDocument.DocumentName = edit.Document.FileName;
+            printDialog.Document          = printDocument;
+            printPreviewDialog.Document   = printDocument;
+            s = edit.Text;
+
+            if (printDialog.ShowDialog() == DialogResult.OK)
+
+            {
+                try
+
+                {
+                    printPreviewDialog.ShowDialog();
+                    if(MessageBox.Show(LocRM.GetString("ContinuePrint"),LocRM.GetString("$this.Text"),MessageBoxButtons.YesNo,MessageBoxIcon.Question)==DialogResult.Yes)
+                        printDocument.Print();
+                }
+
+                catch (Exception excep)
+
+                {
+                    MessageBox.Show(excep.Message,LocRM.GetString("PrintError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    printDocument.PrintController.OnEndPrint(printDocument, new PrintEventArgs());
+                }
+            }
         }
 
         private async void reOpenMenuItem_Click(object sender, EventArgs e)
@@ -1414,46 +1567,44 @@ namespace NotepadSharp
         }
 
         static frmFindReplace frmFind = null;
+
         private void ReplaceMenuItem_Click(object sender, EventArgs e)
         {
             if (frmFind is null)
             {
-                frmFind = new frmFindReplace(edit);
+                frmFind      = new frmFindReplace(edit);
                 frmFind.Left = this.Left + 5;
                 frmFind.Top  = this.Top  + 44;
             }
-           
-            frmFindReplace.ShowForReplace(frmFind,edit);
+
+            frmFindReplace.ShowForReplace(frmFind, edit);
         }
-       
+
         private void FindMenuItem_Click(object sender, EventArgs e)
         {
             if (frmFind is null)
             {
-                frmFind = new frmFindReplace(edit);
+                frmFind      = new frmFindReplace(edit);
                 frmFind.Left = this.Left + 5;
                 frmFind.Top  = this.Top  + 44;
             }
-            
+
             frmFindReplace.ShowForFind(frmFind, edit);
         }
-
-        #endregion
 
         private void FindNextMenuItem_Click(object sender, EventArgs e)
         {
             if (frmFind is null)
             {
-                frmFind = new frmFindReplace(edit);
+                frmFind      = new frmFindReplace(edit);
                 frmFind.Left = this.Left + 5;
                 frmFind.Top  = this.Top  + 44;
                 frmFindReplace.ShowForFind(frmFind, edit);
             }
             else
             {
-                frmFind.FindNextClick(null,null);
+                frmFind.FindNextClick(null, null);
             }
-           
         }
 
         private void FindPrevMenuItem_Click(object sender, EventArgs e)
@@ -1470,5 +1621,9 @@ namespace NotepadSharp
                 frmFind.btnFindPrev_Click(null, null);
             }
         }
+
+        #endregion
+
+
     }
 }

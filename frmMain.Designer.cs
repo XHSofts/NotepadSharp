@@ -102,6 +102,8 @@
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.Container = new NotepadSharp.PanelEx(this.components);
+            this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
+            this.printDialog = new System.Windows.Forms.PrintDialog();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
             this.SuspendLayout();
@@ -195,6 +197,7 @@
             this.PageSetupMenuItem.Name = "PageSetupMenuItem";
             this.PageSetupMenuItem.Size = new System.Drawing.Size(258, 26);
             this.PageSetupMenuItem.Text = "页面设置(&U)...";
+            this.PageSetupMenuItem.Click += new System.EventHandler(this.PageSetupMenuItem_Click);
             // 
             // PrintMenuItem
             // 
@@ -551,6 +554,7 @@
             this.DebugMenu.Name = "DebugMenu";
             this.DebugMenu.Size = new System.Drawing.Size(51, 24);
             this.DebugMenu.Text = "调试";
+            this.DebugMenu.Visible = false;
             this.DebugMenu.Click += new System.EventHandler(this.DebugMenu_Click);
             // 
             // bottomStatusBar
@@ -758,6 +762,21 @@
             this.Container.Size = new System.Drawing.Size(1130, 592);
             this.Container.TabIndex = 4;
             // 
+            // printPreviewDialog
+            // 
+            this.printPreviewDialog.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog.Enabled = true;
+            this.printPreviewDialog.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog.Icon")));
+            this.printPreviewDialog.Name = "printPreviewDialog";
+            this.printPreviewDialog.UseAntiAlias = true;
+            this.printPreviewDialog.Visible = false;
+            // 
+            // printDialog
+            // 
+            this.printDialog.UseEXDialog = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -856,6 +875,8 @@
         private System.Windows.Forms.ToolStripMenuItem UseSpaceAsTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DebugMenu;
         private System.Windows.Forms.ToolStripDropDownButton HighLightTypeMenuItem;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog;
+        private System.Windows.Forms.PrintDialog printDialog;
     }
 }
 

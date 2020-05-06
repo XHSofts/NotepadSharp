@@ -30,10 +30,12 @@
         {
             this.mainTab = new System.Windows.Forms.TabControl();
             this.FindTab = new System.Windows.Forms.TabPage();
+            this.btnFindPrev = new System.Windows.Forms.Button();
             this.btnFindNext = new System.Windows.Forms.Button();
             this.txtFind = new System.Windows.Forms.TextBox();
             this.lbl2Find = new System.Windows.Forms.Label();
             this.ReplaceTab = new System.Windows.Forms.TabPage();
+            this.btnFindPrev2 = new System.Windows.Forms.Button();
             this.btnReplaceAll = new System.Windows.Forms.Button();
             this.btnReplace = new System.Windows.Forms.Button();
             this.btnFindNext2 = new System.Windows.Forms.Button();
@@ -46,8 +48,6 @@
             this.cbRegex = new System.Windows.Forms.CheckBox();
             this.cbWildcards = new System.Windows.Forms.CheckBox();
             this.cbSearchUp = new System.Windows.Forms.CheckBox();
-            this.btnFindPrev = new System.Windows.Forms.Button();
-            this.btnFindPrev2 = new System.Windows.Forms.Button();
             this.panelCheckBox = new System.Windows.Forms.Panel();
             this.mainTab.SuspendLayout();
             this.FindTab.SuspendLayout();
@@ -80,6 +80,16 @@
             this.FindTab.TabIndex = 0;
             this.FindTab.Text = "查找";
             this.FindTab.UseVisualStyleBackColor = true;
+            // 
+            // btnFindPrev
+            // 
+            this.btnFindPrev.Location = new System.Drawing.Point(169, 81);
+            this.btnFindPrev.Name = "btnFindPrev";
+            this.btnFindPrev.Size = new System.Drawing.Size(132, 32);
+            this.btnFindPrev.TabIndex = 3;
+            this.btnFindPrev.Text = "查找上一个";
+            this.btnFindPrev.UseVisualStyleBackColor = true;
+            this.btnFindPrev.Click += new System.EventHandler(this.btnFindPrev_Click);
             // 
             // btnFindNext
             // 
@@ -121,10 +131,20 @@
             this.ReplaceTab.Location = new System.Drawing.Point(4, 25);
             this.ReplaceTab.Name = "ReplaceTab";
             this.ReplaceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ReplaceTab.Size = new System.Drawing.Size(458, 180);
+            this.ReplaceTab.Size = new System.Drawing.Size(458, 127);
             this.ReplaceTab.TabIndex = 1;
             this.ReplaceTab.Text = "替换";
             this.ReplaceTab.UseVisualStyleBackColor = true;
+            // 
+            // btnFindPrev2
+            // 
+            this.btnFindPrev2.Location = new System.Drawing.Point(16, 133);
+            this.btnFindPrev2.Name = "btnFindPrev2";
+            this.btnFindPrev2.Size = new System.Drawing.Size(94, 30);
+            this.btnFindPrev2.TabIndex = 9;
+            this.btnFindPrev2.Text = "查找上一个";
+            this.btnFindPrev2.UseVisualStyleBackColor = true;
+            this.btnFindPrev2.Click += new System.EventHandler(this.btnFindPrev2_Click);
             // 
             // btnReplaceAll
             // 
@@ -240,26 +260,6 @@
             this.cbSearchUp.UseVisualStyleBackColor = true;
             this.cbSearchUp.Visible = false;
             // 
-            // btnFindPrev
-            // 
-            this.btnFindPrev.Location = new System.Drawing.Point(169, 81);
-            this.btnFindPrev.Name = "btnFindPrev";
-            this.btnFindPrev.Size = new System.Drawing.Size(132, 32);
-            this.btnFindPrev.TabIndex = 3;
-            this.btnFindPrev.Text = "查找上一个";
-            this.btnFindPrev.UseVisualStyleBackColor = true;
-            this.btnFindPrev.Click += new System.EventHandler(this.btnFindPrev_Click);
-            // 
-            // btnFindPrev2
-            // 
-            this.btnFindPrev2.Location = new System.Drawing.Point(16, 133);
-            this.btnFindPrev2.Name = "btnFindPrev2";
-            this.btnFindPrev2.Size = new System.Drawing.Size(94, 30);
-            this.btnFindPrev2.TabIndex = 9;
-            this.btnFindPrev2.Text = "查找上一个";
-            this.btnFindPrev2.UseVisualStyleBackColor = true;
-            this.btnFindPrev2.Click += new System.EventHandler(this.btnFindPrev2_Click);
-            // 
             // panelCheckBox
             // 
             this.panelCheckBox.Controls.Add(this.cbWildcards);
@@ -276,7 +276,7 @@
             this.AcceptButton = this.btnFindNext;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 319);
+            this.ClientSize = new System.Drawing.Size(480, 232);
             this.Controls.Add(this.panelCheckBox);
             this.Controls.Add(this.cbSearchUp);
             this.Controls.Add(this.mainTab);

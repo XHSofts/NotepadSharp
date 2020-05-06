@@ -213,5 +213,17 @@ namespace NotepadSharp.Properties {
                 this["findSearchUp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int isAutoIndent {
+            get {
+                return ((int)(this["isAutoIndent"]));
+            }
+            set {
+                this["isAutoIndent"] = value;
+            }
+        }
     }
 }

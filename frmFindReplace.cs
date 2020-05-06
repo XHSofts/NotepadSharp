@@ -211,7 +211,7 @@ namespace NotepadSharp
             theDialog.mainTab.SelectedIndex = 1;
             theDialog.Height                = 329;
             theDialog.mainTab.Height        = 209;
-            theDialog.panelCheckBox.Top = 221;
+            theDialog.panelCheckBox.Top     = 221;
             theDialog.Show();
             theDialog.Activate();
 
@@ -232,9 +232,9 @@ namespace NotepadSharp
             }
 
             theDialog.mainTab.SelectedIndex = 0;
-            theDialog.Height                = 294;
+            theDialog.Height                = 279;
             theDialog.mainTab.Height        = 156;
-            theDialog.panelCheckBox.Top = 174;
+            theDialog.panelCheckBox.Top     = 174;
             theDialog.Show();
             theDialog.Activate();
 
@@ -284,14 +284,14 @@ namespace NotepadSharp
             if (mainTab.SelectedIndex == 0)
             {
                 txtFind.Focus();
-                theDialog.Height = 294;
-                mainTab.Height   = 156;
+                theDialog.Height  = 279;
+                mainTab.Height    = 156;
                 panelCheckBox.Top = 174;
             }
             else
             {
-                theDialog.Height = 329;
-                mainTab.Height   = 209;
+                theDialog.Height  = 329;
+                mainTab.Height    = 209;
                 panelCheckBox.Top = 221;
                 if (txtFind2.Text != "")
                     txtReplace.Focus();

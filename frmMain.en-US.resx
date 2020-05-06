@@ -195,4 +195,22 @@
   <data name="TabSize" xml:space="preserve">
     <value>Tab Size</value>
   </data>
+  <data name="ContinuePrint" xml:space="preserve">
+    <value>Continue printing? If you choose "No", then you can modify the print setting or modify the document.</value>
+  </data>
+  <data name="FileNotExistWhileSaving" xml:space="preserve">
+    <value>The file you want to save is deleted or missing, do you want to create this file and saving it?</value>
+  </data>
+  <data name="FileReadOnly" xml:space="preserve">
+    <value>We have detected this file you want to save is ReadOnly. Do you want to modify the file attribute to non-ReadOnly temporarily? (We will restore the file attribute afterwards)</value>
+  </data>
+  <data name="IsAutoIndent" xml:space="preserve">
+    <value>We have detected that you have opened a code file, do you want to enable Auto Indent? It will indent the text while you are typing. If you choose "Yes", every time you open a C-Like code file (such as PHP, etc.) the Auto Indent will enable automatically; If you choose "No", you can still enable it manually in the status bar→Tab Indent submenu. (This feature maybe replace with Code Format in the future)</value>
+  </data>
+  <data name="PrintError" xml:space="preserve">
+    <value>An error occured while printing</value>
+  </data>
+  <data name="ReadOnlySaveAs" xml:space="preserve">
+    <value>Since you don't want to modify this file's attribute, please select another save path.</value>
+  </data>
 </root>
