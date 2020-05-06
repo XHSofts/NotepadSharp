@@ -720,22 +720,88 @@ namespace NotepadSharp
 
         #region Util Functions
 
+        public void WriteToFile(string path, string content)
+        {
+            FileStream   fs = new FileStream(path, FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs, edit.Encoding);
+            //开始写入
+            sw.Write(content);
+            //清空缓冲区
+            sw.Flush();
+            //关闭流
+            sw.Close();
+            fs.Close();
+        }
+
+        /// <summary>
+        /// 获取当前本地时间戳
+        /// </summary>
+        /// <returns></returns>      
+        public long GetCurrentTimeUnix()
+        {
+            TimeSpan cha = (DateTime.Now - TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)));
+            long     t   = (long) cha.TotalSeconds;
+            return t;
+        }
+
+        private void previewMarkDown()
+        {
+            String rootPath = "";
+            if (edit.Document.FileName == "\\Untitled\\" || edit.Document.FileName == "" ||
+                (edit.Document.FileName is null))
+            {
+                rootPath = System.Environment.GetEnvironmentVariable("TEMP");
+            }
+            else
+            {
+                rootPath = Path.GetDirectoryName(edit.Document.FileName);
+            }
+
+            String fileDisplayName = (edit.Document.FileName == "\\Untitled\\"
+                ? LocRM.GetString("defaultTitle")
+                : Path.GetFileNameWithoutExtension(edit.Document.FileName));
+            rootPath = rootPath.EndsWith("\\") ? rootPath : rootPath + "\\";
+            String fileName = rootPath             + fileDisplayName +
+                              "_preview@"          +
+                              GetCurrentTimeUnix() + ".html";
+            String header = @"
+<!DOCTYPE html>
+<html>
+<title>" + fileDisplayName;
+            header += @"</title>
+
+<xmp theme=""cerulean"" style=""display:none;"">
+";
+            String footer = @"
+</xmp>
+
+<script src=""http://strapdownjs.com/v/0.2/strapdown.js""></script>
+</html>
+";
+            WriteToFile(fileName, header + edit.Text + footer);
+
+            Process.Start(fileName);
+        }
+
+        //Thanks to https://blog.csdn.net/wrgoodliness/article/details/52703660
         String s;
+
         private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             StringFormat stringFormat = new StringFormat(StringFormatFlags.MeasureTrailingSpaces, 0);
-            int count, rows;
-            Graphics g = e.Graphics; //获得绘图对象
+            int          count, rows;
+            Graphics     g = e.Graphics; //获得绘图对象
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             //像素偏移方式，像素在水平和垂直距离上均偏移若干个单位，以进行高速锯齿消除。
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             //也可以通过设置Graphics对不平平滑处理方式解决，代码如下： 
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            
+
 
             SizeF sf = e.Graphics.MeasureString(s, currFont, e.MarginBounds.Size, stringFormat, out count, out rows);
             //MessageBox.Show("总长度：" + s.Length.ToString() + "#当页长度：" + count.ToString() + "#行数：" + rows.ToString());
-            e.Graphics.DrawString(s.Substring(0, count), currFont, new SolidBrush(Color.Black), e.MarginBounds, stringFormat);
+            e.Graphics.DrawString(s.Substring(0, count), currFont, new SolidBrush(Color.Black), e.MarginBounds,
+                                  stringFormat);
             s = s.Remove(0, count < s.Length ? count : s.Length);
             Debug.Print(s.Length.ToString());
             if (s.Length > 0)
@@ -743,7 +809,7 @@ namespace NotepadSharp
             else
             {
                 e.HasMorePages = false;
-                s = edit.Text;
+                s              = edit.Text;
             }
         }
 
@@ -830,6 +896,18 @@ namespace NotepadSharp
             else
             {
                 reOpenMenuItem.Enabled = true;
+            }
+
+            if (!(edit.Document.FileName is null) &&
+                (edit.Document.FileName != "")   &&
+                (edit.Document.FileName != "\\Untitled\\")&&
+                Path.GetExtension(edit.Document.FileName)==".md")
+            {
+                PreviewInWebMenuItem.Visible = true;
+            }
+            else
+            {
+                PreviewInWebMenuItem.Visible = false;
             }
 
             if (edit.Text != "")
@@ -1416,14 +1494,15 @@ namespace NotepadSharp
             pageSetupDialog.Document     = printDocument;
             pageSetupDialog.ShowDialog();
         }
+
         private void PrintMenuItem_Click(object sender, EventArgs e)
         {
-         //   This setting ruins the document printing...
-         //   printDocument.OriginAtMargins = true;
-            printDocument.DocumentName = edit.Document.FileName;
-            printDialog.Document          = printDocument;
-            printPreviewDialog.Document   = printDocument;
-            s = edit.Text;
+            //   This setting ruins the document printing...
+            //   printDocument.OriginAtMargins = true;
+            printDocument.DocumentName  = edit.Document.FileName;
+            printDialog.Document        = printDocument;
+            printPreviewDialog.Document = printDocument;
+            s                           = edit.Text;
 
             if (printDialog.ShowDialog() == DialogResult.OK)
 
@@ -1432,14 +1511,16 @@ namespace NotepadSharp
 
                 {
                     printPreviewDialog.ShowDialog();
-                    if(MessageBox.Show(LocRM.GetString("ContinuePrint"),LocRM.GetString("$this.Text"),MessageBoxButtons.YesNo,MessageBoxIcon.Question)==DialogResult.Yes)
+                    if (MessageBox.Show(LocRM.GetString("ContinuePrint"), LocRM.GetString("$this.Text"),
+                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         printDocument.Print();
                 }
 
                 catch (Exception excep)
 
                 {
-                    MessageBox.Show(excep.Message,LocRM.GetString("PrintError"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(excep.Message, LocRM.GetString("PrintError"), MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
 
                     printDocument.PrintController.OnEndPrint(printDocument, new PrintEventArgs());
                 }
@@ -1534,7 +1615,7 @@ namespace NotepadSharp
 
         private void DebugMenu_Click(object sender, EventArgs e)
         {
-            isCoding();
+            previewMarkDown();
         }
 
         private void Indent2MenuItem_Click(object sender, EventArgs e)
@@ -1622,8 +1703,11 @@ namespace NotepadSharp
             }
         }
 
+        private void PreviewInWebMenuItem_Click(object sender, EventArgs e)
+        {
+            previewMarkDown();
+        }
+
         #endregion
-
-
     }
 }

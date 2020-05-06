@@ -169,7 +169,7 @@
     <value>字数：{0}，行数：{1}</value>
   </data>
   <data name="FileNotExistWhenCheck" xml:space="preserve">
-    <value>你已经打开的文件 {0} 丢失或被删除，你是否想保存已经打开的文件内容？</value>
+    <value>你已经打开的文件 {0} 丢失或被删除，请保存已经打开的文件内容，否则文件内容将丢失。你是否想保存已经打开的文件内容？</value>
   </data>
   <data name="saveQuestion" xml:space="preserve">
     <value>你想将更改保存到 {0} 吗？</value>
@@ -199,7 +199,7 @@
     <value>是否继续打印？选择“否”可取消打印，然后你可以修改打印设置或文档。</value>
   </data>
   <data name="FileNotExistWhileSaving" xml:space="preserve">
-    <value>要保存的文件已经被删除或丢失，你是否想新建然后保存这个文件？</value>
+    <value>要保存的文件已经被删除或丢失，请保存已经打开的文件内容，否则文件内容将丢失。你是否想新建然后保存这个文件？</value>
   </data>
   <data name="FileReadOnly" xml:space="preserve">
     <value>检测到文件只读。是否临时修改文件属性，去掉只读？（保存完毕后会恢复只读属性）</value>

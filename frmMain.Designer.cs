@@ -101,9 +101,10 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.fontDialog = new System.Windows.Forms.FontDialog();
-            this.Container = new NotepadSharp.PanelEx(this.components);
             this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
             this.printDialog = new System.Windows.Forms.PrintDialog();
+            this.PreviewInWebMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Container = new NotepadSharp.PanelEx(this.components);
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
             this.SuspendLayout();
@@ -118,6 +119,7 @@
             this.FormatMenuItem,
             this.ViewMenuItem,
             this.HelpMenuItem,
+            this.PreviewInWebMenuItem,
             this.DebugMenu});
             this.titleMenu.Location = new System.Drawing.Point(0, 0);
             this.titleMenu.Name = "titleMenu";
@@ -752,16 +754,6 @@
             // 
             this.fontDialog.ShowApply = true;
             // 
-            // Container
-            // 
-            this.Container.BorderColor = System.Drawing.SystemColors.Control;
-            this.Container.BorderSize = 1;
-            this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Container.Location = new System.Drawing.Point(0, 24);
-            this.Container.Name = "Container";
-            this.Container.Size = new System.Drawing.Size(1130, 592);
-            this.Container.TabIndex = 4;
-            // 
             // printPreviewDialog
             // 
             this.printPreviewDialog.AutoScrollMargin = new System.Drawing.Size(0, 0);
@@ -776,6 +768,23 @@
             // printDialog
             // 
             this.printDialog.UseEXDialog = true;
+            // 
+            // PreviewInWebMenuItem
+            // 
+            this.PreviewInWebMenuItem.Name = "PreviewInWebMenuItem";
+            this.PreviewInWebMenuItem.Size = new System.Drawing.Size(140, 24);
+            this.PreviewInWebMenuItem.Text = "在浏览器中预览&B)";
+            this.PreviewInWebMenuItem.Click += new System.EventHandler(this.PreviewInWebMenuItem_Click);
+            // 
+            // Container
+            // 
+            this.Container.BorderColor = System.Drawing.SystemColors.Control;
+            this.Container.BorderSize = 1;
+            this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Container.Location = new System.Drawing.Point(0, 24);
+            this.Container.Name = "Container";
+            this.Container.Size = new System.Drawing.Size(1130, 592);
+            this.Container.TabIndex = 4;
             // 
             // frmMain
             // 
@@ -877,6 +886,7 @@
         private System.Windows.Forms.ToolStripDropDownButton HighLightTypeMenuItem;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog;
         private System.Windows.Forms.PrintDialog printDialog;
+        private System.Windows.Forms.ToolStripMenuItem PreviewInWebMenuItem;
     }
 }
 

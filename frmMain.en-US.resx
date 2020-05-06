@@ -169,7 +169,7 @@
     <value>Length: {0}, Lines: {1}</value>
   </data>
   <data name="FileNotExistWhenCheck" xml:space="preserve">
-    <value>The file {0} you have opened was missing or deleted, do you want to save the opened content?</value>
+    <value>The file {0} you have opened was missing or deleted, please save the file content, otherwise the content will be lost. Do you want to save the opened content?</value>
   </data>
   <data name="saveQuestion" xml:space="preserve">
     <value>Do you want to save changes to {0} ?</value>
@@ -199,7 +199,7 @@
     <value>Continue printing? If you choose "No", then you can modify the print setting or modify the document.</value>
   </data>
   <data name="FileNotExistWhileSaving" xml:space="preserve">
-    <value>The file you want to save is deleted or missing, do you want to create this file and saving it?</value>
+    <value>The file you want to save is deleted or missing, please save the file content, otherwise the content will be lost. Do you want to create this file and saving it?</value>
   </data>
   <data name="FileReadOnly" xml:space="preserve">
     <value>We have detected this file you want to save is ReadOnly. Do you want to modify the file attribute to non-ReadOnly temporarily? (We will restore the file attribute afterwards)</value>
