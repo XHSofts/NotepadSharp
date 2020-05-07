@@ -214,7 +214,7 @@ namespace NotepadSharp
             theDialog.panelCheckBox.Top     = 221;
             theDialog.Show();
             theDialog.Activate();
-
+            theDialog.txtFind2.Focus();
             if (!editor.TextArea.Selection.IsMultiline && editor.TextArea.Selection.GetText() != "")
             {
                 theDialog.txtFind.Text = theDialog.txtFind2.Text = editor.TextArea.Selection.GetText();
@@ -237,7 +237,7 @@ namespace NotepadSharp
             theDialog.panelCheckBox.Top     = 174;
             theDialog.Show();
             theDialog.Activate();
-
+            theDialog.txtFind.Focus();
             if (!editor.TextArea.Selection.IsMultiline && editor.TextArea.Selection.GetText() != "")
             {
                 theDialog.txtFind.Text = theDialog.txtFind2.Text = editor.TextArea.Selection.GetText();

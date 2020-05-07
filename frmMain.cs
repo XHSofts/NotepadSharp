@@ -137,6 +137,7 @@ namespace NotepadSharp
             {
                 _isShowControlChar                                = value;
                 ControlCharMenuItem.Checked                       = value;
+                RShowControlCharMenuItem.Checked                  = value;
                 edit.TextArea.Options.ShowBoxForControlCharacters = value;
                 Properties.Settings.Default.showControlChar       = value;
                 Properties.Settings.Default.Save();
@@ -637,11 +638,12 @@ namespace NotepadSharp
                         edit.TextArea.Caret.Offset--;
                         break;
                     case ")":
-                        if (edit.Text.Length > currIndex + 1 &&  edit.Text.Substring(currIndex+1, 1) == ")")
+                        if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == ")")
                         {
                             edit.TextArea.Caret.Offset++;
                             e.Handled = true;
                         }
+
                         break;
                     case "}":
                         if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "}")
@@ -649,6 +651,7 @@ namespace NotepadSharp
                             edit.TextArea.Caret.Offset++;
                             e.Handled = true;
                         }
+
                         break;
                     case "]":
                         if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "]")
@@ -656,6 +659,7 @@ namespace NotepadSharp
                             edit.TextArea.Caret.Offset++;
                             e.Handled = true;
                         }
+
                         break;
                     case " ":
                         if (inTheBrackets)
@@ -892,20 +896,24 @@ namespace NotepadSharp
         {
             if (edit.CanUndo)
             {
-                UndoMenuItem.Enabled = true;
+                UndoMenuItem.Enabled  = true;
+                RUndoMenuItem.Enabled = true;
             }
             else
             {
-                UndoMenuItem.Enabled = false;
+                UndoMenuItem.Enabled  = false;
+                RUndoMenuItem.Enabled = false;
             }
 
             if (edit.CanRedo)
             {
-                RedoMenuItem.Enabled = true;
+                RedoMenuItem.Enabled  = true;
+                RRedoMenuItem.Enabled = true;
             }
             else
             {
-                RedoMenuItem.Enabled = false;
+                RedoMenuItem.Enabled  = false;
+                RRedoMenuItem.Enabled = false;
             }
 
             if (!File.Exists(edit.Document.FileName) || (edit.Document.FileName is null) ||
@@ -919,10 +927,10 @@ namespace NotepadSharp
                 reOpenMenuItem.Enabled = true;
             }
 
-            if (!(edit.Document.FileName is null) &&
-                (edit.Document.FileName != "")   &&
-                (edit.Document.FileName != "\\Untitled\\")&&
-                Path.GetExtension(edit.Document.FileName)==".md")
+            if (!(edit.Document.FileName is null)          &&
+                (edit.Document.FileName != "")             &&
+                (edit.Document.FileName != "\\Untitled\\") &&
+                Path.GetExtension(edit.Document.FileName) == ".md")
             {
                 PreviewInWebMenuItem.Visible = true;
             }
@@ -948,17 +956,36 @@ namespace NotepadSharp
 
             if (HaveSelection())
             {
-                CutMenuItem.Enabled  = true;
-                CopyMenuItem.Enabled = true;
-                CutMenuItem.Text     = LocRM.GetString("CutMenuItem.Text");
-                CopyMenuItem.Text    = LocRM.GetString("CopyMenuItem.Text");
+                RCutMenuItem.Enabled  = true;
+                RCopyMenuItem.Enabled = true;
+                RCutMenuItem.Text     = LocRM.GetString("CutMenuItem.Text");
+                RCopyMenuItem.Text    = LocRM.GetString("CopyMenuItem.Text");
+                CutMenuItem.Enabled   = true;
+                CopyMenuItem.Enabled  = true;
+                CutMenuItem.Text      = LocRM.GetString("CutMenuItem.Text");
+                CopyMenuItem.Text     = LocRM.GetString("CopyMenuItem.Text");
             }
             else
             {
-                CutMenuItem.Enabled  = false;
-                CopyMenuItem.Enabled = false;
-                CutMenuItem.Text     = LocRM.GetString("CutWholeLine");
-                CopyMenuItem.Text    = LocRM.GetString("CopyWholeLine");
+                RCutMenuItem.Enabled  = false;
+                RCopyMenuItem.Enabled = false;
+                RCutMenuItem.Text     = LocRM.GetString("CutWholeLine");
+                RCopyMenuItem.Text    = LocRM.GetString("CopyWholeLine");
+                CutMenuItem.Enabled   = false;
+                CopyMenuItem.Enabled  = false;
+                CutMenuItem.Text      = LocRM.GetString("CutWholeLine");
+                CopyMenuItem.Text     = LocRM.GetString("CopyWholeLine");
+            }
+
+            if (edit.Text.Length > 0)
+            {
+                DeleteMenuItem.Enabled = true;
+                RDeleteMenuItem.Enabled = true;
+            }
+            else
+            {
+                DeleteMenuItem.Enabled  = false;
+                RDeleteMenuItem.Enabled = false;
             }
         }
 
@@ -1176,6 +1203,7 @@ namespace NotepadSharp
             #region TextEditor ctor
 
             edit = new TextEditor();
+
             edit.BorderBrush =
                 new SolidColorBrush(System.Windows.Media.Color.FromRgb(160, 160, 160));
             edit.BorderThickness                =  new Thickness(0, 1, 0, 1);
@@ -1397,6 +1425,8 @@ namespace NotepadSharp
         {
             if (HaveSelection())
                 edit.Delete();
+            else if (edit.CaretOffset-1 >= 0 && edit.Text.Length > 0)
+                edit.Document.Remove(edit.CaretOffset-1, 1);
             if (isLoadFile)
             {
                 isLoadFile = false; //Restore to default
@@ -1727,6 +1757,51 @@ namespace NotepadSharp
         private void PreviewInWebMenuItem_Click(object sender, EventArgs e)
         {
             previewMarkDown();
+        }
+
+        private void RShowControlCharMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            isShowControlChar = RShowControlCharMenuItem.Checked;
+        }
+
+        private void RUndoMenuItem_Click(object sender, EventArgs e)
+        {
+            UndoMenuItem_Click(sender, e);
+        }
+
+        private void RRedoMenuItem_Click(object sender, EventArgs e)
+        {
+            RedoMenuItem_Click(sender, e);
+        }
+
+        private void RCutMenuItem_Click(object sender, EventArgs e)
+        {
+            CutMenuItem_Click(sender, e);
+        }
+
+        private void RCopyMenuItem_Click(object sender, EventArgs e)
+        {
+            CopyMenuItem_Click(sender, e);
+        }
+
+        private void RPasteMenuItem_Click(object sender, EventArgs e)
+        {
+            PasteMenuItem_Click(sender, e);
+        }
+
+        private void RDeleteMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteMenuItem_Click(sender, e);
+        }
+
+        private void RSelectAllMenuItem_Click(object sender, EventArgs e)
+        {
+            SelectAllMenuItem_Click(sender, e);
+        }
+
+        private void RUseBingMenuItem_Click(object sender, EventArgs e)
+        {
+            UseBingMenuItem_Click(sender, e);
         }
 
         #endregion

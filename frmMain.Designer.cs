@@ -81,6 +81,7 @@
             this.SendIssusMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PreviewInWebMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DebugMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.bottomStatusBar = new System.Windows.Forms.StatusStrip();
             this.encodingStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -103,10 +104,25 @@
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
             this.printDialog = new System.Windows.Forms.PrintDialog();
-            this.PreviewInWebMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Container = new NotepadSharp.PanelEx(this.components);
+            this.editMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.RUndoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RRedoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.RCutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RCopyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RPasteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this.RSelectAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.RShowControlCharMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RInsertControlCharMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.RUseBingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
+            this.editMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleMenu
@@ -551,6 +567,13 @@
             this.AboutMenuItem.Size = new System.Drawing.Size(218, 26);
             this.AboutMenuItem.Text = "关于记事本Sharp(&A)";
             // 
+            // PreviewInWebMenuItem
+            // 
+            this.PreviewInWebMenuItem.Name = "PreviewInWebMenuItem";
+            this.PreviewInWebMenuItem.Size = new System.Drawing.Size(140, 24);
+            this.PreviewInWebMenuItem.Text = "在浏览器中预览&B)";
+            this.PreviewInWebMenuItem.Click += new System.EventHandler(this.PreviewInWebMenuItem_Click);
+            // 
             // DebugMenu
             // 
             this.DebugMenu.Name = "DebugMenu";
@@ -769,22 +792,128 @@
             // 
             this.printDialog.UseEXDialog = true;
             // 
-            // PreviewInWebMenuItem
-            // 
-            this.PreviewInWebMenuItem.Name = "PreviewInWebMenuItem";
-            this.PreviewInWebMenuItem.Size = new System.Drawing.Size(140, 24);
-            this.PreviewInWebMenuItem.Text = "在浏览器中预览&B)";
-            this.PreviewInWebMenuItem.Click += new System.EventHandler(this.PreviewInWebMenuItem_Click);
-            // 
             // Container
             // 
             this.Container.BorderColor = System.Drawing.SystemColors.Control;
             this.Container.BorderSize = 1;
+            this.Container.ContextMenuStrip = this.editMenu;
             this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Container.Location = new System.Drawing.Point(0, 24);
             this.Container.Name = "Container";
             this.Container.Size = new System.Drawing.Size(1130, 592);
             this.Container.TabIndex = 4;
+            // 
+            // editMenu
+            // 
+            this.editMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.editMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.RUndoMenuItem,
+            this.RRedoMenuItem,
+            this.toolStripSeparator11,
+            this.RCutMenuItem,
+            this.RCopyMenuItem,
+            this.RPasteMenuItem,
+            this.RDeleteMenuItem,
+            this.toolStripSeparator12,
+            this.RSelectAllMenuItem,
+            this.toolStripSeparator13,
+            this.RShowControlCharMenuItem,
+            this.RInsertControlCharMenuItem,
+            this.toolStripSeparator14,
+            this.RUseBingMenuItem});
+            this.editMenu.Name = "editMenu";
+            this.editMenu.Size = new System.Drawing.Size(257, 268);
+            // 
+            // RUndoMenuItem
+            // 
+            this.RUndoMenuItem.Name = "RUndoMenuItem";
+            this.RUndoMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RUndoMenuItem.Text = "撤销(&U)";
+            this.RUndoMenuItem.Click += new System.EventHandler(this.RUndoMenuItem_Click);
+            // 
+            // RRedoMenuItem
+            // 
+            this.RRedoMenuItem.Name = "RRedoMenuItem";
+            this.RRedoMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RRedoMenuItem.Text = "重做(&R)";
+            this.RRedoMenuItem.Click += new System.EventHandler(this.RRedoMenuItem_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(253, 6);
+            // 
+            // RCutMenuItem
+            // 
+            this.RCutMenuItem.Name = "RCutMenuItem";
+            this.RCutMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RCutMenuItem.Text = "剪切(&T)";
+            this.RCutMenuItem.Click += new System.EventHandler(this.RCutMenuItem_Click);
+            // 
+            // RCopyMenuItem
+            // 
+            this.RCopyMenuItem.Name = "RCopyMenuItem";
+            this.RCopyMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RCopyMenuItem.Text = "复制(&C)";
+            this.RCopyMenuItem.Click += new System.EventHandler(this.RCopyMenuItem_Click);
+            // 
+            // RPasteMenuItem
+            // 
+            this.RPasteMenuItem.Name = "RPasteMenuItem";
+            this.RPasteMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RPasteMenuItem.Text = "粘贴(&P)";
+            this.RPasteMenuItem.Click += new System.EventHandler(this.RPasteMenuItem_Click);
+            // 
+            // RDeleteMenuItem
+            // 
+            this.RDeleteMenuItem.Name = "RDeleteMenuItem";
+            this.RDeleteMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RDeleteMenuItem.Text = "删除(&L)";
+            this.RDeleteMenuItem.Click += new System.EventHandler(this.RDeleteMenuItem_Click);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(253, 6);
+            // 
+            // RSelectAllMenuItem
+            // 
+            this.RSelectAllMenuItem.Name = "RSelectAllMenuItem";
+            this.RSelectAllMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RSelectAllMenuItem.Text = "全选(&A)";
+            this.RSelectAllMenuItem.Click += new System.EventHandler(this.RSelectAllMenuItem_Click);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(253, 6);
+            // 
+            // RShowControlCharMenuItem
+            // 
+            this.RShowControlCharMenuItem.CheckOnClick = true;
+            this.RShowControlCharMenuItem.Name = "RShowControlCharMenuItem";
+            this.RShowControlCharMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RShowControlCharMenuItem.Text = "显示 Unicode 控制字符(&S)";
+            this.RShowControlCharMenuItem.CheckStateChanged += new System.EventHandler(this.RShowControlCharMenuItem_CheckStateChanged);
+            // 
+            // RInsertControlCharMenuItem
+            // 
+            this.RInsertControlCharMenuItem.Enabled = false;
+            this.RInsertControlCharMenuItem.Name = "RInsertControlCharMenuItem";
+            this.RInsertControlCharMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RInsertControlCharMenuItem.Text = "插入 Unicode 控制字符(&I)";
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(253, 6);
+            // 
+            // RUseBingMenuItem
+            // 
+            this.RUseBingMenuItem.Name = "RUseBingMenuItem";
+            this.RUseBingMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RUseBingMenuItem.Text = "使用 Bing 搜索...";
+            this.RUseBingMenuItem.Click += new System.EventHandler(this.RUseBingMenuItem_Click);
             // 
             // frmMain
             // 
@@ -805,6 +934,7 @@
             this.titleMenu.PerformLayout();
             this.bottomStatusBar.ResumeLayout(false);
             this.bottomStatusBar.PerformLayout();
+            this.editMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -887,6 +1017,21 @@
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog;
         private System.Windows.Forms.PrintDialog printDialog;
         private System.Windows.Forms.ToolStripMenuItem PreviewInWebMenuItem;
+        private System.Windows.Forms.ContextMenuStrip editMenu;
+        private System.Windows.Forms.ToolStripMenuItem RUndoMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RRedoMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripMenuItem RCutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RCopyMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RPasteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RDeleteMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.ToolStripMenuItem RSelectAllMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripMenuItem RShowControlCharMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RInsertControlCharMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripMenuItem RUseBingMenuItem;
     }
 }
 
