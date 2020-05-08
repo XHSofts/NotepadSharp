@@ -24,7 +24,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="showControlChar" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="showColRuler" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

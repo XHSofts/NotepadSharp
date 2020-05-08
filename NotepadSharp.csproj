@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -88,6 +89,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils.cs" />
     <EmbeddedResource Include="frmFindReplace.en-US.resx">
       <DependentUpon>frmFindReplace.cs</DependentUpon>
     </EmbeddedResource>

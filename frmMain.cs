@@ -7,6 +7,7 @@ using System.IO;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -744,6 +745,23 @@ namespace NotepadSharp
         #endregion
 
         #region Util Functions
+
+        private void replaceSelectionTextWith(string strTo)
+        {
+            if (HaveSelection())
+            {
+                //Sometime startPosition is bigger than endPosition, this is because you select text 
+                //from back to front. REMEMBER, startPosition is the position you START to select.
+                int Offset1 = edit.Document.GetOffset(edit.TextArea.Selection.StartPosition.Location);
+                int Offset2 = edit.Document.GetOffset(edit.TextArea.Selection.EndPosition.Location);
+                //So we have to detect which one is smaller, the smaller one is the start position (The ahead text offset)...
+                int startOffset = Offset1 < Offset2 ? Offset1 : Offset2;
+                edit.Document.BeginUpdate();
+                edit.Document.Remove(startOffset, edit.TextArea.Selection.Length);
+                edit.Document.Insert(startOffset,strTo);
+                edit.Document.EndUpdate();
+            }
+        }
 
         public void WriteToFile(string path, string content)
         {
@@ -1666,7 +1684,7 @@ namespace NotepadSharp
 
         private void DebugMenu_Click(object sender, EventArgs e)
         {
-            previewMarkDown();
+            replaceSelectionTextWith("1233333");
         }
 
         private void Indent2MenuItem_Click(object sender, EventArgs e)
@@ -1804,6 +1822,63 @@ namespace NotepadSharp
             UseBingMenuItem_Click(sender, e);
         }
 
+        private void RUrlEncodeMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+            {
+                replaceSelectionTextWith(HttpUtility.UrlEncode(edit.TextArea.Selection.GetText(), edit.Encoding));
+            }
+        }
+
+        private void RUrlDecodeMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+            {
+                replaceSelectionTextWith(HttpUtility.UrlDecode(edit.TextArea.Selection.GetText(), edit.Encoding));
+            }
+        }
+
+        private void RBase64EncodeMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+            {
+                replaceSelectionTextWith(Utils.EncodeBase64(edit.TextArea.Selection.GetText(), edit.Encoding));
+            }
+        }
+
+        private void RBase64DecodeMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+            {
+                replaceSelectionTextWith(Utils.DecodeBase64(edit.TextArea.Selection.GetText(), edit.Encoding));
+            }
+        }
+
+        private void RUniEncodeType1_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+            {
+                replaceSelectionTextWith(Utils.String2Unicode(edit.TextArea.Selection.GetText(), false));
+            }
+        }
+
+        private void RUniEncodeType2_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+            {
+                replaceSelectionTextWith(Utils.String2Unicode(edit.TextArea.Selection.GetText(), true));
+            }
+        }
+
+        private void RUnicodeDecodeMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HaveSelection())
+            {
+                replaceSelectionTextWith(Utils.Unicode2String(edit.TextArea.Selection.GetText()));
+            }
+        }
         #endregion
+
+
     }
 }

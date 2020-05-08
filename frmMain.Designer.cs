@@ -119,6 +119,20 @@
             this.RShowControlCharMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RInsertControlCharMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.RCodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RUrlEncodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RUrlDecodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this.RBase64EncodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RBase64DecodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
+            this.RUnicodeEncodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RUniEncodeType1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.RUniEncodeType2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.RUnicodeDecodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
+            this.其他编码陆续添加中ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.RUseBingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
@@ -579,7 +593,6 @@
             this.DebugMenu.Name = "DebugMenu";
             this.DebugMenu.Size = new System.Drawing.Size(51, 24);
             this.DebugMenu.Text = "调试";
-            this.DebugMenu.Visible = false;
             this.DebugMenu.Click += new System.EventHandler(this.DebugMenu_Click);
             // 
             // bottomStatusBar
@@ -820,9 +833,11 @@
             this.RShowControlCharMenuItem,
             this.RInsertControlCharMenuItem,
             this.toolStripSeparator14,
+            this.RCodeMenuItem,
+            this.toolStripSeparator17,
             this.RUseBingMenuItem});
             this.editMenu.Name = "editMenu";
-            this.editMenu.Size = new System.Drawing.Size(257, 268);
+            this.editMenu.Size = new System.Drawing.Size(257, 326);
             // 
             // RUndoMenuItem
             // 
@@ -907,6 +922,108 @@
             // 
             this.toolStripSeparator14.Name = "toolStripSeparator14";
             this.toolStripSeparator14.Size = new System.Drawing.Size(253, 6);
+            // 
+            // RCodeMenuItem
+            // 
+            this.RCodeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.RUrlEncodeMenuItem,
+            this.RUrlDecodeMenuItem,
+            this.toolStripSeparator15,
+            this.RBase64EncodeMenuItem,
+            this.RBase64DecodeMenuItem,
+            this.toolStripSeparator16,
+            this.RUnicodeEncodeMenuItem,
+            this.RUnicodeDecodeMenuItem,
+            this.toolStripSeparator18,
+            this.其他编码陆续添加中ToolStripMenuItem});
+            this.RCodeMenuItem.Name = "RCodeMenuItem";
+            this.RCodeMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RCodeMenuItem.Text = "编码与解码";
+            // 
+            // RUrlEncodeMenuItem
+            // 
+            this.RUrlEncodeMenuItem.Name = "RUrlEncodeMenuItem";
+            this.RUrlEncodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUrlEncodeMenuItem.Text = "URL 编码";
+            this.RUrlEncodeMenuItem.Click += new System.EventHandler(this.RUrlEncodeMenuItem_Click);
+            // 
+            // RUrlDecodeMenuItem
+            // 
+            this.RUrlDecodeMenuItem.Name = "RUrlDecodeMenuItem";
+            this.RUrlDecodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUrlDecodeMenuItem.Text = "URL 解码";
+            this.RUrlDecodeMenuItem.Click += new System.EventHandler(this.RUrlDecodeMenuItem_Click);
+            // 
+            // toolStripSeparator15
+            // 
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            this.toolStripSeparator15.Size = new System.Drawing.Size(228, 6);
+            // 
+            // RBase64EncodeMenuItem
+            // 
+            this.RBase64EncodeMenuItem.Name = "RBase64EncodeMenuItem";
+            this.RBase64EncodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RBase64EncodeMenuItem.Text = "Base64 编码";
+            this.RBase64EncodeMenuItem.Click += new System.EventHandler(this.RBase64EncodeMenuItem_Click);
+            // 
+            // RBase64DecodeMenuItem
+            // 
+            this.RBase64DecodeMenuItem.Name = "RBase64DecodeMenuItem";
+            this.RBase64DecodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RBase64DecodeMenuItem.Text = "Base64 解码";
+            this.RBase64DecodeMenuItem.Click += new System.EventHandler(this.RBase64DecodeMenuItem_Click);
+            // 
+            // toolStripSeparator16
+            // 
+            this.toolStripSeparator16.Name = "toolStripSeparator16";
+            this.toolStripSeparator16.Size = new System.Drawing.Size(228, 6);
+            // 
+            // RUnicodeEncodeMenuItem
+            // 
+            this.RUnicodeEncodeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.RUniEncodeType1,
+            this.RUniEncodeType2});
+            this.RUnicodeEncodeMenuItem.Name = "RUnicodeEncodeMenuItem";
+            this.RUnicodeEncodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUnicodeEncodeMenuItem.Text = "Unicode 编码";
+            // 
+            // RUniEncodeType1
+            // 
+            this.RUniEncodeType1.Name = "RUniEncodeType1";
+            this.RUniEncodeType1.Size = new System.Drawing.Size(228, 26);
+            this.RUniEncodeType1.Text = "\\uXXXX\\uXXXX 格式";
+            this.RUniEncodeType1.Click += new System.EventHandler(this.RUniEncodeType1_Click);
+            // 
+            // RUniEncodeType2
+            // 
+            this.RUniEncodeType2.Name = "RUniEncodeType2";
+            this.RUniEncodeType2.Size = new System.Drawing.Size(228, 26);
+            this.RUniEncodeType2.Text = "\\uXXXXXXXX 格式";
+            this.RUniEncodeType2.Click += new System.EventHandler(this.RUniEncodeType2_Click);
+            // 
+            // RUnicodeDecodeMenuItem
+            // 
+            this.RUnicodeDecodeMenuItem.Name = "RUnicodeDecodeMenuItem";
+            this.RUnicodeDecodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUnicodeDecodeMenuItem.Text = "Unicode 解码";
+            this.RUnicodeDecodeMenuItem.Click += new System.EventHandler(this.RUnicodeDecodeMenuItem_Click);
+            // 
+            // toolStripSeparator18
+            // 
+            this.toolStripSeparator18.Name = "toolStripSeparator18";
+            this.toolStripSeparator18.Size = new System.Drawing.Size(228, 6);
+            // 
+            // 其他编码陆续添加中ToolStripMenuItem
+            // 
+            this.其他编码陆续添加中ToolStripMenuItem.Enabled = false;
+            this.其他编码陆续添加中ToolStripMenuItem.Name = "其他编码陆续添加中ToolStripMenuItem";
+            this.其他编码陆续添加中ToolStripMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.其他编码陆续添加中ToolStripMenuItem.Text = "其他编码陆续添加中...";
+            // 
+            // toolStripSeparator17
+            // 
+            this.toolStripSeparator17.Name = "toolStripSeparator17";
+            this.toolStripSeparator17.Size = new System.Drawing.Size(253, 6);
             // 
             // RUseBingMenuItem
             // 
@@ -1032,6 +1149,20 @@
         private System.Windows.Forms.ToolStripMenuItem RInsertControlCharMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripMenuItem RUseBingMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RCodeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RUrlEncodeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RUrlDecodeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+        private System.Windows.Forms.ToolStripMenuItem RBase64EncodeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RBase64DecodeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
+        private System.Windows.Forms.ToolStripMenuItem RUnicodeEncodeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RUniEncodeType1;
+        private System.Windows.Forms.ToolStripMenuItem RUniEncodeType2;
+        private System.Windows.Forms.ToolStripMenuItem RUnicodeDecodeMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
+        private System.Windows.Forms.ToolStripMenuItem 其他编码陆续添加中ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
     }
 }
 
