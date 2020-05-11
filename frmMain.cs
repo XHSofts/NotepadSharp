@@ -580,7 +580,6 @@ namespace NotepadSharp
             {
                 isLoadFile = false; //Restore to default
             }
-
             if (e.Key == Key.F6)
             {
                 if (inTheBrackets && isCoding())
@@ -609,10 +608,6 @@ namespace NotepadSharp
                 }
             }
 
-            if (e.Key == Key.F5)
-            {
-            }
-
             updateStatusBar();
             UpdateMenuItem();
         }
@@ -621,22 +616,33 @@ namespace NotepadSharp
         {
             if (isCoding())
             {
+                
                 String retChar   = "\r\n";
                 int    currCaret = 0;
                 int    currIndex = edit.TextArea.Caret.Offset - 1;
                 switch (e.Text)
                 {
                     case "{":
-                        edit.Document.Insert(currIndex + 1, "}");
+                        if (!(edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "}"))
+                        {
+                            edit.Document.Insert(currIndex + 1, "}");
+                        }
+
                         edit.TextArea.Caret.Offset--;
                         break;
                     case "[":
-                        edit.Document.Insert(currIndex + 1, "]");
+                        if (!(edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "]"))
+                        {
+                            edit.Document.Insert(currIndex + 1, "]");
+                        }
+
                         edit.TextArea.Caret.Offset--;
                         break;
                     case "(":
-                        edit.Document.Insert(currIndex + 1, ")");
-                        edit.TextArea.Caret.Offset--;
+                        if (!(edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == ")")) { 
+                            edit.Document.Insert(currIndex + 1, ")");
+                            edit.TextArea.Caret.Offset--;
+                        }
                         break;
                     case ")":
                         if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == ")")
@@ -649,8 +655,46 @@ namespace NotepadSharp
                     case "}":
                         if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "}")
                         {
-                            edit.TextArea.Caret.Offset++;
+                           // edit.TextArea.Caret.Offset++;
                             e.Handled = true;
+
+                                switch (determineReturnStyle())
+                                {
+                                    case "Error":
+                                    case "Windows (CRLF)":
+                                        retChar = "\r\n";
+                                        break;
+                                    case "Unix (LF)":
+                                        retChar = "\n";
+                                        break;
+                                    case "Macintosh (CR)":
+                                        retChar = "\r";
+                                        break;
+                                }
+                                edit.Document.BeginUpdate();
+                                currCaret = edit.TextArea.Caret.Offset;
+                                edit.Document.Insert(currCaret, retChar);
+                            currCaret = edit.TextArea.Caret.Offset;
+                                edit.Document.Insert(currCaret, retChar);
+                                edit.TextArea.Caret.Line--;
+                                
+                                currCaret = edit.TextArea.Caret.Offset;
+                                edit.Document.Insert(currCaret, "\t");
+                                if (isCoding() && currIsAutoIndent)
+                                {
+                                    css.IndentLines(edit.Document, 0, edit.LineCount);
+                                }
+                            edit.TextArea.Caret.Offset = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
+                                edit.Document.EndUpdate();
+                                e.Handled = true;
+                            }
+
+                        break;
+                    case ";":
+
+                        if (isCoding() && currIsAutoIndent)
+                        {
+                            css.IndentLines(edit.Document, 0, edit.LineCount);
                         }
 
                         break;
@@ -678,11 +722,20 @@ namespace NotepadSharp
                                     retChar = "\r";
                                     break;
                             }
-
+                            edit.Document.BeginUpdate();
                             currCaret = edit.TextArea.Caret.Offset;
                             edit.Document.Insert(currCaret, retChar);
                             edit.TextArea.Caret.Line--;
-                            edit.Document.Insert(currCaret, "	");
+                            
+                            currCaret = edit.TextArea.Caret.Offset;
+                            edit.Document.Insert(currCaret, "\t");
+                            if (isCoding() && currIsAutoIndent)
+                            {
+                                css.IndentLines(edit.Document, 0, edit.LineCount);
+                            }
+                            edit.TextArea.Caret.Offset = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset ;
+                            edit.Document.EndUpdate();
+                            e.Handled = true;
                         }
 
                         break;
@@ -731,11 +784,6 @@ namespace NotepadSharp
             else
             {
                 hasSave = false;
-            }
-
-            if (isCoding() && currIsAutoIndent)
-            {
-                css.IndentLines(edit.Document, 0, edit.LineCount);
             }
 
             updateStatusBar();
