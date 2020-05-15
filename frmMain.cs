@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -9,10 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using FontFamily = System.Windows.Media.FontFamily;
@@ -31,16 +28,16 @@ namespace NotepadSharp
 {
     public partial class frmMain : Form
     {
-        private TextEditor edit;
+        public TextEditor edit;
 //        {
 //            get { return this.textEditorControl; }
 //        }
 //        private FoldingManager     foldingManager  = null;
 //        private XmlFoldingStrategy foldingStrategy = new XmlFoldingStrategy();
 
-        ResourceManager LocRM = new ResourceManager("NotepadSharp.frmMain", typeof(frmMain).Assembly);
+        readonly ResourceManager LocRM = new ResourceManager("NotepadSharp.frmMain", typeof(frmMain).Assembly);
 
-        private ICSharpCode.AvalonEdit.Indentation.CSharp.CSharpIndentationStrategy css =
+        private readonly CSharpIndentationStrategy css =
             new CSharpIndentationStrategy();
 
         private enum IndentMode
@@ -56,7 +53,7 @@ namespace NotepadSharp
 
         private Boolean isShowTab
         {
-            get { return _isShowTab; }
+            get => _isShowTab;
             set
             {
                 _isShowTab                          = value;
@@ -71,7 +68,7 @@ namespace NotepadSharp
 
         private Boolean isSpaceAsTab
         {
-            get { return _isSpaceAsTab; }
+            get => _isSpaceAsTab;
             set
             {
                 _isSpaceAsTab                             = value;
@@ -86,7 +83,7 @@ namespace NotepadSharp
 
         private Boolean isShowStatusBar
         {
-            get { return _isShowStatusBar; }
+            get => _isShowStatusBar;
             set
             {
                 _isShowStatusBar                = value;
@@ -103,7 +100,7 @@ namespace NotepadSharp
 
         private Boolean isShowSpace
         {
-            get { return _isShowSpace; }
+            get => _isShowSpace;
             set
             {
                 _isShowSpace                          = value;
@@ -118,7 +115,7 @@ namespace NotepadSharp
 
         private Boolean isShowEOL
         {
-            get { return _isShowEOL; }
+            get => _isShowEOL;
             set
             {
                 _isShowEOL                          = value;
@@ -133,7 +130,7 @@ namespace NotepadSharp
 
         private Boolean isShowControlChar
         {
-            get { return _isShowControlChar; }
+            get => _isShowControlChar;
             set
             {
                 _isShowControlChar                                = value;
@@ -149,7 +146,7 @@ namespace NotepadSharp
 
         private Boolean isShowColRuler
         {
-            get { return _isShowColRuler; }
+            get => _isShowColRuler;
             set
             {
                 _isShowColRuler                          = value;
@@ -164,7 +161,7 @@ namespace NotepadSharp
 
         private Boolean isWordWrap
         {
-            get { return _isWordWrap; }
+            get => _isWordWrap;
             set
             {
                 _isWordWrap                          = value;
@@ -189,7 +186,7 @@ namespace NotepadSharp
 
         private string currFileEncoding
         {
-            get { return _currFileEncoding; }
+            get => _currFileEncoding;
             set
             {
                 _currFileEncoding   = value;
@@ -201,7 +198,7 @@ namespace NotepadSharp
 
         private string currTitleName
         {
-            get { return _currTitleName; }
+            get => _currTitleName;
             set
             {
                 _currTitleName = value;
@@ -213,7 +210,7 @@ namespace NotepadSharp
 
         private FileObject currOpenedFile
         {
-            get { return _currOpenedFile; }
+            get => _currOpenedFile;
             set
             {
                 _currOpenedFile = value;
@@ -226,7 +223,7 @@ namespace NotepadSharp
 
         private int currZoomSize
         {
-            get { return _currZoomSize; }
+            get => _currZoomSize;
             set
             {
                 if (value > 500)
@@ -282,7 +279,7 @@ namespace NotepadSharp
 
         private IndentMode currIndentMode
         {
-            get { return _currIndentMode; }
+            get => _currIndentMode;
             set
             {
                 _currIndentMode = value;
@@ -325,24 +322,17 @@ namespace NotepadSharp
 
         private String currSyntaxHighlighting
         {
-            get { return _currSyntaxHighlighting; }
+            get => _currSyntaxHighlighting;
             set
             {
                 _currSyntaxHighlighting = value;
                 foreach (ToolStripMenuItem tsmi in HighLightTypeMenuItem.DropDownItems)
                 {
-                    if (tsmi.Text == value)
-                    {
-                        tsmi.Checked = true;
-                    }
-                    else
-                    {
-                        tsmi.Checked = false;
-                    }
+                    tsmi.Checked = tsmi.Text == value;
                 }
 
                 IHighlightingDefinition currDefine =
-                    ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance.GetDefinition(value);
+                    HighlightingManager.Instance.GetDefinition(value);
                 HighLightTypeMenuItem.Text = (value != LocRM.GetString("NormalText") && currDefine is null)
                     ? LocRM.GetString("LoadFail")
                     : value;
@@ -355,7 +345,7 @@ namespace NotepadSharp
 
         private int currCaretLine
         {
-            get { return _currCaretLine; }
+            get => _currCaretLine;
             set
             {
                 _currCaretLine = value;
@@ -368,7 +358,7 @@ namespace NotepadSharp
 
         private int currCaretColumn
         {
-            get { return _currCaretColumn; }
+            get => _currCaretColumn;
             set
             {
                 _currCaretColumn = value;
@@ -381,7 +371,7 @@ namespace NotepadSharp
 
         private int currLength
         {
-            get { return _currLength; }
+            get => _currLength;
             set
             {
                 _currLength = value;
@@ -394,7 +384,7 @@ namespace NotepadSharp
 
         private int currLines
         {
-            get { return _currLines; }
+            get => _currLines;
             set
             {
                 _currLines = value;
@@ -407,7 +397,7 @@ namespace NotepadSharp
 
         private string currReturnStyle
         {
-            get { return _currReturnStyle; }
+            get => _currReturnStyle;
             set
             {
                 _currReturnStyle       = value;
@@ -419,7 +409,7 @@ namespace NotepadSharp
 
         private Boolean hasSave
         {
-            get { return _hasSave; }
+            get => _hasSave;
             set
             {
                 _hasSave = value;
@@ -433,9 +423,9 @@ namespace NotepadSharp
         #endregion
 
         private static Task<TextWithEncoding> textReaderTask;
-        private        Stopwatch              sw  = new Stopwatch();
-        private static TextWithEncoding       txt = new TextWithEncoding();
-        PrintDocument                         printDocument;
+        private readonly Stopwatch              sw  = new Stopwatch();
+        private static readonly TextWithEncoding       txt = new TextWithEncoding();
+        readonly PrintDocument                         printDocument;
 
         public frmMain()
         {
@@ -443,7 +433,7 @@ namespace NotepadSharp
             fontDialog.Apply += FontDialog_Apply;
             printDocument    =  new PrintDocument();
 
-            printDocument.PrintPage += new PrintPageEventHandler(this.printDocument_PrintPage);
+            printDocument.PrintPage += printDocument_PrintPage;
             if (Environment.GetCommandLineArgs().Length > 1    && Environment.GetCommandLineArgs()[1] != "" &&
                 !(Environment.GetCommandLineArgs()[1] is null) && File.Exists(Environment.GetCommandLineArgs()[1]))
             {
@@ -553,7 +543,7 @@ namespace NotepadSharp
 
         private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+            if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 if (e.Delta > 0)
                 {
@@ -580,12 +570,13 @@ namespace NotepadSharp
             {
                 isLoadFile = false; //Restore to default
             }
+
             if (e.Key == Key.F6)
             {
                 if (inTheBrackets && isCoding())
                 {
                     String retChar   = "\r\n";
-                    int    currCaret = 0;
+                    int    currCaret;
                     switch (determineReturnStyle())
                     {
                         case "Error":
@@ -616,7 +607,6 @@ namespace NotepadSharp
         {
             if (isCoding())
             {
-                
                 String retChar   = "\r\n";
                 int    currCaret = 0;
                 int    currIndex = edit.TextArea.Caret.Offset - 1;
@@ -639,10 +629,12 @@ namespace NotepadSharp
                         edit.TextArea.Caret.Offset--;
                         break;
                     case "(":
-                        if (!(edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == ")")) { 
+                        if (!(edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == ")"))
+                        {
                             edit.Document.Insert(currIndex + 1, ")");
                             edit.TextArea.Caret.Offset--;
                         }
+
                         break;
                     case ")":
                         if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == ")")
@@ -655,39 +647,41 @@ namespace NotepadSharp
                     case "}":
                         if (edit.Text.Length > currIndex + 1 && edit.Text.Substring(currIndex + 1, 1) == "}")
                         {
-                           // edit.TextArea.Caret.Offset++;
+                            // edit.TextArea.Caret.Offset++;
                             e.Handled = true;
 
-                                switch (determineReturnStyle())
-                                {
-                                    case "Error":
-                                    case "Windows (CRLF)":
-                                        retChar = "\r\n";
-                                        break;
-                                    case "Unix (LF)":
-                                        retChar = "\n";
-                                        break;
-                                    case "Macintosh (CR)":
-                                        retChar = "\r";
-                                        break;
-                                }
-                                edit.Document.BeginUpdate();
-                                currCaret = edit.TextArea.Caret.Offset;
-                                edit.Document.Insert(currCaret, retChar);
-                            currCaret = edit.TextArea.Caret.Offset;
-                                edit.Document.Insert(currCaret, retChar);
-                                edit.TextArea.Caret.Line--;
-                                
-                                currCaret = edit.TextArea.Caret.Offset;
-                                edit.Document.Insert(currCaret, "\t");
-                                if (isCoding() && currIsAutoIndent)
-                                {
-                                    css.IndentLines(edit.Document, 0, edit.LineCount);
-                                }
-                            edit.TextArea.Caret.Offset = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
-                                edit.Document.EndUpdate();
-                                e.Handled = true;
+                            switch (determineReturnStyle())
+                            {
+                                case "Error":
+                                case "Windows (CRLF)":
+                                    retChar = "\r\n";
+                                    break;
+                                case "Unix (LF)":
+                                    retChar = "\n";
+                                    break;
+                                case "Macintosh (CR)":
+                                    retChar = "\r";
+                                    break;
                             }
+
+                            edit.Document.BeginUpdate();
+                            currCaret = edit.TextArea.Caret.Offset;
+                            edit.Document.Insert(currCaret, retChar);
+                            currCaret = edit.TextArea.Caret.Offset;
+                            edit.Document.Insert(currCaret, retChar);
+                            edit.TextArea.Caret.Line--;
+
+                            currCaret = edit.TextArea.Caret.Offset;
+                            edit.Document.Insert(currCaret, "\t");
+                            if (isCoding() && currIsAutoIndent)
+                            {
+                                css.IndentLines(edit.Document, 0, edit.LineCount);
+                            }
+
+                            edit.TextArea.Caret.Offset = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
+                            edit.Document.EndUpdate();
+                            e.Handled = true;
+                        }
 
                         break;
                     case ";":
@@ -722,18 +716,20 @@ namespace NotepadSharp
                                     retChar = "\r";
                                     break;
                             }
+
                             edit.Document.BeginUpdate();
                             currCaret = edit.TextArea.Caret.Offset;
                             edit.Document.Insert(currCaret, retChar);
                             edit.TextArea.Caret.Line--;
-                            
+
                             currCaret = edit.TextArea.Caret.Offset;
                             edit.Document.Insert(currCaret, "\t");
                             if (isCoding() && currIsAutoIndent)
                             {
                                 css.IndentLines(edit.Document, 0, edit.LineCount);
                             }
-                            edit.TextArea.Caret.Offset = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset ;
+
+                            edit.TextArea.Caret.Offset = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
                             edit.Document.EndUpdate();
                             e.Handled = true;
                         }
@@ -758,12 +754,12 @@ namespace NotepadSharp
             }
             else
             {
-                currOpenedFile = new FileObject(System.IO.Path.GetFileName(edit.Document.FileName),
+                currOpenedFile = new FileObject(Path.GetFileName(edit.Document.FileName),
                                                 edit.Document.FileName,
-                                                System.IO.Path.GetExtension(edit.Document.FileName));
+                                                Path.GetExtension(edit.Document.FileName));
                 edit.SyntaxHighlighting =
                     HighlightingManager
-                        .Instance.GetDefinitionByExtension(System.IO.Path.GetExtension(edit.Document.FileName));
+                        .Instance.GetDefinitionByExtension(Path.GetExtension(edit.Document.FileName));
                 hasSave    = true;
                 isLoadFile = true;
             }
@@ -806,7 +802,7 @@ namespace NotepadSharp
                 int startOffset = Offset1 < Offset2 ? Offset1 : Offset2;
                 edit.Document.BeginUpdate();
                 edit.Document.Remove(startOffset, edit.TextArea.Selection.Length);
-                edit.Document.Insert(startOffset,strTo);
+                edit.Document.Insert(startOffset, strTo);
                 edit.Document.EndUpdate();
             }
         }
@@ -830,7 +826,7 @@ namespace NotepadSharp
         /// <returns></returns>      
         public long GetCurrentTimeUnix()
         {
-            TimeSpan cha = (DateTime.Now - TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)));
+            TimeSpan cha = (DateTime.Now - TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1)));
             long     t   = (long) cha.TotalSeconds;
             return t;
         }
@@ -841,7 +837,7 @@ namespace NotepadSharp
             if (edit.Document.FileName == "\\Untitled\\" || edit.Document.FileName == "" ||
                 (edit.Document.FileName is null))
             {
-                rootPath = System.Environment.GetEnvironmentVariable("TEMP");
+                rootPath = Environment.GetEnvironmentVariable("TEMP");
             }
             else
             {
@@ -880,8 +876,7 @@ namespace NotepadSharp
         private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             StringFormat stringFormat = new StringFormat(StringFormatFlags.MeasureTrailingSpaces, 0);
-            int          count, rows;
-            Graphics     g = e.Graphics; //获得绘图对象
+            Graphics     g            = e.Graphics; //获得绘图对象
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             //像素偏移方式，像素在水平和垂直距离上均偏移若干个单位，以进行高速锯齿消除。
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
@@ -889,7 +884,8 @@ namespace NotepadSharp
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
 
-            SizeF sf = e.Graphics.MeasureString(s, currFont, e.MarginBounds.Size, stringFormat, out count, out rows);
+            SizeF sf = e.Graphics.MeasureString(s, currFont, e.MarginBounds.Size, stringFormat, out var count,
+                                                out var rows);
             //MessageBox.Show("总长度：" + s.Length.ToString() + "#当页长度：" + count.ToString() + "#行数：" + rows.ToString());
             e.Graphics.DrawString(s.Substring(0, count), currFont, new SolidBrush(Color.Black), e.MarginBounds,
                                   stringFormat);
@@ -949,11 +945,11 @@ namespace NotepadSharp
         {
             if (currTitleName != "")
             {
-                this.Text = (hasSave ? "" : "*") + currTitleName + " - " + LocRM.GetString("$this.Text");
+                Text = (hasSave ? "" : "*") + currTitleName + " - " + LocRM.GetString("$this.Text");
             }
             else
             {
-                this.Text = (hasSave ? "" : "*") + LocRM.GetString("defaultTitle") + " - " +
+                Text = (hasSave ? "" : "*") + LocRM.GetString("defaultTitle") + " - " +
                             LocRM.GetString("$this.Text");
             }
         }
@@ -1045,7 +1041,7 @@ namespace NotepadSharp
 
             if (edit.Text.Length > 0)
             {
-                DeleteMenuItem.Enabled = true;
+                DeleteMenuItem.Enabled  = true;
                 RDeleteMenuItem.Enabled = true;
             }
             else
@@ -1242,21 +1238,21 @@ namespace NotepadSharp
 //                return cp;
 //            }
 //        }
-        protected override void OnLoad(System.EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            this.SetStyle(ControlStyles.ResizeRedraw, true);
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
         }
 
         #region UI Events
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            this.SuspendLayout();
+            SuspendLayout();
             //Try to fix high-dpi blurry
-            this.AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Font;
             //Finally I upgrade to .Net 4.7 to solve this...
 
             reArrangeControl();
@@ -1268,11 +1264,12 @@ namespace NotepadSharp
 
             #region TextEditor ctor
 
-            edit = new TextEditor();
+            edit = new TextEditor
+            {
+                BorderBrush     = new SolidColorBrush(System.Windows.Media.Color.FromRgb(160, 160, 160)),
+                BorderThickness = new Thickness(0, 1, 0, 1)
+            };
 
-            edit.BorderBrush =
-                new SolidColorBrush(System.Windows.Media.Color.FromRgb(160, 160, 160));
-            edit.BorderThickness                =  new Thickness(0, 1, 0, 1);
             edit.TextChanged                    += Edit_TextChanged;
             edit.MouseDown                      += Edit_Click;
             edit.TextArea.MouseMove             += TextArea_MouseMove;
@@ -1311,7 +1308,7 @@ namespace NotepadSharp
             edit.TextArea.Options.EnableTextDragDrop         = true;
             edit.Document.FileName                           = "\\Untitled\\";
             edit.ShowLineNumbers                             = true;
-            edit.Encoding                                    = System.Text.Encoding.UTF8;
+            edit.Encoding                                    = Encoding.UTF8;
             edit.TextArea.Options.EnableRectangularSelection = true;
 
             switch (Properties.Settings.Default.IndentMode)
@@ -1336,24 +1333,23 @@ namespace NotepadSharp
             isShowStatusBar   = Properties.Settings.Default.showStatusBar;
             isShowTab         = Properties.Settings.Default.showTab;
             //Add the default highlighting defines in AvalonEdit to the status bar DropDownMenu
-            foreach (IHighlightingDefinition hr in ICSharpCode
-                                                   .AvalonEdit.Highlighting.HighlightingManager.Instance
+            foreach (IHighlightingDefinition hr in HighlightingManager.Instance
                                                    .HighlightingDefinitions)
             {
-                ToolStripMenuItem subMenu = new ToolStripMenuItem();
-                subMenu.Name         =  "MenuItem" + hr.Name;
-                subMenu.Text         =  hr.Name;
-                subMenu.CheckOnClick =  true;
-                subMenu.Click        += SyntaxMenuItem_Click;
+                ToolStripMenuItem subMenu = new ToolStripMenuItem
+                {
+                    Name = "MenuItem" + hr.Name, Text = hr.Name, CheckOnClick = true
+                };
+                subMenu.Click += SyntaxMenuItem_Click;
                 HighLightTypeMenuItem.DropDownItems.Add(subMenu);
             }
 
             //Don't forget to add the normal text
-            ToolStripMenuItem subMenuLast = new ToolStripMenuItem();
-            subMenuLast.Name         =  "MenuItemNormal";
-            subMenuLast.Text         =  LocRM.GetString("NormalText");
-            subMenuLast.CheckOnClick =  true;
-            subMenuLast.Click        += SyntaxMenuItem_Click;
+            ToolStripMenuItem subMenuLast = new ToolStripMenuItem
+            {
+                Name = "MenuItemNormal", Text = LocRM.GetString("NormalText"), CheckOnClick = true
+            };
+            subMenuLast.Click += SyntaxMenuItem_Click;
             HighLightTypeMenuItem.DropDownItems.Add(subMenuLast);
             //And don't forget to set the default one...
             currSyntaxHighlighting = LocRM.GetString("NormalText");
@@ -1369,8 +1365,8 @@ namespace NotepadSharp
                 Child = edit
             };
             Container.Controls.Add(host);
-            this.ResumeLayout(true);
-            this.WindowState = FormWindowState.Normal;
+            ResumeLayout(true);
+            WindowState = FormWindowState.Normal;
 
 
             if (Environment.GetCommandLineArgs().Length > 1    && Environment.GetCommandLineArgs()[1] != "" &&
@@ -1383,7 +1379,7 @@ namespace NotepadSharp
                 //edit.Load(await test);
             }
 
-            this.Refresh();
+            Refresh();
         }
 
 
@@ -1393,8 +1389,8 @@ namespace NotepadSharp
             LoadTime.Text = LocRM.GetString("LoadTime") + ":" + sw.ElapsedMilliseconds.ToString() + " ms";
             sw.Reset();
             edit.SetCurrentValue(TextEditor.IsModifiedProperty, false);
-            edit.SetCurrentValue(TextEditor.EncodingProperty, (object) t.TextEncoding);
-            this.Refresh();
+            edit.SetCurrentValue(TextEditor.EncodingProperty, t.TextEncoding);
+            Refresh();
         }
 
         async Task<TextWithEncoding> ReadFileAsync(string filePath)
@@ -1491,8 +1487,8 @@ namespace NotepadSharp
         {
             if (HaveSelection())
                 edit.Delete();
-            else if (edit.CaretOffset-1 >= 0 && edit.Text.Length > 0)
-                edit.Document.Remove(edit.CaretOffset-1, 1);
+            else if (edit.CaretOffset - 1 >= 0 && edit.Text.Length > 0)
+                edit.Document.Remove(edit.CaretOffset - 1, 1);
             if (isLoadFile)
             {
                 isLoadFile = false; //Restore to default
@@ -1506,7 +1502,7 @@ namespace NotepadSharp
                 edit.Document.FileName = "\\Untitled\\";
                 edit.Document.Text     = string.Empty;
                 edit.Document.UndoStack.ClearAll();
-                this.Refresh();
+                Refresh();
             }
         }
 
@@ -1566,16 +1562,9 @@ namespace NotepadSharp
         private void UseBingMenuItem_Click(object sender, EventArgs e)
         {
             String searchText = "";
-            if (HaveSelection())
-            {
-                searchText = edit.SelectedText;
-            }
-            else
-            {
-                searchText = edit.Text;
-            }
+            searchText = HaveSelection() ? edit.SelectedText : edit.Text;
 
-            System.Diagnostics.Process.Start("https://www.bing.com/search?q=" + searchText);
+            Process.Start("https://www.bing.com/search?q=" + searchText);
         }
 
         private void DateTimeMenuItem_Click(object sender, EventArgs e)
@@ -1585,9 +1574,7 @@ namespace NotepadSharp
 
         private void GotoMenuItem_Click(object sender, EventArgs e)
         {
-            var GoToLinePrompt = new frmGoto(edit.TextArea.Caret.Line + 1);
-            GoToLinePrompt.Left = this.Left + 5;
-            GoToLinePrompt.Top  = this.Top  + 44;
+            var GoToLinePrompt = new frmGoto(edit.TextArea.Caret.Line + 1) {Left = Left + 5, Top = Top + 44};
 
             if (GoToLinePrompt.ShowDialog(this) != DialogResult.OK) return;
 
@@ -1606,9 +1593,7 @@ namespace NotepadSharp
 
         private void PageSetupMenuItem_Click(object sender, EventArgs e)
         {
-            PageSetupDialog pageSetupDialog = new PageSetupDialog();
-            pageSetupDialog.EnableMetric = true;
-            pageSetupDialog.Document     = printDocument;
+            PageSetupDialog pageSetupDialog = new PageSetupDialog {EnableMetric = true, Document = printDocument};
             pageSetupDialog.ShowDialog();
         }
 
@@ -1770,9 +1755,7 @@ namespace NotepadSharp
         {
             if (frmFind is null)
             {
-                frmFind      = new frmFindReplace(edit);
-                frmFind.Left = this.Left + 5;
-                frmFind.Top  = this.Top  + 44;
+                frmFind = new frmFindReplace(edit) {Left = Left + 5, Top = Top + 44};
             }
 
             frmFindReplace.ShowForReplace(frmFind, edit);
@@ -1782,9 +1765,7 @@ namespace NotepadSharp
         {
             if (frmFind is null)
             {
-                frmFind      = new frmFindReplace(edit);
-                frmFind.Left = this.Left + 5;
-                frmFind.Top  = this.Top  + 44;
+                frmFind = new frmFindReplace(edit) {Left = Left + 5, Top = Top + 44};
             }
 
             frmFindReplace.ShowForFind(frmFind, edit);
@@ -1794,9 +1775,7 @@ namespace NotepadSharp
         {
             if (frmFind is null)
             {
-                frmFind      = new frmFindReplace(edit);
-                frmFind.Left = this.Left + 5;
-                frmFind.Top  = this.Top  + 44;
+                frmFind = new frmFindReplace(edit) {Left = Left + 5, Top = Top + 44};
                 frmFindReplace.ShowForFind(frmFind, edit);
             }
             else
@@ -1809,9 +1788,7 @@ namespace NotepadSharp
         {
             if (frmFind is null)
             {
-                frmFind      = new frmFindReplace(edit);
-                frmFind.Left = this.Left + 5;
-                frmFind.Top  = this.Top  + 44;
+                frmFind = new frmFindReplace(edit) {Left = Left + 5, Top = Top + 44};
                 frmFindReplace.ShowForFind(frmFind, edit);
             }
             else
@@ -1925,8 +1902,7 @@ namespace NotepadSharp
                 replaceSelectionTextWith(Utils.Unicode2String(edit.TextArea.Selection.GetText()));
             }
         }
+
         #endregion
-
-
     }
 }

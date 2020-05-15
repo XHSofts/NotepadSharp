@@ -14,12 +14,12 @@ namespace NotepadSharp
 {
     public partial class frmGoto : Form
     {
-        ResourceManager LocRM = new ResourceManager("NotepadSharp.frmGoto", typeof(frmGoto).Assembly);
+        readonly ResourceManager LocRM = new ResourceManager("NotepadSharp.frmGoto", typeof(frmGoto).Assembly);
         
         private int _lineGoto;
         public int lineGoto
         {
-            get { return _lineGoto; }
+            get => _lineGoto;
             set
             {
                 _lineGoto = value;
@@ -47,7 +47,7 @@ namespace NotepadSharp
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (System.OverflowException eX)
+            catch (OverflowException eX)
             {
                 MessageBox.Show(this, string.Format(LocRM.GetString("overflowError"), txtLine.Text),
                                 LocRM.GetString("$this.Text"),MessageBoxButtons.OK,MessageBoxIcon.Exclamation);

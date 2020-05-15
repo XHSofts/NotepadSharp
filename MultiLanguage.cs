@@ -15,11 +15,8 @@ namespace NotepadSharp
 
         public static string DefaultLanguage
         {
-            get { return _DefaultLanguage; }
-            set
-            {
-                _DefaultLanguage = value;
-            }
+            get => _DefaultLanguage;
+            set => _DefaultLanguage = value;
         }
 
 
@@ -29,7 +26,7 @@ namespace NotepadSharp
         /// <param name="lang">待设置默认语言</param>
         public static void SetDefaultLanguage(string lang)
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
             DefaultLanguage                                        = lang;
             Properties.Settings.Default.DefaultLanguage            = lang;
             Properties.Settings.Default.Save();
@@ -53,7 +50,7 @@ namespace NotepadSharp
                 }
                 else
                 {
-                    resources.ApplyResources(form, "$this", new System.Globalization.CultureInfo(Properties.Settings.Default.DefaultLanguage));
+                    resources.ApplyResources(form, "$this", new CultureInfo(Properties.Settings.Default.DefaultLanguage));
                     SetDefaultLanguage(Properties.Settings.Default.DefaultLanguage);
                 }
 

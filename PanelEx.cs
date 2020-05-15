@@ -31,11 +31,11 @@ namespace NotepadSharp
         [Browsable(true), Description("边框颜色"), Category("自定义分组")]
         public Color BorderColor
         {
-            get { return _BorderColor; }
+            get => _BorderColor;
             set
             {
                 _BorderColor = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -44,11 +44,11 @@ namespace NotepadSharp
         [Browsable(true), Description("边框粗细"), Category("自定义分组")]
         public int BorderSize
         {
-            get { return _BorderSize; }
+            get => _BorderSize;
             set
             {
                 _BorderSize = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
         /// <summary>
@@ -58,18 +58,18 @@ namespace NotepadSharp
         protected override void OnPaint(PaintEventArgs e)
         {
             ControlPaint.DrawBorder(e.Graphics,
-                                    this.ClientRectangle,
-                                    this._BorderColor,
-                                    this._BorderSize,
+                                    ClientRectangle,
+                                    _BorderColor,
+                                    _BorderSize,
                                     ButtonBorderStyle.Solid,
-                                    this._BorderColor,
-                                    this._BorderSize,
+                                    _BorderColor,
+                                    _BorderSize,
                                     ButtonBorderStyle.Solid,
-                                    this._BorderColor,
-                                    this._BorderSize,
+                                    _BorderColor,
+                                    _BorderSize,
                                     ButtonBorderStyle.Solid,
-                                    this._BorderColor,
-                                    this._BorderSize,
+                                    _BorderColor,
+                                    _BorderSize,
                                     ButtonBorderStyle.Solid);
         }
     }

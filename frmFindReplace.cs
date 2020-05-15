@@ -21,16 +21,16 @@ namespace NotepadSharp
     //Thanks
     public partial class frmFindReplace : Form
     {
-        ResourceManager LocRM = new ResourceManager("NotepadSharp.frmFindReplace", typeof(frmFindReplace).Assembly);
+        readonly ResourceManager LocRM = new ResourceManager("NotepadSharp.frmFindReplace", typeof(frmFindReplace).Assembly);
 
-        private static string textToFind    = "";
-        private static bool   caseSensitive = Properties.Settings.Default.findCaseSensitive;
-        private static bool   wholeWord     = Properties.Settings.Default.findWholeWord;
-        private static bool   useRegex      = Properties.Settings.Default.findUseRegex;
-        private static bool   useWildcards  = Properties.Settings.Default.findUseWildcards;
-        private static bool   searchUp      = Properties.Settings.Default.findSearchUp;
+        private static readonly string textToFind    = "";
+        private static readonly bool   caseSensitive = Properties.Settings.Default.findCaseSensitive;
+        private static readonly bool   wholeWord     = Properties.Settings.Default.findWholeWord;
+        private static readonly bool   useRegex      = Properties.Settings.Default.findUseRegex;
+        private static readonly bool   useWildcards  = Properties.Settings.Default.findUseWildcards;
+        private static readonly bool   searchUp      = Properties.Settings.Default.findSearchUp;
 
-        private TextEditor editor;
+        private readonly TextEditor editor;
 
         public frmFindReplace(TextEditor editor)
         {
@@ -55,12 +55,12 @@ namespace NotepadSharp
             }
         }
 
-        protected override void OnLoad(System.EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            this.SetStyle(ControlStyles.ResizeRedraw, true);
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
         }
 
         private void frmFindReplace_FormClosed(object sender, FormClosedEventArgs e)

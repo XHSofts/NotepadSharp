@@ -14,7 +14,7 @@ namespace NotepadSharp
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
 
-        private static ResourceManager LocRM = new ResourceManager("NotepadSharp.frmMain", typeof(frmMain).Assembly);
+        private static readonly ResourceManager LocRM = new ResourceManager("NotepadSharp.frmMain", typeof(frmMain).Assembly);
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>

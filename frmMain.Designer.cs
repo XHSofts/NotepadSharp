@@ -1071,7 +1071,7 @@
         private System.Windows.Forms.ToolStripStatusLabel zoomStatus;
         private System.Windows.Forms.ToolStripStatusLabel cursorStatus;
         private System.Windows.Forms.ToolStripMenuItem openFileMenuItem;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        public System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.ToolStripMenuItem NewFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveMenuItem;
