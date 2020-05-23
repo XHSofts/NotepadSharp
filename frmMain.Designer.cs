@@ -134,6 +134,10 @@
             this.其他编码陆续添加中ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.RUseBingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.QuickFunctionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DupCurLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.InsertNewLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteCurrLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
             this.editMenu.SuspendLayout();
@@ -155,7 +159,7 @@
             this.titleMenu.Name = "titleMenu";
             this.titleMenu.Padding = new System.Windows.Forms.Padding(0);
             this.titleMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.titleMenu.Size = new System.Drawing.Size(1130, 24);
+            this.titleMenu.Size = new System.Drawing.Size(848, 24);
             this.titleMenu.TabIndex = 0;
             this.titleMenu.Text = "menuStrip1";
             // 
@@ -174,14 +178,14 @@
             this.ExitMenuItem});
             this.FileMenuItem.Name = "FileMenuItem";
             this.FileMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-            this.FileMenuItem.Size = new System.Drawing.Size(63, 24);
+            this.FileMenuItem.Size = new System.Drawing.Size(52, 24);
             this.FileMenuItem.Text = "文件(&F)";
             // 
             // NewFileMenuItem
             // 
             this.NewFileMenuItem.Name = "NewFileMenuItem";
             this.NewFileMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.NewFileMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.NewFileMenuItem.Size = new System.Drawing.Size(216, 22);
             this.NewFileMenuItem.Text = "新建(&N)";
             this.NewFileMenuItem.Click += new System.EventHandler(this.NewFileMenuItem_Click);
             // 
@@ -189,7 +193,7 @@
             // 
             this.openFileMenuItem.Name = "openFileMenuItem";
             this.openFileMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openFileMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.openFileMenuItem.Size = new System.Drawing.Size(216, 22);
             this.openFileMenuItem.Text = "打开(&O)...";
             this.openFileMenuItem.Click += new System.EventHandler(this.openFileMenuItem_Click);
             // 
@@ -198,7 +202,7 @@
             this.reOpenMenuItem.Name = "reOpenMenuItem";
             this.reOpenMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-            this.reOpenMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.reOpenMenuItem.Size = new System.Drawing.Size(216, 22);
             this.reOpenMenuItem.Text = "重新打开(&R)";
             this.reOpenMenuItem.Click += new System.EventHandler(this.reOpenMenuItem_Click);
             // 
@@ -206,7 +210,7 @@
             // 
             this.SaveMenuItem.Name = "SaveMenuItem";
             this.SaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.SaveMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.SaveMenuItem.Size = new System.Drawing.Size(216, 22);
             this.SaveMenuItem.Text = "保存(&S)";
             this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
@@ -215,19 +219,19 @@
             this.SaveAsMenuItem.Name = "SaveAsMenuItem";
             this.SaveAsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.SaveAsMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.SaveAsMenuItem.Size = new System.Drawing.Size(216, 22);
             this.SaveAsMenuItem.Text = "另存为(&A)...";
             this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(213, 6);
             // 
             // PageSetupMenuItem
             // 
             this.PageSetupMenuItem.Name = "PageSetupMenuItem";
-            this.PageSetupMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.PageSetupMenuItem.Size = new System.Drawing.Size(216, 22);
             this.PageSetupMenuItem.Text = "页面设置(&U)...";
             this.PageSetupMenuItem.Click += new System.EventHandler(this.PageSetupMenuItem_Click);
             // 
@@ -235,19 +239,19 @@
             // 
             this.PrintMenuItem.Name = "PrintMenuItem";
             this.PrintMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.PrintMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.PrintMenuItem.Size = new System.Drawing.Size(216, 22);
             this.PrintMenuItem.Text = "打印(&P)...";
             this.PrintMenuItem.Click += new System.EventHandler(this.PrintMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(213, 6);
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.ExitMenuItem.Size = new System.Drawing.Size(216, 22);
             this.ExitMenuItem.Text = "退出(&X)";
             this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
@@ -261,6 +265,7 @@
             this.CopyMenuItem,
             this.PasteMenuItem,
             this.DeleteMenuItem,
+            this.QuickFunctionMenuItem,
             this.toolStripSeparator4,
             this.UseBingMenuItem,
             this.FindMenuItem,
@@ -273,14 +278,14 @@
             this.DateTimeMenuItem});
             this.EditMenuItem.Name = "EditMenuItem";
             this.EditMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-            this.EditMenuItem.Size = new System.Drawing.Size(63, 24);
+            this.EditMenuItem.Size = new System.Drawing.Size(52, 24);
             this.EditMenuItem.Text = "编辑(&E)";
             // 
             // UndoMenuItem
             // 
             this.UndoMenuItem.Name = "UndoMenuItem";
             this.UndoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.UndoMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.UndoMenuItem.Size = new System.Drawing.Size(206, 22);
             this.UndoMenuItem.Text = "撤销(&U)";
             this.UndoMenuItem.Click += new System.EventHandler(this.UndoMenuItem_Click);
             // 
@@ -288,20 +293,20 @@
             // 
             this.RedoMenuItem.Name = "RedoMenuItem";
             this.RedoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.RedoMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.RedoMenuItem.Size = new System.Drawing.Size(206, 22);
             this.RedoMenuItem.Text = "重做(&R)";
             this.RedoMenuItem.Click += new System.EventHandler(this.RedoMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(242, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(203, 6);
             // 
             // CutMenuItem
             // 
             this.CutMenuItem.Name = "CutMenuItem";
             this.CutMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.CutMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.CutMenuItem.Size = new System.Drawing.Size(206, 22);
             this.CutMenuItem.Text = "剪切(&T)";
             this.CutMenuItem.Click += new System.EventHandler(this.CutMenuItem_Click);
             // 
@@ -309,7 +314,7 @@
             // 
             this.CopyMenuItem.Name = "CopyMenuItem";
             this.CopyMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.CopyMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.CopyMenuItem.Size = new System.Drawing.Size(206, 22);
             this.CopyMenuItem.Text = "复制(&C)";
             this.CopyMenuItem.Click += new System.EventHandler(this.CopyMenuItem_Click);
             // 
@@ -317,7 +322,7 @@
             // 
             this.PasteMenuItem.Name = "PasteMenuItem";
             this.PasteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.PasteMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.PasteMenuItem.Size = new System.Drawing.Size(206, 22);
             this.PasteMenuItem.Text = "粘贴(&P)";
             this.PasteMenuItem.Click += new System.EventHandler(this.PasteMenuItem_Click);
             // 
@@ -325,20 +330,20 @@
             // 
             this.DeleteMenuItem.Name = "DeleteMenuItem";
             this.DeleteMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.DeleteMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.DeleteMenuItem.Size = new System.Drawing.Size(206, 22);
             this.DeleteMenuItem.Text = "删除(&L)";
             this.DeleteMenuItem.Click += new System.EventHandler(this.DeleteMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(242, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(203, 6);
             // 
             // UseBingMenuItem
             // 
             this.UseBingMenuItem.Name = "UseBingMenuItem";
             this.UseBingMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.UseBingMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.UseBingMenuItem.Size = new System.Drawing.Size(206, 22);
             this.UseBingMenuItem.Text = "使用 Bing 搜索...";
             this.UseBingMenuItem.Click += new System.EventHandler(this.UseBingMenuItem_Click);
             // 
@@ -346,7 +351,7 @@
             // 
             this.FindMenuItem.Name = "FindMenuItem";
             this.FindMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.FindMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.FindMenuItem.Size = new System.Drawing.Size(206, 22);
             this.FindMenuItem.Text = "查找(&F)...";
             this.FindMenuItem.Click += new System.EventHandler(this.FindMenuItem_Click);
             // 
@@ -354,7 +359,7 @@
             // 
             this.FindNextMenuItem.Name = "FindNextMenuItem";
             this.FindNextMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.FindNextMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.FindNextMenuItem.Size = new System.Drawing.Size(206, 22);
             this.FindNextMenuItem.Text = "查找下一个(&N)";
             this.FindNextMenuItem.Click += new System.EventHandler(this.FindNextMenuItem_Click);
             // 
@@ -362,7 +367,7 @@
             // 
             this.FindPrevMenuItem.Name = "FindPrevMenuItem";
             this.FindPrevMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F3)));
-            this.FindPrevMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.FindPrevMenuItem.Size = new System.Drawing.Size(206, 22);
             this.FindPrevMenuItem.Text = "查找上一个(&V)";
             this.FindPrevMenuItem.Click += new System.EventHandler(this.FindPrevMenuItem_Click);
             // 
@@ -370,7 +375,7 @@
             // 
             this.ReplaceMenuItem.Name = "ReplaceMenuItem";
             this.ReplaceMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.ReplaceMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.ReplaceMenuItem.Size = new System.Drawing.Size(206, 22);
             this.ReplaceMenuItem.Text = "替换(&E)...";
             this.ReplaceMenuItem.Click += new System.EventHandler(this.ReplaceMenuItem_Click);
             // 
@@ -378,20 +383,20 @@
             // 
             this.GotoMenuItem.Name = "GotoMenuItem";
             this.GotoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.GotoMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.GotoMenuItem.Size = new System.Drawing.Size(206, 22);
             this.GotoMenuItem.Text = "转到(&G)...";
             this.GotoMenuItem.Click += new System.EventHandler(this.GotoMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(242, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(203, 6);
             // 
             // SelectAllMenuItem
             // 
             this.SelectAllMenuItem.Name = "SelectAllMenuItem";
             this.SelectAllMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.SelectAllMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.SelectAllMenuItem.Size = new System.Drawing.Size(206, 22);
             this.SelectAllMenuItem.Text = "全选(&A)";
             this.SelectAllMenuItem.Click += new System.EventHandler(this.SelectAllMenuItem_Click);
             // 
@@ -399,7 +404,7 @@
             // 
             this.DateTimeMenuItem.Name = "DateTimeMenuItem";
             this.DateTimeMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.DateTimeMenuItem.Size = new System.Drawing.Size(245, 26);
+            this.DateTimeMenuItem.Size = new System.Drawing.Size(206, 22);
             this.DateTimeMenuItem.Text = "时间/日期(&D)";
             this.DateTimeMenuItem.Click += new System.EventHandler(this.DateTimeMenuItem_Click);
             // 
@@ -410,7 +415,7 @@
             this.FontMenuItem});
             this.FormatMenuItem.Name = "FormatMenuItem";
             this.FormatMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-            this.FormatMenuItem.Size = new System.Drawing.Size(67, 24);
+            this.FormatMenuItem.Size = new System.Drawing.Size(56, 24);
             this.FormatMenuItem.Text = "格式(&O)";
             // 
             // WordWarpMenuItem
@@ -419,7 +424,7 @@
             this.WordWarpMenuItem.CheckOnClick = true;
             this.WordWarpMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.WordWarpMenuItem.Name = "WordWarpMenuItem";
-            this.WordWarpMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.WordWarpMenuItem.Size = new System.Drawing.Size(180, 22);
             this.WordWarpMenuItem.Text = "自动换行(&W)";
             this.WordWarpMenuItem.CheckedChanged += new System.EventHandler(this.WordWarpMenuItem_CheckedChanged);
             this.WordWarpMenuItem.Click += new System.EventHandler(this.WordWarpMenuItem_Click);
@@ -427,7 +432,7 @@
             // FontMenuItem
             // 
             this.FontMenuItem.Name = "FontMenuItem";
-            this.FontMenuItem.Size = new System.Drawing.Size(169, 26);
+            this.FontMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FontMenuItem.Text = "字体(&F)...";
             this.FontMenuItem.Click += new System.EventHandler(this.FontMenuItem_Click);
             // 
@@ -445,7 +450,7 @@
             this.TabMenuItem});
             this.ViewMenuItem.Name = "ViewMenuItem";
             this.ViewMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-            this.ViewMenuItem.Size = new System.Drawing.Size(65, 24);
+            this.ViewMenuItem.Size = new System.Drawing.Size(54, 24);
             this.ViewMenuItem.Text = "查看(&V)";
             // 
             // ZoomMenuItem
@@ -455,7 +460,7 @@
             this.ZoomOutMenuItem,
             this.RestoreZoomMenuItem});
             this.ZoomMenuItem.Name = "ZoomMenuItem";
-            this.ZoomMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.ZoomMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ZoomMenuItem.Text = "缩放(&Z)";
             // 
             // ZoomInMenuItem
@@ -463,7 +468,7 @@
             this.ZoomInMenuItem.Name = "ZoomInMenuItem";
             this.ZoomInMenuItem.ShortcutKeyDisplayString = "Ctrl + 加号键";
             this.ZoomInMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
-            this.ZoomInMenuItem.Size = new System.Drawing.Size(232, 26);
+            this.ZoomInMenuItem.Size = new System.Drawing.Size(197, 22);
             this.ZoomInMenuItem.Text = "放大(&I)";
             this.ZoomInMenuItem.Click += new System.EventHandler(this.ZoomInMenuItem_Click);
             // 
@@ -472,7 +477,7 @@
             this.ZoomOutMenuItem.Name = "ZoomOutMenuItem";
             this.ZoomOutMenuItem.ShortcutKeyDisplayString = "Ctrl + 减号键";
             this.ZoomOutMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
-            this.ZoomOutMenuItem.Size = new System.Drawing.Size(232, 26);
+            this.ZoomOutMenuItem.Size = new System.Drawing.Size(197, 22);
             this.ZoomOutMenuItem.Text = "缩小(&O)";
             this.ZoomOutMenuItem.Click += new System.EventHandler(this.ZoomOutMenuItem_Click);
             // 
@@ -480,7 +485,7 @@
             // 
             this.RestoreZoomMenuItem.Name = "RestoreZoomMenuItem";
             this.RestoreZoomMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D0)));
-            this.RestoreZoomMenuItem.Size = new System.Drawing.Size(232, 26);
+            this.RestoreZoomMenuItem.Size = new System.Drawing.Size(197, 22);
             this.RestoreZoomMenuItem.Text = "恢复默认缩放";
             this.RestoreZoomMenuItem.Click += new System.EventHandler(this.RestoreZoomMenuItem_Click);
             // 
@@ -488,7 +493,7 @@
             // 
             this.IsShowStatusBarMenuItem.CheckOnClick = true;
             this.IsShowStatusBarMenuItem.Name = "IsShowStatusBarMenuItem";
-            this.IsShowStatusBarMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.IsShowStatusBarMenuItem.Size = new System.Drawing.Size(180, 22);
             this.IsShowStatusBarMenuItem.Text = "状态栏(&S)";
             this.IsShowStatusBarMenuItem.CheckStateChanged += new System.EventHandler(this.IsShowStatusBarMenuItem_CheckStateChanged);
             this.IsShowStatusBarMenuItem.Click += new System.EventHandler(this.IsShowStatusBarMenuItem_Click);
@@ -496,26 +501,26 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(161, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // ColRulerMenuItem
             // 
             this.ColRulerMenuItem.CheckOnClick = true;
             this.ColRulerMenuItem.Name = "ColRulerMenuItem";
-            this.ColRulerMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.ColRulerMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ColRulerMenuItem.Text = "列尺子(&R)";
             this.ColRulerMenuItem.CheckStateChanged += new System.EventHandler(this.ColRulerMenuItem_CheckStateChanged);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(161, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(177, 6);
             // 
             // ControlCharMenuItem
             // 
             this.ControlCharMenuItem.CheckOnClick = true;
             this.ControlCharMenuItem.Name = "ControlCharMenuItem";
-            this.ControlCharMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.ControlCharMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ControlCharMenuItem.Text = "控制字符(&C)";
             this.ControlCharMenuItem.CheckStateChanged += new System.EventHandler(this.ControlCharMenuItem_CheckStateChanged);
             // 
@@ -523,7 +528,7 @@
             // 
             this.EOLMenuItem.CheckOnClick = true;
             this.EOLMenuItem.Name = "EOLMenuItem";
-            this.EOLMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.EOLMenuItem.Size = new System.Drawing.Size(180, 22);
             this.EOLMenuItem.Text = "换行符(&E)";
             this.EOLMenuItem.CheckStateChanged += new System.EventHandler(this.EOLMenuItem_CheckStateChanged);
             this.EOLMenuItem.Click += new System.EventHandler(this.EOLMenuItem_Click);
@@ -532,7 +537,7 @@
             // 
             this.SpaceMenuItem.CheckOnClick = true;
             this.SpaceMenuItem.Name = "SpaceMenuItem";
-            this.SpaceMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.SpaceMenuItem.Size = new System.Drawing.Size(180, 22);
             this.SpaceMenuItem.Text = "空格(&S)";
             this.SpaceMenuItem.CheckStateChanged += new System.EventHandler(this.SpaceMenuItem_CheckStateChanged);
             // 
@@ -540,7 +545,7 @@
             // 
             this.TabMenuItem.CheckOnClick = true;
             this.TabMenuItem.Name = "TabMenuItem";
-            this.TabMenuItem.Size = new System.Drawing.Size(164, 26);
+            this.TabMenuItem.Size = new System.Drawing.Size(180, 22);
             this.TabMenuItem.Text = "制表符(&T)";
             this.TabMenuItem.CheckStateChanged += new System.EventHandler(this.TabMenuItem_CheckStateChanged);
             // 
@@ -553,45 +558,45 @@
             this.AboutMenuItem});
             this.HelpMenuItem.Name = "HelpMenuItem";
             this.HelpMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-            this.HelpMenuItem.Size = new System.Drawing.Size(66, 24);
+            this.HelpMenuItem.Size = new System.Drawing.Size(55, 24);
             this.HelpMenuItem.Text = "帮助(&H)";
             // 
             // ShowHelpMenuItem
             // 
             this.ShowHelpMenuItem.Name = "ShowHelpMenuItem";
-            this.ShowHelpMenuItem.Size = new System.Drawing.Size(218, 26);
+            this.ShowHelpMenuItem.Size = new System.Drawing.Size(182, 22);
             this.ShowHelpMenuItem.Text = "查看帮助(&H)";
             this.ShowHelpMenuItem.Click += new System.EventHandler(this.ShowHelpMenuItem_Click);
             // 
             // SendIssusMenuItem
             // 
             this.SendIssusMenuItem.Name = "SendIssusMenuItem";
-            this.SendIssusMenuItem.Size = new System.Drawing.Size(218, 26);
+            this.SendIssusMenuItem.Size = new System.Drawing.Size(182, 22);
             this.SendIssusMenuItem.Text = "发送反馈(&F)";
             this.SendIssusMenuItem.Click += new System.EventHandler(this.SendIssusMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(215, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(179, 6);
             // 
             // AboutMenuItem
             // 
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(218, 26);
+            this.AboutMenuItem.Size = new System.Drawing.Size(182, 22);
             this.AboutMenuItem.Text = "关于记事本Sharp(&A)";
             // 
             // PreviewInWebMenuItem
             // 
             this.PreviewInWebMenuItem.Name = "PreviewInWebMenuItem";
-            this.PreviewInWebMenuItem.Size = new System.Drawing.Size(140, 24);
+            this.PreviewInWebMenuItem.Size = new System.Drawing.Size(115, 24);
             this.PreviewInWebMenuItem.Text = "在浏览器中预览&B)";
             this.PreviewInWebMenuItem.Click += new System.EventHandler(this.PreviewInWebMenuItem_Click);
             // 
             // DebugMenu
             // 
             this.DebugMenu.Name = "DebugMenu";
-            this.DebugMenu.Size = new System.Drawing.Size(51, 24);
+            this.DebugMenu.Size = new System.Drawing.Size(44, 24);
             this.DebugMenu.Text = "调试";
             this.DebugMenu.Click += new System.EventHandler(this.DebugMenu_Click);
             // 
@@ -610,10 +615,11 @@
             this.textLengthStatus,
             this.LoadTime});
             this.bottomStatusBar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.bottomStatusBar.Location = new System.Drawing.Point(0, 616);
+            this.bottomStatusBar.Location = new System.Drawing.Point(0, 493);
             this.bottomStatusBar.Name = "bottomStatusBar";
+            this.bottomStatusBar.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
             this.bottomStatusBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.bottomStatusBar.Size = new System.Drawing.Size(1130, 25);
+            this.bottomStatusBar.Size = new System.Drawing.Size(848, 20);
             this.bottomStatusBar.TabIndex = 2;
             // 
             // encodingStatus
@@ -638,7 +644,7 @@
             this.HighLightTypeMenuItem.Margin = new System.Windows.Forms.Padding(0);
             this.HighLightTypeMenuItem.Name = "HighLightTypeMenuItem";
             this.HighLightTypeMenuItem.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.HighLightTypeMenuItem.Size = new System.Drawing.Size(83, 25);
+            this.HighLightTypeMenuItem.Size = new System.Drawing.Size(69, 20);
             this.HighLightTypeMenuItem.Text = "普通文本";
             this.HighLightTypeMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -672,7 +678,7 @@
             this.TabWidthStatus.Margin = new System.Windows.Forms.Padding(0);
             this.TabWidthStatus.Name = "TabWidthStatus";
             this.TabWidthStatus.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.TabWidthStatus.Size = new System.Drawing.Size(101, 25);
+            this.TabWidthStatus.Size = new System.Drawing.Size(85, 20);
             this.TabWidthStatus.Text = "Tab 宽度: 4";
             this.TabWidthStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -680,20 +686,20 @@
             // 
             this.AutoIndentMenuItem.CheckOnClick = true;
             this.AutoIndentMenuItem.Name = "AutoIndentMenuItem";
-            this.AutoIndentMenuItem.Size = new System.Drawing.Size(189, 26);
+            this.AutoIndentMenuItem.Size = new System.Drawing.Size(160, 22);
             this.AutoIndentMenuItem.Text = "输入时自动缩进";
             this.AutoIndentMenuItem.CheckStateChanged += new System.EventHandler(this.AutoIndentMenuItem_CheckStateChanged);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(186, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(157, 6);
             // 
             // Indent2MenuItem
             // 
             this.Indent2MenuItem.CheckOnClick = true;
             this.Indent2MenuItem.Name = "Indent2MenuItem";
-            this.Indent2MenuItem.Size = new System.Drawing.Size(189, 26);
+            this.Indent2MenuItem.Size = new System.Drawing.Size(160, 22);
             this.Indent2MenuItem.Text = "2";
             this.Indent2MenuItem.Click += new System.EventHandler(this.Indent2MenuItem_Click);
             // 
@@ -701,7 +707,7 @@
             // 
             this.Indent4MenuItem.CheckOnClick = true;
             this.Indent4MenuItem.Name = "Indent4MenuItem";
-            this.Indent4MenuItem.Size = new System.Drawing.Size(189, 26);
+            this.Indent4MenuItem.Size = new System.Drawing.Size(160, 22);
             this.Indent4MenuItem.Text = "4";
             this.Indent4MenuItem.Click += new System.EventHandler(this.Indent4MenuItem_Click);
             // 
@@ -709,20 +715,20 @@
             // 
             this.Indent8MenuItem.CheckOnClick = true;
             this.Indent8MenuItem.Name = "Indent8MenuItem";
-            this.Indent8MenuItem.Size = new System.Drawing.Size(189, 26);
+            this.Indent8MenuItem.Size = new System.Drawing.Size(160, 22);
             this.Indent8MenuItem.Text = "8";
             this.Indent8MenuItem.Click += new System.EventHandler(this.Indent8MenuItem_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(186, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(157, 6);
             // 
             // UseSpaceAsTabMenuItem
             // 
             this.UseSpaceAsTabMenuItem.CheckOnClick = true;
             this.UseSpaceAsTabMenuItem.Name = "UseSpaceAsTabMenuItem";
-            this.UseSpaceAsTabMenuItem.Size = new System.Drawing.Size(189, 26);
+            this.UseSpaceAsTabMenuItem.Size = new System.Drawing.Size(160, 22);
             this.UseSpaceAsTabMenuItem.Text = "使用空格代替";
             this.UseSpaceAsTabMenuItem.Click += new System.EventHandler(this.UseSpaceAsTabMenuItem_Click);
             // 
@@ -812,8 +818,9 @@
             this.Container.ContextMenuStrip = this.editMenu;
             this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Container.Location = new System.Drawing.Point(0, 24);
+            this.Container.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Container.Name = "Container";
-            this.Container.Size = new System.Drawing.Size(1130, 592);
+            this.Container.Size = new System.Drawing.Size(848, 469);
             this.Container.TabIndex = 4;
             // 
             // editMenu
@@ -837,77 +844,77 @@
             this.toolStripSeparator17,
             this.RUseBingMenuItem});
             this.editMenu.Name = "editMenu";
-            this.editMenu.Size = new System.Drawing.Size(257, 326);
+            this.editMenu.Size = new System.Drawing.Size(220, 276);
             // 
             // RUndoMenuItem
             // 
             this.RUndoMenuItem.Name = "RUndoMenuItem";
-            this.RUndoMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RUndoMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RUndoMenuItem.Text = "撤销(&U)";
             this.RUndoMenuItem.Click += new System.EventHandler(this.RUndoMenuItem_Click);
             // 
             // RRedoMenuItem
             // 
             this.RRedoMenuItem.Name = "RRedoMenuItem";
-            this.RRedoMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RRedoMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RRedoMenuItem.Text = "重做(&R)";
             this.RRedoMenuItem.Click += new System.EventHandler(this.RRedoMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(216, 6);
             // 
             // RCutMenuItem
             // 
             this.RCutMenuItem.Name = "RCutMenuItem";
-            this.RCutMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RCutMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RCutMenuItem.Text = "剪切(&T)";
             this.RCutMenuItem.Click += new System.EventHandler(this.RCutMenuItem_Click);
             // 
             // RCopyMenuItem
             // 
             this.RCopyMenuItem.Name = "RCopyMenuItem";
-            this.RCopyMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RCopyMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RCopyMenuItem.Text = "复制(&C)";
             this.RCopyMenuItem.Click += new System.EventHandler(this.RCopyMenuItem_Click);
             // 
             // RPasteMenuItem
             // 
             this.RPasteMenuItem.Name = "RPasteMenuItem";
-            this.RPasteMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RPasteMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RPasteMenuItem.Text = "粘贴(&P)";
             this.RPasteMenuItem.Click += new System.EventHandler(this.RPasteMenuItem_Click);
             // 
             // RDeleteMenuItem
             // 
             this.RDeleteMenuItem.Name = "RDeleteMenuItem";
-            this.RDeleteMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RDeleteMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RDeleteMenuItem.Text = "删除(&L)";
             this.RDeleteMenuItem.Click += new System.EventHandler(this.RDeleteMenuItem_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(216, 6);
             // 
             // RSelectAllMenuItem
             // 
             this.RSelectAllMenuItem.Name = "RSelectAllMenuItem";
-            this.RSelectAllMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RSelectAllMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RSelectAllMenuItem.Text = "全选(&A)";
             this.RSelectAllMenuItem.Click += new System.EventHandler(this.RSelectAllMenuItem_Click);
             // 
             // toolStripSeparator13
             // 
             this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator13.Size = new System.Drawing.Size(216, 6);
             // 
             // RShowControlCharMenuItem
             // 
             this.RShowControlCharMenuItem.CheckOnClick = true;
             this.RShowControlCharMenuItem.Name = "RShowControlCharMenuItem";
-            this.RShowControlCharMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RShowControlCharMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RShowControlCharMenuItem.Text = "显示 Unicode 控制字符(&S)";
             this.RShowControlCharMenuItem.CheckStateChanged += new System.EventHandler(this.RShowControlCharMenuItem_CheckStateChanged);
             // 
@@ -915,13 +922,13 @@
             // 
             this.RInsertControlCharMenuItem.Enabled = false;
             this.RInsertControlCharMenuItem.Name = "RInsertControlCharMenuItem";
-            this.RInsertControlCharMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RInsertControlCharMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RInsertControlCharMenuItem.Text = "插入 Unicode 控制字符(&I)";
             // 
             // toolStripSeparator14
             // 
             this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator14.Size = new System.Drawing.Size(216, 6);
             // 
             // RCodeMenuItem
             // 
@@ -937,46 +944,46 @@
             this.toolStripSeparator18,
             this.其他编码陆续添加中ToolStripMenuItem});
             this.RCodeMenuItem.Name = "RCodeMenuItem";
-            this.RCodeMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RCodeMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RCodeMenuItem.Text = "编码与解码";
             // 
             // RUrlEncodeMenuItem
             // 
             this.RUrlEncodeMenuItem.Name = "RUrlEncodeMenuItem";
-            this.RUrlEncodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUrlEncodeMenuItem.Size = new System.Drawing.Size(193, 22);
             this.RUrlEncodeMenuItem.Text = "URL 编码";
             this.RUrlEncodeMenuItem.Click += new System.EventHandler(this.RUrlEncodeMenuItem_Click);
             // 
             // RUrlDecodeMenuItem
             // 
             this.RUrlDecodeMenuItem.Name = "RUrlDecodeMenuItem";
-            this.RUrlDecodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUrlDecodeMenuItem.Size = new System.Drawing.Size(193, 22);
             this.RUrlDecodeMenuItem.Text = "URL 解码";
             this.RUrlDecodeMenuItem.Click += new System.EventHandler(this.RUrlDecodeMenuItem_Click);
             // 
             // toolStripSeparator15
             // 
             this.toolStripSeparator15.Name = "toolStripSeparator15";
-            this.toolStripSeparator15.Size = new System.Drawing.Size(228, 6);
+            this.toolStripSeparator15.Size = new System.Drawing.Size(190, 6);
             // 
             // RBase64EncodeMenuItem
             // 
             this.RBase64EncodeMenuItem.Name = "RBase64EncodeMenuItem";
-            this.RBase64EncodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RBase64EncodeMenuItem.Size = new System.Drawing.Size(193, 22);
             this.RBase64EncodeMenuItem.Text = "Base64 编码";
             this.RBase64EncodeMenuItem.Click += new System.EventHandler(this.RBase64EncodeMenuItem_Click);
             // 
             // RBase64DecodeMenuItem
             // 
             this.RBase64DecodeMenuItem.Name = "RBase64DecodeMenuItem";
-            this.RBase64DecodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RBase64DecodeMenuItem.Size = new System.Drawing.Size(193, 22);
             this.RBase64DecodeMenuItem.Text = "Base64 解码";
             this.RBase64DecodeMenuItem.Click += new System.EventHandler(this.RBase64DecodeMenuItem_Click);
             // 
             // toolStripSeparator16
             // 
             this.toolStripSeparator16.Name = "toolStripSeparator16";
-            this.toolStripSeparator16.Size = new System.Drawing.Size(228, 6);
+            this.toolStripSeparator16.Size = new System.Drawing.Size(190, 6);
             // 
             // RUnicodeEncodeMenuItem
             // 
@@ -984,64 +991,100 @@
             this.RUniEncodeType1,
             this.RUniEncodeType2});
             this.RUnicodeEncodeMenuItem.Name = "RUnicodeEncodeMenuItem";
-            this.RUnicodeEncodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUnicodeEncodeMenuItem.Size = new System.Drawing.Size(193, 22);
             this.RUnicodeEncodeMenuItem.Text = "Unicode 编码";
             // 
             // RUniEncodeType1
             // 
             this.RUniEncodeType1.Name = "RUniEncodeType1";
-            this.RUniEncodeType1.Size = new System.Drawing.Size(228, 26);
+            this.RUniEncodeType1.Size = new System.Drawing.Size(192, 22);
             this.RUniEncodeType1.Text = "\\uXXXX\\uXXXX 格式";
             this.RUniEncodeType1.Click += new System.EventHandler(this.RUniEncodeType1_Click);
             // 
             // RUniEncodeType2
             // 
             this.RUniEncodeType2.Name = "RUniEncodeType2";
-            this.RUniEncodeType2.Size = new System.Drawing.Size(228, 26);
+            this.RUniEncodeType2.Size = new System.Drawing.Size(192, 22);
             this.RUniEncodeType2.Text = "\\uXXXXXXXX 格式";
             this.RUniEncodeType2.Click += new System.EventHandler(this.RUniEncodeType2_Click);
             // 
             // RUnicodeDecodeMenuItem
             // 
             this.RUnicodeDecodeMenuItem.Name = "RUnicodeDecodeMenuItem";
-            this.RUnicodeDecodeMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.RUnicodeDecodeMenuItem.Size = new System.Drawing.Size(193, 22);
             this.RUnicodeDecodeMenuItem.Text = "Unicode 解码";
             this.RUnicodeDecodeMenuItem.Click += new System.EventHandler(this.RUnicodeDecodeMenuItem_Click);
             // 
             // toolStripSeparator18
             // 
             this.toolStripSeparator18.Name = "toolStripSeparator18";
-            this.toolStripSeparator18.Size = new System.Drawing.Size(228, 6);
+            this.toolStripSeparator18.Size = new System.Drawing.Size(190, 6);
             // 
             // 其他编码陆续添加中ToolStripMenuItem
             // 
             this.其他编码陆续添加中ToolStripMenuItem.Enabled = false;
             this.其他编码陆续添加中ToolStripMenuItem.Name = "其他编码陆续添加中ToolStripMenuItem";
-            this.其他编码陆续添加中ToolStripMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.其他编码陆续添加中ToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.其他编码陆续添加中ToolStripMenuItem.Text = "其他编码陆续添加中...";
             // 
             // toolStripSeparator17
             // 
             this.toolStripSeparator17.Name = "toolStripSeparator17";
-            this.toolStripSeparator17.Size = new System.Drawing.Size(253, 6);
+            this.toolStripSeparator17.Size = new System.Drawing.Size(216, 6);
             // 
             // RUseBingMenuItem
             // 
             this.RUseBingMenuItem.Name = "RUseBingMenuItem";
-            this.RUseBingMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.RUseBingMenuItem.Size = new System.Drawing.Size(219, 22);
             this.RUseBingMenuItem.Text = "使用 Bing 搜索...";
             this.RUseBingMenuItem.Click += new System.EventHandler(this.RUseBingMenuItem_Click);
             // 
+            // QuickFunctionMenuItem
+            // 
+            this.QuickFunctionMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DupCurLineMenuItem,
+            this.InsertNewLineMenuItem,
+            this.DeleteCurrLineMenuItem});
+            this.QuickFunctionMenuItem.Name = "QuickFunctionMenuItem";
+            this.QuickFunctionMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.QuickFunctionMenuItem.Text = "快捷功能(&Q)";
+            // 
+            // DupCurLineMenuItem
+            // 
+            this.DupCurLineMenuItem.Name = "DupCurLineMenuItem";
+            this.DupCurLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
+            this.DupCurLineMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.DupCurLineMenuItem.Text = "复制当前行并插入到下一行";
+            this.DupCurLineMenuItem.Click += new System.EventHandler(this.DupCurLineMenuItem_Click);
+            // 
+            // InsertNewLineMenuItem
+            // 
+            this.InsertNewLineMenuItem.Name = "InsertNewLineMenuItem";
+            this.InsertNewLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Insert)));
+            this.InsertNewLineMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.InsertNewLineMenuItem.Text = "在当前行后面插入新行";
+            this.InsertNewLineMenuItem.Click += new System.EventHandler(this.InsertNewLineMenuItem_Click);
+            // 
+            // DeleteCurrLineMenuItem
+            // 
+            this.DeleteCurrLineMenuItem.Enabled = false;
+            this.DeleteCurrLineMenuItem.Name = "DeleteCurrLineMenuItem";
+            this.DeleteCurrLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.DeleteCurrLineMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.DeleteCurrLineMenuItem.Text = "删除当前行";
+            this.DeleteCurrLineMenuItem.Click += new System.EventHandler(this.DeleteCurrLineMenuItem_Click);
+            // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1130, 641);
+            this.ClientSize = new System.Drawing.Size(848, 513);
             this.Controls.Add(this.Container);
             this.Controls.Add(this.bottomStatusBar);
             this.Controls.Add(this.titleMenu);
             this.MainMenuStrip = this.titleMenu;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmMain";
             this.Text = "NotepadSharp";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
@@ -1163,6 +1206,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
         private System.Windows.Forms.ToolStripMenuItem 其他编码陆续添加中ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
+        private System.Windows.Forms.ToolStripMenuItem QuickFunctionMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DupCurLineMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem InsertNewLineMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteCurrLineMenuItem;
     }
 }
 

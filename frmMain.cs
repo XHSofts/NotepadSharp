@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using FontFamily = System.Windows.Media.FontFamily;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -422,10 +423,10 @@ namespace NotepadSharp
 
         #endregion
 
-        private static Task<TextWithEncoding> textReaderTask;
-        private readonly Stopwatch              sw  = new Stopwatch();
+        private static          Task<TextWithEncoding> textReaderTask;
+        private readonly        Stopwatch              sw  = new Stopwatch();
         private static readonly TextWithEncoding       txt = new TextWithEncoding();
-        readonly PrintDocument                         printDocument;
+        readonly                PrintDocument          printDocument;
 
         public frmMain()
         {
@@ -575,22 +576,8 @@ namespace NotepadSharp
             {
                 if (inTheBrackets && isCoding())
                 {
-                    String retChar   = "\r\n";
-                    int    currCaret;
-                    switch (determineReturnStyle())
-                    {
-                        case "Error":
-                        case "Windows (CRLF)":
-                            retChar = "\r\n";
-                            break;
-                        case "Unix (LF)":
-                            retChar = "\n";
-                            break;
-                        case "Macintosh (CR)":
-                            retChar = "\r";
-                            break;
-                    }
-
+                    String retChar = getCurrReturnChar();
+                    int currCaret;
                     currCaret = edit.TextArea.Caret.Offset;
                     edit.Document.Insert(currCaret, retChar);
                     edit.TextArea.Caret.Line--;
@@ -650,19 +637,7 @@ namespace NotepadSharp
                             // edit.TextArea.Caret.Offset++;
                             e.Handled = true;
 
-                            switch (determineReturnStyle())
-                            {
-                                case "Error":
-                                case "Windows (CRLF)":
-                                    retChar = "\r\n";
-                                    break;
-                                case "Unix (LF)":
-                                    retChar = "\n";
-                                    break;
-                                case "Macintosh (CR)":
-                                    retChar = "\r";
-                                    break;
-                            }
+                            retChar = getCurrReturnChar();
 
                             edit.Document.BeginUpdate();
                             currCaret = edit.TextArea.Caret.Offset;
@@ -703,19 +678,7 @@ namespace NotepadSharp
                     case " ":
                         if (inTheBrackets)
                         {
-                            switch (determineReturnStyle())
-                            {
-                                case "Error":
-                                case "Windows (CRLF)":
-                                    retChar = "\r\n";
-                                    break;
-                                case "Unix (LF)":
-                                    retChar = "\n";
-                                    break;
-                                case "Macintosh (CR)":
-                                    retChar = "\r";
-                                    break;
-                            }
+                            retChar = getCurrReturnChar();
 
                             edit.Document.BeginUpdate();
                             currCaret = edit.TextArea.Caret.Offset;
@@ -905,6 +868,26 @@ namespace NotepadSharp
             return !(edit.SyntaxHighlighting is null);
         }
 
+        private string getCurrReturnChar()
+        {
+            String retChar = "\r\n";
+            int    currCaret;
+            switch (determineReturnStyle())
+            {
+                case "Error":
+                case "Windows (CRLF)":
+                    retChar = "\r\n";
+                    break;
+                case "Unix (LF)":
+                    retChar = "\n";
+                    break;
+                case "Macintosh (CR)":
+                    retChar = "\r";
+                    break;
+            }
+
+            return retChar;
+        }
         private string determineReturnStyle()
         {
             try
@@ -950,7 +933,7 @@ namespace NotepadSharp
             else
             {
                 Text = (hasSave ? "" : "*") + LocRM.GetString("defaultTitle") + " - " +
-                            LocRM.GetString("$this.Text");
+                       LocRM.GetString("$this.Text");
             }
         }
 
@@ -1334,7 +1317,7 @@ namespace NotepadSharp
             isShowTab         = Properties.Settings.Default.showTab;
             //Add the default highlighting defines in AvalonEdit to the status bar DropDownMenu
             foreach (IHighlightingDefinition hr in HighlightingManager.Instance
-                                                   .HighlightingDefinitions)
+                                                                      .HighlightingDefinitions)
             {
                 ToolStripMenuItem subMenu = new ToolStripMenuItem
                 {
@@ -1776,10 +1759,24 @@ namespace NotepadSharp
             if (frmFind is null)
             {
                 frmFind = new frmFindReplace(edit) {Left = Left + 5, Top = Top + 44};
-                frmFindReplace.ShowForFind(frmFind, edit);
+
+                if (!edit.TextArea.Selection.IsMultiline && edit.TextArea.Selection.GetText() != "")
+                {
+                    frmFindReplace.ShowForFind(frmFind, edit, true);
+                    frmFind.FindNextClick(null, null);
+                }
+                else
+                {
+                    frmFindReplace.ShowForFind(frmFind, edit);
+                }
             }
             else
             {
+                if (!edit.TextArea.Selection.IsMultiline && edit.TextArea.Selection.GetText() != "")
+                {
+                    frmFindReplace.ShowForFind(frmFind, edit, true);
+                }
+
                 frmFind.FindNextClick(null, null);
             }
         }
@@ -1788,11 +1785,25 @@ namespace NotepadSharp
         {
             if (frmFind is null)
             {
-                frmFind = new frmFindReplace(edit) {Left = Left + 5, Top = Top + 44};
-                frmFindReplace.ShowForFind(frmFind, edit);
+                frmFind = new frmFindReplace(edit) { Left = Left + 5, Top = Top + 44 };
+
+                if (!edit.TextArea.Selection.IsMultiline && edit.TextArea.Selection.GetText() != "")
+                {
+                    frmFindReplace.ShowForFind(frmFind, edit, true);
+                    frmFind.btnFindPrev_Click(null, null);
+                }
+                else
+                {
+                    frmFindReplace.ShowForFind(frmFind, edit);
+                }
             }
             else
             {
+                if (!edit.TextArea.Selection.IsMultiline && edit.TextArea.Selection.GetText() != "")
+                {
+                    frmFindReplace.ShowForFind(frmFind, edit, true);
+                }
+
                 frmFind.btnFindPrev_Click(null, null);
             }
         }
@@ -1904,5 +1915,32 @@ namespace NotepadSharp
         }
 
         #endregion
+
+        private void DupCurLineMenuItem_Click(object sender, EventArgs e)
+        {
+            //Someone please tell me how can do this quicker...
+            int currLineStart = edit.Document.Lines[edit.TextArea.Caret.Line - 1].Offset;
+            int currLineEnd = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
+            String currLine =
+                edit.Document.GetText(currLineStart, edit.Document.Lines[edit.TextArea.Caret.Line - 1].Length);
+            edit.Document.BeginUpdate();
+            edit.Document.Insert(currLineEnd, getCurrReturnChar());
+            edit.Document.Insert(currLineEnd+1, currLine);
+            edit.Document.EndUpdate();
+        }
+
+        private void InsertNewLineMenuItem_Click(object sender, EventArgs e)
+        {
+            int currLineEnd = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
+            edit.Document.Insert(currLineEnd, getCurrReturnChar());
+            edit.TextArea.Caret.Line++;
+        }
+
+        private void DeleteCurrLineMenuItem_Click(object sender, EventArgs e)
+        {
+            //Not well, please use shortcut
+//            int currLineStart = edit.Document.Lines[edit.TextArea.Caret.Line - 1].Offset;
+//            edit.Document.Remove(currLineStart, edit.Document.Lines[edit.TextArea.Caret.Line - 1].Length);
+        }
     }
 }

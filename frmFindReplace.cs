@@ -224,7 +224,7 @@ namespace NotepadSharp
             }
         }
 
-        public static void ShowForFind(frmFindReplace newFrm, TextEditor editor)
+        public static void ShowForFind(frmFindReplace newFrm, TextEditor editor,Boolean notShown=false)
         {
             if (theDialog == null)
             {
@@ -235,9 +235,12 @@ namespace NotepadSharp
             theDialog.Height                = 279;
             theDialog.mainTab.Height        = 156;
             theDialog.panelCheckBox.Top     = 174;
-            theDialog.Show();
-            theDialog.Activate();
-            theDialog.txtFind.Focus();
+            if (!notShown)
+            {
+                theDialog.Show();
+                theDialog.Activate();
+                theDialog.txtFind.Focus();
+            }
             if (!editor.TextArea.Selection.IsMultiline && editor.TextArea.Selection.GetText() != "")
             {
                 theDialog.txtFind.Text = theDialog.txtFind2.Text = editor.TextArea.Selection.GetText();
@@ -249,7 +252,7 @@ namespace NotepadSharp
 
         private void txtFind2_TextChanged(object sender, EventArgs e)
         {
-            txtFind.Text = txtFind2.Text;
+            txtFind2.Text = txtFind.Text;
         }
 
         private void txtFind_TextChanged(object sender, EventArgs e)
