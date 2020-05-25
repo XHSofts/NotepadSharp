@@ -577,7 +577,7 @@ namespace NotepadSharp
                 if (inTheBrackets && isCoding())
                 {
                     String retChar = getCurrReturnChar();
-                    int currCaret;
+                    int    currCaret;
                     currCaret = edit.TextArea.Caret.Offset;
                     edit.Document.Insert(currCaret, retChar);
                     edit.TextArea.Caret.Line--;
@@ -753,6 +753,23 @@ namespace NotepadSharp
 
         #region Util Functions
 
+        /// <summary> 
+        /// 移除字符串末尾指定字符 
+        /// </summary> 
+        /// <param name="str">需要移除的字符串</param> 
+        /// <param name="value">指定字符</param> 
+        /// <returns>移除后的字符串</returns> 
+        public static string RemoveLastChar(string str, string value)
+        {
+            int _finded = str.LastIndexOf(value);
+            if (_finded != -1)
+            {
+                return str.Substring(0, _finded);
+            }
+
+            return str;
+        }
+
         private void replaceSelectionTextWith(string strTo)
         {
             if (HaveSelection())
@@ -888,6 +905,7 @@ namespace NotepadSharp
 
             return retChar;
         }
+
         private string determineReturnStyle()
         {
             try
@@ -1785,7 +1803,7 @@ namespace NotepadSharp
         {
             if (frmFind is null)
             {
-                frmFind = new frmFindReplace(edit) { Left = Left + 5, Top = Top + 44 };
+                frmFind = new frmFindReplace(edit) {Left = Left + 5, Top = Top + 44};
 
                 if (!edit.TextArea.Selection.IsMultiline && edit.TextArea.Selection.GetText() != "")
                 {
@@ -1920,13 +1938,15 @@ namespace NotepadSharp
         {
             //Someone please tell me how can do this quicker...
             int currLineStart = edit.Document.Lines[edit.TextArea.Caret.Line - 1].Offset;
-            int currLineEnd = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
+            int currLineEnd   = edit.Document.Lines[edit.TextArea.Caret.Line - 1].EndOffset;
             String currLine =
                 edit.Document.GetText(currLineStart, edit.Document.Lines[edit.TextArea.Caret.Line - 1].Length);
+            currLine = RemoveLastChar(currLine, getCurrReturnChar());
             edit.Document.BeginUpdate();
             edit.Document.Insert(currLineEnd, getCurrReturnChar());
-            edit.Document.Insert(currLineEnd+1, currLine);
+            edit.Document.Insert(currLineEnd+ getCurrReturnChar().Length, currLine);
             edit.Document.EndUpdate();
+            edit.TextArea.Caret.Line++;
         }
 
         private void InsertNewLineMenuItem_Click(object sender, EventArgs e)
