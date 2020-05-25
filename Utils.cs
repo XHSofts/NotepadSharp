@@ -41,9 +41,10 @@ namespace NotepadSharp
         public static string DecodeBase64(string source, Encoding encode)
         {
             string result = "";
-            byte[] bytes  = Convert.FromBase64String(source);
             try
             {
+                byte[] bytes = Convert.FromBase64String(source);
+
                 result = encode.GetString(bytes);
             }
             catch
@@ -93,17 +94,25 @@ namespace NotepadSharp
         /// <returns>正常字符串</returns>
         internal static string Unicode2String(string source)
         {
-            if (source.StartsWith("\\u"))
+            try
             {
-                source = source.Replace("\\u", "");
-                return new Regex(@"([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(source,
-                                                                                                               x => Convert
-                                                                                                                    .ToChar(Convert
-                                                                                                                                .ToUInt16(x.Result("$1"),
-                                                                                                                                          16))
-                                                                                                                    .ToString());
+                if (source.StartsWith("\\u"))
+                {
+                    source = source.Replace("\\u", "");
+                    return new Regex(@"([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(source,
+                                                                                                                x =>
+                                                                                                                    Convert
+                                                                                                                        .ToChar(Convert
+                                                                                                                                    .ToUInt16(x.Result("$1"),
+                                                                                                                                              16))
+                                                                                                                        .ToString());
+                }
+                else
+                {
+                    return source;
+                }
             }
-            else
+            catch
             {
                 return source;
             }

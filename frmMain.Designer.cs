@@ -50,6 +50,10 @@
             this.CopyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PasteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.QuickFunctionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DupCurLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.InsertNewLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteCurrLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.UseBingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FindMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,7 +99,6 @@
             this.Indent8MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.UseSpaceAsTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.cursorStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.textLengthStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.LoadTime = new System.Windows.Forms.ToolStripStatusLabel();
@@ -134,10 +137,12 @@
             this.其他编码陆续添加中ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.RUseBingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.QuickFunctionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DupCurLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.InsertNewLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DeleteCurrLineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoomStatus = new System.Windows.Forms.ToolStripDropDownButton();
+            this.RestoreZoomTo100MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Zoom200MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Zoom300MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Zoom500MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Zoom50MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
             this.editMenu.SuspendLayout();
@@ -159,7 +164,7 @@
             this.titleMenu.Name = "titleMenu";
             this.titleMenu.Padding = new System.Windows.Forms.Padding(0);
             this.titleMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.titleMenu.Size = new System.Drawing.Size(848, 24);
+            this.titleMenu.Size = new System.Drawing.Size(1054, 24);
             this.titleMenu.TabIndex = 0;
             this.titleMenu.Text = "menuStrip1";
             // 
@@ -333,6 +338,41 @@
             this.DeleteMenuItem.Size = new System.Drawing.Size(206, 22);
             this.DeleteMenuItem.Text = "删除(&L)";
             this.DeleteMenuItem.Click += new System.EventHandler(this.DeleteMenuItem_Click);
+            // 
+            // QuickFunctionMenuItem
+            // 
+            this.QuickFunctionMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DupCurLineMenuItem,
+            this.InsertNewLineMenuItem,
+            this.DeleteCurrLineMenuItem});
+            this.QuickFunctionMenuItem.Name = "QuickFunctionMenuItem";
+            this.QuickFunctionMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.QuickFunctionMenuItem.Text = "快捷功能(&Q)";
+            // 
+            // DupCurLineMenuItem
+            // 
+            this.DupCurLineMenuItem.Name = "DupCurLineMenuItem";
+            this.DupCurLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
+            this.DupCurLineMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.DupCurLineMenuItem.Text = "复制当前行并插入到下一行";
+            this.DupCurLineMenuItem.Click += new System.EventHandler(this.DupCurLineMenuItem_Click);
+            // 
+            // InsertNewLineMenuItem
+            // 
+            this.InsertNewLineMenuItem.Name = "InsertNewLineMenuItem";
+            this.InsertNewLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Insert)));
+            this.InsertNewLineMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.InsertNewLineMenuItem.Text = "在当前行后面插入新行";
+            this.InsertNewLineMenuItem.Click += new System.EventHandler(this.InsertNewLineMenuItem_Click);
+            // 
+            // DeleteCurrLineMenuItem
+            // 
+            this.DeleteCurrLineMenuItem.Enabled = false;
+            this.DeleteCurrLineMenuItem.Name = "DeleteCurrLineMenuItem";
+            this.DeleteCurrLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.DeleteCurrLineMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.DeleteCurrLineMenuItem.Text = "删除当前行";
+            this.DeleteCurrLineMenuItem.Click += new System.EventHandler(this.DeleteCurrLineMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
@@ -585,6 +625,7 @@
             this.AboutMenuItem.Name = "AboutMenuItem";
             this.AboutMenuItem.Size = new System.Drawing.Size(182, 22);
             this.AboutMenuItem.Text = "关于记事本Sharp(&A)";
+            this.AboutMenuItem.Click += new System.EventHandler(this.AboutMenuItem_Click);
             // 
             // PreviewInWebMenuItem
             // 
@@ -610,16 +651,16 @@
             this.HighLightTypeMenuItem,
             this.returnStyleStatus,
             this.TabWidthStatus,
-            this.zoomStatus,
             this.cursorStatus,
+            this.zoomStatus,
             this.textLengthStatus,
             this.LoadTime});
             this.bottomStatusBar.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.bottomStatusBar.Location = new System.Drawing.Point(0, 493);
+            this.bottomStatusBar.Location = new System.Drawing.Point(0, 552);
             this.bottomStatusBar.Name = "bottomStatusBar";
             this.bottomStatusBar.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
             this.bottomStatusBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.bottomStatusBar.Size = new System.Drawing.Size(848, 20);
+            this.bottomStatusBar.Size = new System.Drawing.Size(1054, 20);
             this.bottomStatusBar.TabIndex = 2;
             // 
             // encodingStatus
@@ -732,24 +773,11 @@
             this.UseSpaceAsTabMenuItem.Text = "使用空格代替";
             this.UseSpaceAsTabMenuItem.Click += new System.EventHandler(this.UseSpaceAsTabMenuItem_Click);
             // 
-            // zoomStatus
-            // 
-            this.zoomStatus.AutoSize = false;
-            this.zoomStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.zoomStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
-            this.zoomStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.zoomStatus.Name = "zoomStatus";
-            this.zoomStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
-            this.zoomStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zoomStatus.Size = new System.Drawing.Size(50, 25);
-            this.zoomStatus.Text = "100%";
-            this.zoomStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // cursorStatus
             // 
             this.cursorStatus.AutoSize = false;
             this.cursorStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.cursorStatus.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.cursorStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
             this.cursorStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cursorStatus.Name = "cursorStatus";
             this.cursorStatus.Padding = new System.Windows.Forms.Padding(20);
@@ -762,7 +790,7 @@
             // 
             this.textLengthStatus.AutoSize = false;
             this.textLengthStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.textLengthStatus.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.textLengthStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
             this.textLengthStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.textLengthStatus.Name = "textLengthStatus";
             this.textLengthStatus.Padding = new System.Windows.Forms.Padding(20);
@@ -818,9 +846,9 @@
             this.Container.ContextMenuStrip = this.editMenu;
             this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Container.Location = new System.Drawing.Point(0, 24);
-            this.Container.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Container.Margin = new System.Windows.Forms.Padding(2);
             this.Container.Name = "Container";
-            this.Container.Size = new System.Drawing.Size(848, 469);
+            this.Container.Size = new System.Drawing.Size(1054, 528);
             this.Container.TabIndex = 4;
             // 
             // editMenu
@@ -1039,52 +1067,71 @@
             this.RUseBingMenuItem.Text = "使用 Bing 搜索...";
             this.RUseBingMenuItem.Click += new System.EventHandler(this.RUseBingMenuItem_Click);
             // 
-            // QuickFunctionMenuItem
+            // zoomStatus
             // 
-            this.QuickFunctionMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.DupCurLineMenuItem,
-            this.InsertNewLineMenuItem,
-            this.DeleteCurrLineMenuItem});
-            this.QuickFunctionMenuItem.Name = "QuickFunctionMenuItem";
-            this.QuickFunctionMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.QuickFunctionMenuItem.Text = "快捷功能(&Q)";
+            this.zoomStatus.AutoSize = false;
+            this.zoomStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.zoomStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Zoom50MenuItem,
+            this.RestoreZoomTo100MenuItem,
+            this.Zoom200MenuItem,
+            this.Zoom300MenuItem,
+            this.Zoom500MenuItem});
+            this.zoomStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.zoomStatus.Name = "zoomStatus";
+            this.zoomStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
+            this.zoomStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.zoomStatus.Size = new System.Drawing.Size(50, 25);
+            this.zoomStatus.Text = "100%";
+            this.zoomStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.zoomStatus.DoubleClick += new System.EventHandler(this.zoomStatus_DoubleClick);
             // 
-            // DupCurLineMenuItem
+            // RestoreZoomTo100MenuItem
             // 
-            this.DupCurLineMenuItem.Name = "DupCurLineMenuItem";
-            this.DupCurLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
-            this.DupCurLineMenuItem.Size = new System.Drawing.Size(260, 22);
-            this.DupCurLineMenuItem.Text = "复制当前行并插入到下一行";
-            this.DupCurLineMenuItem.Click += new System.EventHandler(this.DupCurLineMenuItem_Click);
+            this.RestoreZoomTo100MenuItem.Name = "RestoreZoomTo100MenuItem";
+            this.RestoreZoomTo100MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.RestoreZoomTo100MenuItem.Text = "重置缩放为 100%";
+            this.RestoreZoomTo100MenuItem.Click += new System.EventHandler(this.RestoreZoomTo100MenuItem_Click);
             // 
-            // InsertNewLineMenuItem
+            // Zoom200MenuItem
             // 
-            this.InsertNewLineMenuItem.Name = "InsertNewLineMenuItem";
-            this.InsertNewLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Insert)));
-            this.InsertNewLineMenuItem.Size = new System.Drawing.Size(260, 22);
-            this.InsertNewLineMenuItem.Text = "在当前行后面插入新行";
-            this.InsertNewLineMenuItem.Click += new System.EventHandler(this.InsertNewLineMenuItem_Click);
+            this.Zoom200MenuItem.Name = "Zoom200MenuItem";
+            this.Zoom200MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.Zoom200MenuItem.Text = "200%";
+            this.Zoom200MenuItem.Click += new System.EventHandler(this.Zoom200MenuItem_Click);
             // 
-            // DeleteCurrLineMenuItem
+            // Zoom300MenuItem
             // 
-            this.DeleteCurrLineMenuItem.Enabled = false;
-            this.DeleteCurrLineMenuItem.Name = "DeleteCurrLineMenuItem";
-            this.DeleteCurrLineMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.DeleteCurrLineMenuItem.Size = new System.Drawing.Size(260, 22);
-            this.DeleteCurrLineMenuItem.Text = "删除当前行";
-            this.DeleteCurrLineMenuItem.Click += new System.EventHandler(this.DeleteCurrLineMenuItem_Click);
+            this.Zoom300MenuItem.Name = "Zoom300MenuItem";
+            this.Zoom300MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.Zoom300MenuItem.Text = "300%";
+            this.Zoom300MenuItem.Click += new System.EventHandler(this.Zoom300MenuItem_Click);
+            // 
+            // Zoom500MenuItem
+            // 
+            this.Zoom500MenuItem.Name = "Zoom500MenuItem";
+            this.Zoom500MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.Zoom500MenuItem.Text = "500%";
+            this.Zoom500MenuItem.Click += new System.EventHandler(this.Zoom500MenuItem_Click);
+            // 
+            // Zoom50MenuItem
+            // 
+            this.Zoom50MenuItem.Name = "Zoom50MenuItem";
+            this.Zoom50MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.Zoom50MenuItem.Text = "50%";
+            this.Zoom50MenuItem.Click += new System.EventHandler(this.Zoom50MenuItem_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(848, 513);
+            this.ClientSize = new System.Drawing.Size(1054, 572);
             this.Controls.Add(this.Container);
             this.Controls.Add(this.bottomStatusBar);
             this.Controls.Add(this.titleMenu);
             this.MainMenuStrip = this.titleMenu;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmMain";
             this.Text = "NotepadSharp";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
@@ -1111,7 +1158,6 @@
         private System.Windows.Forms.StatusStrip bottomStatusBar;
         private System.Windows.Forms.ToolStripStatusLabel encodingStatus;
         private System.Windows.Forms.ToolStripStatusLabel returnStyleStatus;
-        private System.Windows.Forms.ToolStripStatusLabel zoomStatus;
         private System.Windows.Forms.ToolStripStatusLabel cursorStatus;
         private System.Windows.Forms.ToolStripMenuItem openFileMenuItem;
         public System.Windows.Forms.OpenFileDialog openFileDialog;
@@ -1210,6 +1256,12 @@
         private System.Windows.Forms.ToolStripMenuItem DupCurLineMenuItem;
         private System.Windows.Forms.ToolStripMenuItem InsertNewLineMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DeleteCurrLineMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton zoomStatus;
+        private System.Windows.Forms.ToolStripMenuItem RestoreZoomTo100MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Zoom50MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Zoom200MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Zoom300MenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Zoom500MenuItem;
     }
 }
 

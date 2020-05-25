@@ -1932,7 +1932,6 @@ namespace NotepadSharp
             }
         }
 
-        #endregion
 
         private void DupCurLineMenuItem_Click(object sender, EventArgs e)
         {
@@ -1944,7 +1943,7 @@ namespace NotepadSharp
             currLine = RemoveLastChar(currLine, getCurrReturnChar());
             edit.Document.BeginUpdate();
             edit.Document.Insert(currLineEnd, getCurrReturnChar());
-            edit.Document.Insert(currLineEnd+ getCurrReturnChar().Length, currLine);
+            edit.Document.Insert(currLineEnd + getCurrReturnChar().Length, currLine);
             edit.Document.EndUpdate();
             edit.TextArea.Caret.Line++;
         }
@@ -1961,6 +1960,44 @@ namespace NotepadSharp
             //Not well, please use shortcut
 //            int currLineStart = edit.Document.Lines[edit.TextArea.Caret.Line - 1].Offset;
 //            edit.Document.Remove(currLineStart, edit.Document.Lines[edit.TextArea.Caret.Line - 1].Length);
+        }
+
+        private void zoomStatus_DoubleClick(object sender, EventArgs e)
+        {
+            currZoomSize = 100;
+        }
+
+        
+        private void RestoreZoomTo100MenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize = 100;
+        }
+
+        private void Zoom50MenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize = 50;
+        }
+
+        private void Zoom200MenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize = 200;
+        }
+
+        private void Zoom300MenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize = 300;
+        }
+
+        private void Zoom500MenuItem_Click(object sender, EventArgs e)
+        {
+            currZoomSize = 500;
+        }
+        #endregion
+
+        private void AboutMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAbout fa =new frmAbout() { Left = Left + 5, Top = Top + 44 }; ;
+            fa.Show();
         }
     }
 }

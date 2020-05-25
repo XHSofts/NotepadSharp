@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("NotepadSharp")]
-[assembly: AssemblyDescription("Another notepad replacement.")]
+[assembly: AssemblyDescription("另一个能替代 Windows 记事本的软件。\r\n目前还处于初级开发阶段，更多功能添加中……\r\n项目地址位于：https://www.github.com/XHSofts/NotepadSharp")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NotepadSharp")]
