@@ -644,6 +644,7 @@
             this.DebugMenu.Name = "DebugMenu";
             this.DebugMenu.Size = new System.Drawing.Size(44, 24);
             this.DebugMenu.Text = "调试";
+            this.DebugMenu.Visible = false;
             this.DebugMenu.Click += new System.EventHandler(this.DebugMenu_Click);
             // 
             // bottomStatusBar

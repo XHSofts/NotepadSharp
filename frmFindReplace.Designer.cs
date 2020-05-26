@@ -59,10 +59,11 @@
             // 
             this.mainTab.Controls.Add(this.FindTab);
             this.mainTab.Controls.Add(this.ReplaceTab);
-            this.mainTab.Location = new System.Drawing.Point(2, 12);
+            this.mainTab.Location = new System.Drawing.Point(2, 10);
+            this.mainTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.mainTab.Name = "mainTab";
             this.mainTab.SelectedIndex = 0;
-            this.mainTab.Size = new System.Drawing.Size(466, 156);
+            this.mainTab.Size = new System.Drawing.Size(352, 170);
             this.mainTab.TabIndex = 0;
             this.mainTab.SelectedIndexChanged += new System.EventHandler(this.mainTab_SelectedIndexChanged);
             this.mainTab.TabIndexChanged += new System.EventHandler(this.mainTab_TabIndexChanged);
@@ -73,19 +74,21 @@
             this.FindTab.Controls.Add(this.btnFindNext);
             this.FindTab.Controls.Add(this.txtFind);
             this.FindTab.Controls.Add(this.lbl2Find);
-            this.FindTab.Location = new System.Drawing.Point(4, 25);
+            this.FindTab.Location = new System.Drawing.Point(4, 22);
+            this.FindTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.FindTab.Name = "FindTab";
-            this.FindTab.Padding = new System.Windows.Forms.Padding(3);
-            this.FindTab.Size = new System.Drawing.Size(458, 127);
+            this.FindTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FindTab.Size = new System.Drawing.Size(344, 144);
             this.FindTab.TabIndex = 0;
             this.FindTab.Text = "查找";
             this.FindTab.UseVisualStyleBackColor = true;
             // 
             // btnFindPrev
             // 
-            this.btnFindPrev.Location = new System.Drawing.Point(169, 81);
+            this.btnFindPrev.Location = new System.Drawing.Point(127, 65);
+            this.btnFindPrev.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnFindPrev.Name = "btnFindPrev";
-            this.btnFindPrev.Size = new System.Drawing.Size(132, 32);
+            this.btnFindPrev.Size = new System.Drawing.Size(99, 26);
             this.btnFindPrev.TabIndex = 3;
             this.btnFindPrev.Text = "查找上一个";
             this.btnFindPrev.UseVisualStyleBackColor = true;
@@ -93,9 +96,10 @@
             // 
             // btnFindNext
             // 
-            this.btnFindNext.Location = new System.Drawing.Point(307, 81);
+            this.btnFindNext.Location = new System.Drawing.Point(230, 65);
+            this.btnFindNext.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnFindNext.Name = "btnFindNext";
-            this.btnFindNext.Size = new System.Drawing.Size(132, 32);
+            this.btnFindNext.Size = new System.Drawing.Size(99, 26);
             this.btnFindNext.TabIndex = 2;
             this.btnFindNext.Text = "查找下一个";
             this.btnFindNext.UseVisualStyleBackColor = true;
@@ -103,18 +107,20 @@
             // 
             // txtFind
             // 
-            this.txtFind.Location = new System.Drawing.Point(16, 30);
+            this.txtFind.Location = new System.Drawing.Point(12, 24);
+            this.txtFind.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtFind.Name = "txtFind";
-            this.txtFind.Size = new System.Drawing.Size(423, 25);
+            this.txtFind.Size = new System.Drawing.Size(318, 21);
             this.txtFind.TabIndex = 1;
             this.txtFind.TextChanged += new System.EventHandler(this.txtFind_TextChanged);
             // 
             // lbl2Find
             // 
             this.lbl2Find.AutoSize = true;
-            this.lbl2Find.Location = new System.Drawing.Point(8, 12);
+            this.lbl2Find.Location = new System.Drawing.Point(6, 10);
+            this.lbl2Find.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl2Find.Name = "lbl2Find";
-            this.lbl2Find.Size = new System.Drawing.Size(127, 15);
+            this.lbl2Find.Size = new System.Drawing.Size(101, 12);
             this.lbl2Find.TabIndex = 0;
             this.lbl2Find.Text = "要查找的字符串：";
             // 
@@ -128,19 +134,21 @@
             this.ReplaceTab.Controls.Add(this.lblReplaceTo);
             this.ReplaceTab.Controls.Add(this.txtFind2);
             this.ReplaceTab.Controls.Add(this.lblFind2);
-            this.ReplaceTab.Location = new System.Drawing.Point(4, 25);
+            this.ReplaceTab.Location = new System.Drawing.Point(4, 22);
+            this.ReplaceTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ReplaceTab.Name = "ReplaceTab";
-            this.ReplaceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ReplaceTab.Size = new System.Drawing.Size(458, 127);
+            this.ReplaceTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ReplaceTab.Size = new System.Drawing.Size(344, 144);
             this.ReplaceTab.TabIndex = 1;
             this.ReplaceTab.Text = "替换";
             this.ReplaceTab.UseVisualStyleBackColor = true;
             // 
             // btnFindPrev2
             // 
-            this.btnFindPrev2.Location = new System.Drawing.Point(16, 133);
+            this.btnFindPrev2.Location = new System.Drawing.Point(12, 106);
+            this.btnFindPrev2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnFindPrev2.Name = "btnFindPrev2";
-            this.btnFindPrev2.Size = new System.Drawing.Size(94, 30);
+            this.btnFindPrev2.Size = new System.Drawing.Size(78, 24);
             this.btnFindPrev2.TabIndex = 9;
             this.btnFindPrev2.Text = "查找上一个";
             this.btnFindPrev2.UseVisualStyleBackColor = true;
@@ -148,9 +156,10 @@
             // 
             // btnReplaceAll
             // 
-            this.btnReplaceAll.Location = new System.Drawing.Point(345, 133);
+            this.btnReplaceAll.Location = new System.Drawing.Point(254, 106);
+            this.btnReplaceAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnReplaceAll.Name = "btnReplaceAll";
-            this.btnReplaceAll.Size = new System.Drawing.Size(94, 30);
+            this.btnReplaceAll.Size = new System.Drawing.Size(76, 24);
             this.btnReplaceAll.TabIndex = 8;
             this.btnReplaceAll.Text = "替换全部";
             this.btnReplaceAll.UseVisualStyleBackColor = true;
@@ -158,9 +167,10 @@
             // 
             // btnReplace
             // 
-            this.btnReplace.Location = new System.Drawing.Point(235, 133);
+            this.btnReplace.Location = new System.Drawing.Point(176, 106);
+            this.btnReplace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnReplace.Name = "btnReplace";
-            this.btnReplace.Size = new System.Drawing.Size(94, 30);
+            this.btnReplace.Size = new System.Drawing.Size(74, 24);
             this.btnReplace.TabIndex = 7;
             this.btnReplace.Text = "替换";
             this.btnReplace.UseVisualStyleBackColor = true;
@@ -168,9 +178,10 @@
             // 
             // btnFindNext2
             // 
-            this.btnFindNext2.Location = new System.Drawing.Point(126, 133);
+            this.btnFindNext2.Location = new System.Drawing.Point(94, 106);
+            this.btnFindNext2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnFindNext2.Name = "btnFindNext2";
-            this.btnFindNext2.Size = new System.Drawing.Size(94, 30);
+            this.btnFindNext2.Size = new System.Drawing.Size(78, 24);
             this.btnFindNext2.TabIndex = 6;
             this.btnFindNext2.Text = "查找下一个";
             this.btnFindNext2.UseVisualStyleBackColor = true;
@@ -178,43 +189,48 @@
             // 
             // txtReplace
             // 
-            this.txtReplace.Location = new System.Drawing.Point(16, 93);
+            this.txtReplace.Location = new System.Drawing.Point(12, 74);
+            this.txtReplace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtReplace.Name = "txtReplace";
-            this.txtReplace.Size = new System.Drawing.Size(423, 25);
+            this.txtReplace.Size = new System.Drawing.Size(318, 21);
             this.txtReplace.TabIndex = 5;
             // 
             // lblReplaceTo
             // 
             this.lblReplaceTo.AutoSize = true;
-            this.lblReplaceTo.Location = new System.Drawing.Point(8, 75);
+            this.lblReplaceTo.Location = new System.Drawing.Point(6, 60);
+            this.lblReplaceTo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblReplaceTo.Name = "lblReplaceTo";
-            this.lblReplaceTo.Size = new System.Drawing.Size(67, 15);
+            this.lblReplaceTo.Size = new System.Drawing.Size(53, 12);
             this.lblReplaceTo.TabIndex = 4;
             this.lblReplaceTo.Text = "替换为：";
             // 
             // txtFind2
             // 
-            this.txtFind2.Location = new System.Drawing.Point(16, 30);
+            this.txtFind2.Location = new System.Drawing.Point(12, 24);
+            this.txtFind2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtFind2.Name = "txtFind2";
-            this.txtFind2.Size = new System.Drawing.Size(423, 25);
+            this.txtFind2.Size = new System.Drawing.Size(318, 21);
             this.txtFind2.TabIndex = 3;
             this.txtFind2.TextChanged += new System.EventHandler(this.txtFind2_TextChanged);
             // 
             // lblFind2
             // 
             this.lblFind2.AutoSize = true;
-            this.lblFind2.Location = new System.Drawing.Point(8, 12);
+            this.lblFind2.Location = new System.Drawing.Point(6, 10);
+            this.lblFind2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblFind2.Name = "lblFind2";
-            this.lblFind2.Size = new System.Drawing.Size(127, 15);
+            this.lblFind2.Size = new System.Drawing.Size(101, 12);
             this.lblFind2.TabIndex = 2;
             this.lblFind2.Text = "要查找的字符串：";
             // 
             // cbCaseSensitive
             // 
             this.cbCaseSensitive.AutoSize = true;
-            this.cbCaseSensitive.Location = new System.Drawing.Point(14, 6);
+            this.cbCaseSensitive.Location = new System.Drawing.Point(10, 5);
+            this.cbCaseSensitive.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbCaseSensitive.Name = "cbCaseSensitive";
-            this.cbCaseSensitive.Size = new System.Drawing.Size(104, 19);
+            this.cbCaseSensitive.Size = new System.Drawing.Size(84, 16);
             this.cbCaseSensitive.TabIndex = 1;
             this.cbCaseSensitive.Text = "区分大小写";
             this.cbCaseSensitive.UseVisualStyleBackColor = true;
@@ -222,9 +238,10 @@
             // cbWholeWord
             // 
             this.cbWholeWord.AutoSize = true;
-            this.cbWholeWord.Location = new System.Drawing.Point(14, 29);
+            this.cbWholeWord.Location = new System.Drawing.Point(10, 23);
+            this.cbWholeWord.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbWholeWord.Name = "cbWholeWord";
-            this.cbWholeWord.Size = new System.Drawing.Size(89, 19);
+            this.cbWholeWord.Size = new System.Drawing.Size(72, 16);
             this.cbWholeWord.TabIndex = 2;
             this.cbWholeWord.Text = "全字匹配";
             this.cbWholeWord.UseVisualStyleBackColor = true;
@@ -232,9 +249,10 @@
             // cbRegex
             // 
             this.cbRegex.AutoSize = true;
-            this.cbRegex.Location = new System.Drawing.Point(163, 6);
+            this.cbRegex.Location = new System.Drawing.Point(122, 5);
+            this.cbRegex.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbRegex.Name = "cbRegex";
-            this.cbRegex.Size = new System.Drawing.Size(134, 19);
+            this.cbRegex.Size = new System.Drawing.Size(108, 16);
             this.cbRegex.TabIndex = 3;
             this.cbRegex.Text = "使用正则表达式";
             this.cbRegex.UseVisualStyleBackColor = true;
@@ -242,9 +260,10 @@
             // cbWildcards
             // 
             this.cbWildcards.AutoSize = true;
-            this.cbWildcards.Location = new System.Drawing.Point(163, 29);
+            this.cbWildcards.Location = new System.Drawing.Point(122, 23);
+            this.cbWildcards.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbWildcards.Name = "cbWildcards";
-            this.cbWildcards.Size = new System.Drawing.Size(104, 19);
+            this.cbWildcards.Size = new System.Drawing.Size(84, 16);
             this.cbWildcards.TabIndex = 4;
             this.cbWildcards.Text = "使用通配符";
             this.cbWildcards.UseVisualStyleBackColor = true;
@@ -252,9 +271,10 @@
             // cbSearchUp
             // 
             this.cbSearchUp.AutoSize = true;
-            this.cbSearchUp.Location = new System.Drawing.Point(397, 266);
+            this.cbSearchUp.Location = new System.Drawing.Point(298, 213);
+            this.cbSearchUp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbSearchUp.Name = "cbSearchUp";
-            this.cbSearchUp.Size = new System.Drawing.Size(89, 19);
+            this.cbSearchUp.Size = new System.Drawing.Size(72, 16);
             this.cbSearchUp.TabIndex = 5;
             this.cbSearchUp.Text = "向上搜索";
             this.cbSearchUp.UseVisualStyleBackColor = true;
@@ -266,21 +286,23 @@
             this.panelCheckBox.Controls.Add(this.cbRegex);
             this.panelCheckBox.Controls.Add(this.cbWholeWord);
             this.panelCheckBox.Controls.Add(this.cbCaseSensitive);
-            this.panelCheckBox.Location = new System.Drawing.Point(22, 174);
+            this.panelCheckBox.Location = new System.Drawing.Point(18, 184);
+            this.panelCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panelCheckBox.Name = "panelCheckBox";
-            this.panelCheckBox.Size = new System.Drawing.Size(317, 63);
+            this.panelCheckBox.Size = new System.Drawing.Size(238, 50);
             this.panelCheckBox.TabIndex = 6;
             // 
             // frmFindReplace
             // 
             this.AcceptButton = this.btnFindNext;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(480, 232);
+            this.ClientSize = new System.Drawing.Size(359, 225);
             this.Controls.Add(this.panelCheckBox);
             this.Controls.Add(this.cbSearchUp);
             this.Controls.Add(this.mainTab);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmFindReplace";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "查找与替换";

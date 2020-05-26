@@ -21,7 +21,8 @@ namespace NotepadSharp
     //Thanks
     public partial class frmFindReplace : Form
     {
-        readonly ResourceManager LocRM = new ResourceManager("NotepadSharp.frmFindReplace", typeof(frmFindReplace).Assembly);
+        readonly ResourceManager LocRM =
+            new ResourceManager("NotepadSharp.frmFindReplace", typeof(frmFindReplace).Assembly);
 
         private static readonly string textToFind    = "";
         private static readonly bool   caseSensitive = Properties.Settings.Default.findCaseSensitive;
@@ -224,7 +225,7 @@ namespace NotepadSharp
             }
         }
 
-        public static void ShowForFind(frmFindReplace newFrm, TextEditor editor,Boolean notShown=false)
+        public static void ShowForFind(frmFindReplace newFrm, TextEditor editor, Boolean notShown = false)
         {
             if (theDialog == null)
             {
@@ -241,6 +242,7 @@ namespace NotepadSharp
                 theDialog.Activate();
                 theDialog.txtFind.Focus();
             }
+
             if (!editor.TextArea.Selection.IsMultiline && editor.TextArea.Selection.GetText() != "")
             {
                 theDialog.txtFind.Text = theDialog.txtFind2.Text = editor.TextArea.Selection.GetText();
@@ -252,7 +254,7 @@ namespace NotepadSharp
 
         private void txtFind2_TextChanged(object sender, EventArgs e)
         {
-            txtFind2.Text = txtFind.Text;
+            txtFind.Text = txtFind2.Text;
         }
 
         private void txtFind_TextChanged(object sender, EventArgs e)
@@ -290,16 +292,24 @@ namespace NotepadSharp
                 theDialog.Height  = 279;
                 mainTab.Height    = 156;
                 panelCheckBox.Top = 174;
+                this.AcceptButton = btnFindNext;
             }
             else
             {
                 theDialog.Height  = 329;
                 mainTab.Height    = 209;
                 panelCheckBox.Top = 221;
+
                 if (txtFind2.Text != "")
+                {
                     txtReplace.Focus();
+                    this.AcceptButton = btnReplace;
+                }
                 else
+                {
                     txtFind2.Focus();
+                    this.AcceptButton = btnFindNext2;
+                }
             }
         }
     }
