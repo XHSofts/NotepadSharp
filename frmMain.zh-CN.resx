@@ -213,4 +213,7 @@
   <data name="ReadOnlySaveAs" xml:space="preserve">
     <value>如不修改文件属性，请选择其他保存路径。</value>
   </data>
+  <data name="LoadingFile" xml:space="preserve">
+    <value>加载文件中...</value>
+  </data>
 </root>

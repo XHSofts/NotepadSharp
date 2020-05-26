@@ -100,6 +100,12 @@
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.UseSpaceAsTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cursorStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.zoomStatus = new System.Windows.Forms.ToolStripDropDownButton();
+            this.Zoom50MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RestoreZoomTo100MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Zoom200MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Zoom300MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Zoom500MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textLengthStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.LoadTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -107,7 +113,6 @@
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
             this.printDialog = new System.Windows.Forms.PrintDialog();
-            this.Container = new NotepadSharp.PanelEx(this.components);
             this.editMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RUndoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RRedoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -137,15 +142,15 @@
             this.其他编码陆续添加中ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.RUseBingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.zoomStatus = new System.Windows.Forms.ToolStripDropDownButton();
-            this.RestoreZoomTo100MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Zoom200MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Zoom300MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Zoom500MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Zoom50MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Container = new NotepadSharp.PanelEx(this.components);
+            this.panelLoading = new System.Windows.Forms.Panel();
+            this.picLoading = new System.Windows.Forms.PictureBox();
             this.titleMenu.SuspendLayout();
             this.bottomStatusBar.SuspendLayout();
             this.editMenu.SuspendLayout();
+            this.Container.SuspendLayout();
+            this.panelLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLoading)).BeginInit();
             this.SuspendLayout();
             // 
             // titleMenu
@@ -464,7 +469,7 @@
             this.WordWarpMenuItem.CheckOnClick = true;
             this.WordWarpMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.WordWarpMenuItem.Name = "WordWarpMenuItem";
-            this.WordWarpMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.WordWarpMenuItem.Size = new System.Drawing.Size(144, 22);
             this.WordWarpMenuItem.Text = "自动换行(&W)";
             this.WordWarpMenuItem.CheckedChanged += new System.EventHandler(this.WordWarpMenuItem_CheckedChanged);
             this.WordWarpMenuItem.Click += new System.EventHandler(this.WordWarpMenuItem_Click);
@@ -472,7 +477,7 @@
             // FontMenuItem
             // 
             this.FontMenuItem.Name = "FontMenuItem";
-            this.FontMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FontMenuItem.Size = new System.Drawing.Size(144, 22);
             this.FontMenuItem.Text = "字体(&F)...";
             this.FontMenuItem.Click += new System.EventHandler(this.FontMenuItem_Click);
             // 
@@ -500,7 +505,7 @@
             this.ZoomOutMenuItem,
             this.RestoreZoomMenuItem});
             this.ZoomMenuItem.Name = "ZoomMenuItem";
-            this.ZoomMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ZoomMenuItem.Size = new System.Drawing.Size(140, 22);
             this.ZoomMenuItem.Text = "缩放(&Z)";
             // 
             // ZoomInMenuItem
@@ -533,7 +538,7 @@
             // 
             this.IsShowStatusBarMenuItem.CheckOnClick = true;
             this.IsShowStatusBarMenuItem.Name = "IsShowStatusBarMenuItem";
-            this.IsShowStatusBarMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.IsShowStatusBarMenuItem.Size = new System.Drawing.Size(140, 22);
             this.IsShowStatusBarMenuItem.Text = "状态栏(&S)";
             this.IsShowStatusBarMenuItem.CheckStateChanged += new System.EventHandler(this.IsShowStatusBarMenuItem_CheckStateChanged);
             this.IsShowStatusBarMenuItem.Click += new System.EventHandler(this.IsShowStatusBarMenuItem_Click);
@@ -541,26 +546,26 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(137, 6);
             // 
             // ColRulerMenuItem
             // 
             this.ColRulerMenuItem.CheckOnClick = true;
             this.ColRulerMenuItem.Name = "ColRulerMenuItem";
-            this.ColRulerMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ColRulerMenuItem.Size = new System.Drawing.Size(140, 22);
             this.ColRulerMenuItem.Text = "列尺子(&R)";
             this.ColRulerMenuItem.CheckStateChanged += new System.EventHandler(this.ColRulerMenuItem_CheckStateChanged);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(137, 6);
             // 
             // ControlCharMenuItem
             // 
             this.ControlCharMenuItem.CheckOnClick = true;
             this.ControlCharMenuItem.Name = "ControlCharMenuItem";
-            this.ControlCharMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ControlCharMenuItem.Size = new System.Drawing.Size(140, 22);
             this.ControlCharMenuItem.Text = "控制字符(&C)";
             this.ControlCharMenuItem.CheckStateChanged += new System.EventHandler(this.ControlCharMenuItem_CheckStateChanged);
             // 
@@ -568,7 +573,7 @@
             // 
             this.EOLMenuItem.CheckOnClick = true;
             this.EOLMenuItem.Name = "EOLMenuItem";
-            this.EOLMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.EOLMenuItem.Size = new System.Drawing.Size(140, 22);
             this.EOLMenuItem.Text = "换行符(&E)";
             this.EOLMenuItem.CheckStateChanged += new System.EventHandler(this.EOLMenuItem_CheckStateChanged);
             this.EOLMenuItem.Click += new System.EventHandler(this.EOLMenuItem_Click);
@@ -577,7 +582,7 @@
             // 
             this.SpaceMenuItem.CheckOnClick = true;
             this.SpaceMenuItem.Name = "SpaceMenuItem";
-            this.SpaceMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SpaceMenuItem.Size = new System.Drawing.Size(140, 22);
             this.SpaceMenuItem.Text = "空格(&S)";
             this.SpaceMenuItem.CheckStateChanged += new System.EventHandler(this.SpaceMenuItem_CheckStateChanged);
             // 
@@ -585,7 +590,7 @@
             // 
             this.TabMenuItem.CheckOnClick = true;
             this.TabMenuItem.Name = "TabMenuItem";
-            this.TabMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.TabMenuItem.Size = new System.Drawing.Size(140, 22);
             this.TabMenuItem.Text = "制表符(&T)";
             this.TabMenuItem.CheckStateChanged += new System.EventHandler(this.TabMenuItem_CheckStateChanged);
             // 
@@ -786,6 +791,60 @@
             this.cursorStatus.Text = "第 1 行，第 1 列";
             this.cursorStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // zoomStatus
+            // 
+            this.zoomStatus.AutoSize = false;
+            this.zoomStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.zoomStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Zoom50MenuItem,
+            this.RestoreZoomTo100MenuItem,
+            this.Zoom200MenuItem,
+            this.Zoom300MenuItem,
+            this.Zoom500MenuItem});
+            this.zoomStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.zoomStatus.Name = "zoomStatus";
+            this.zoomStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
+            this.zoomStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.zoomStatus.Size = new System.Drawing.Size(50, 25);
+            this.zoomStatus.Text = "100%";
+            this.zoomStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.zoomStatus.DoubleClick += new System.EventHandler(this.zoomStatus_DoubleClick);
+            // 
+            // Zoom50MenuItem
+            // 
+            this.Zoom50MenuItem.Name = "Zoom50MenuItem";
+            this.Zoom50MenuItem.Size = new System.Drawing.Size(162, 22);
+            this.Zoom50MenuItem.Text = "50%";
+            this.Zoom50MenuItem.Click += new System.EventHandler(this.Zoom50MenuItem_Click);
+            // 
+            // RestoreZoomTo100MenuItem
+            // 
+            this.RestoreZoomTo100MenuItem.Name = "RestoreZoomTo100MenuItem";
+            this.RestoreZoomTo100MenuItem.Size = new System.Drawing.Size(162, 22);
+            this.RestoreZoomTo100MenuItem.Text = "重置缩放为 100%";
+            this.RestoreZoomTo100MenuItem.Click += new System.EventHandler(this.RestoreZoomTo100MenuItem_Click);
+            // 
+            // Zoom200MenuItem
+            // 
+            this.Zoom200MenuItem.Name = "Zoom200MenuItem";
+            this.Zoom200MenuItem.Size = new System.Drawing.Size(162, 22);
+            this.Zoom200MenuItem.Text = "200%";
+            this.Zoom200MenuItem.Click += new System.EventHandler(this.Zoom200MenuItem_Click);
+            // 
+            // Zoom300MenuItem
+            // 
+            this.Zoom300MenuItem.Name = "Zoom300MenuItem";
+            this.Zoom300MenuItem.Size = new System.Drawing.Size(162, 22);
+            this.Zoom300MenuItem.Text = "300%";
+            this.Zoom300MenuItem.Click += new System.EventHandler(this.Zoom300MenuItem_Click);
+            // 
+            // Zoom500MenuItem
+            // 
+            this.Zoom500MenuItem.Name = "Zoom500MenuItem";
+            this.Zoom500MenuItem.Size = new System.Drawing.Size(162, 22);
+            this.Zoom500MenuItem.Text = "500%";
+            this.Zoom500MenuItem.Click += new System.EventHandler(this.Zoom500MenuItem_Click);
+            // 
             // textLengthStatus
             // 
             this.textLengthStatus.AutoSize = false;
@@ -838,18 +897,6 @@
             // printDialog
             // 
             this.printDialog.UseEXDialog = true;
-            // 
-            // Container
-            // 
-            this.Container.BorderColor = System.Drawing.SystemColors.Control;
-            this.Container.BorderSize = 1;
-            this.Container.ContextMenuStrip = this.editMenu;
-            this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Container.Location = new System.Drawing.Point(0, 24);
-            this.Container.Margin = new System.Windows.Forms.Padding(2);
-            this.Container.Name = "Container";
-            this.Container.Size = new System.Drawing.Size(1054, 528);
-            this.Container.TabIndex = 4;
             // 
             // editMenu
             // 
@@ -1067,59 +1114,38 @@
             this.RUseBingMenuItem.Text = "使用 Bing 搜索...";
             this.RUseBingMenuItem.Click += new System.EventHandler(this.RUseBingMenuItem_Click);
             // 
-            // zoomStatus
+            // Container
             // 
-            this.zoomStatus.AutoSize = false;
-            this.zoomStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.zoomStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Zoom50MenuItem,
-            this.RestoreZoomTo100MenuItem,
-            this.Zoom200MenuItem,
-            this.Zoom300MenuItem,
-            this.Zoom500MenuItem});
-            this.zoomStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.zoomStatus.Name = "zoomStatus";
-            this.zoomStatus.Padding = new System.Windows.Forms.Padding(20, 0, 0, 20);
-            this.zoomStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.zoomStatus.Size = new System.Drawing.Size(50, 25);
-            this.zoomStatus.Text = "100%";
-            this.zoomStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.zoomStatus.DoubleClick += new System.EventHandler(this.zoomStatus_DoubleClick);
+            this.Container.BorderColor = System.Drawing.SystemColors.Control;
+            this.Container.BorderSize = 1;
+            this.Container.ContextMenuStrip = this.editMenu;
+            this.Container.Controls.Add(this.panelLoading);
+            this.Container.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Container.Location = new System.Drawing.Point(0, 24);
+            this.Container.Margin = new System.Windows.Forms.Padding(2);
+            this.Container.Name = "Container";
+            this.Container.Size = new System.Drawing.Size(1054, 528);
+            this.Container.TabIndex = 4;
             // 
-            // RestoreZoomTo100MenuItem
+            // panelLoading
             // 
-            this.RestoreZoomTo100MenuItem.Name = "RestoreZoomTo100MenuItem";
-            this.RestoreZoomTo100MenuItem.Size = new System.Drawing.Size(180, 22);
-            this.RestoreZoomTo100MenuItem.Text = "重置缩放为 100%";
-            this.RestoreZoomTo100MenuItem.Click += new System.EventHandler(this.RestoreZoomTo100MenuItem_Click);
+            this.panelLoading.Controls.Add(this.picLoading);
+            this.panelLoading.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelLoading.Location = new System.Drawing.Point(0, 0);
+            this.panelLoading.Name = "panelLoading";
+            this.panelLoading.Size = new System.Drawing.Size(1054, 528);
+            this.panelLoading.TabIndex = 0;
+            this.panelLoading.Visible = false;
             // 
-            // Zoom200MenuItem
+            // picLoading
             // 
-            this.Zoom200MenuItem.Name = "Zoom200MenuItem";
-            this.Zoom200MenuItem.Size = new System.Drawing.Size(180, 22);
-            this.Zoom200MenuItem.Text = "200%";
-            this.Zoom200MenuItem.Click += new System.EventHandler(this.Zoom200MenuItem_Click);
-            // 
-            // Zoom300MenuItem
-            // 
-            this.Zoom300MenuItem.Name = "Zoom300MenuItem";
-            this.Zoom300MenuItem.Size = new System.Drawing.Size(180, 22);
-            this.Zoom300MenuItem.Text = "300%";
-            this.Zoom300MenuItem.Click += new System.EventHandler(this.Zoom300MenuItem_Click);
-            // 
-            // Zoom500MenuItem
-            // 
-            this.Zoom500MenuItem.Name = "Zoom500MenuItem";
-            this.Zoom500MenuItem.Size = new System.Drawing.Size(180, 22);
-            this.Zoom500MenuItem.Text = "500%";
-            this.Zoom500MenuItem.Click += new System.EventHandler(this.Zoom500MenuItem_Click);
-            // 
-            // Zoom50MenuItem
-            // 
-            this.Zoom50MenuItem.Name = "Zoom50MenuItem";
-            this.Zoom50MenuItem.Size = new System.Drawing.Size(180, 22);
-            this.Zoom50MenuItem.Text = "50%";
-            this.Zoom50MenuItem.Click += new System.EventHandler(this.Zoom50MenuItem_Click);
+            this.picLoading.Image = global::NotepadSharp.Properties.Resources._18590465_140b53390cf171dd;
+            this.picLoading.Location = new System.Drawing.Point(463, 263);
+            this.picLoading.Name = "picLoading";
+            this.picLoading.Size = new System.Drawing.Size(66, 69);
+            this.picLoading.TabIndex = 0;
+            this.picLoading.TabStop = false;
+            this.picLoading.Resize += new System.EventHandler(this.picLoading_Resize);
             // 
             // frmMain
             // 
@@ -1137,11 +1163,15 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Shown += new System.EventHandler(this.frmMain_Shown);
+            this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.titleMenu.ResumeLayout(false);
             this.titleMenu.PerformLayout();
             this.bottomStatusBar.ResumeLayout(false);
             this.bottomStatusBar.PerformLayout();
             this.editMenu.ResumeLayout(false);
+            this.Container.ResumeLayout(false);
+            this.panelLoading.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picLoading)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1262,6 +1292,8 @@
         private System.Windows.Forms.ToolStripMenuItem Zoom200MenuItem;
         private System.Windows.Forms.ToolStripMenuItem Zoom300MenuItem;
         private System.Windows.Forms.ToolStripMenuItem Zoom500MenuItem;
+        private System.Windows.Forms.Panel panelLoading;
+        private System.Windows.Forms.PictureBox picLoading;
     }
 }
 

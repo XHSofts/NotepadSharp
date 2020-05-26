@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
 using System.IO;
 using System.Resources;
@@ -749,9 +751,60 @@ namespace NotepadSharp
             UpdateMenuItem();
         }
 
+        private void Edit_DragEnter(object sender, System.Windows.DragEventArgs e)
+        {
+        }
+
+        private async void Edit_Drop(object sender, System.Windows.DragEventArgs e)
+        {
+            String fileName = ((System.Array) e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop))
+                              .GetValue(0).ToString();
+            if (checkUnsave())
+            {
+                showLoading();
+                edit.Document.FileName = "\\Untitled\\"; //To ensure triggering FileNameChanged event
+                edit.SelectionLength   = 0;
+                edit.Document.FileName = fileName; //If not, open the same name file again, will not trigger this event.
+                sw.Start();
+                textReaderTask = ReadFileAsync(fileName);
+                readFileToEdit(await textReaderTask);
+                //                    edit.Load(openFileDialog.FileName);
+            }
+        }
+
+        #endregion
+
+        #region loadingCircle
+
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            picLoading.Left = panelLoading.Width  / 2 - picLoading.Width  / 2;
+            picLoading.Top  = panelLoading.Height / 2 - picLoading.Height / 2;
+        }
+        private void picLoading_Resize(object sender, EventArgs e)
+        {
+            picLoading.Left = panelLoading.Width  / 2 - picLoading.Width  / 2;
+            picLoading.Top  = panelLoading.Height / 2 - picLoading.Height / 2;
+        }
+        private void showLoading()
+        {
+            this.Text = LocRM.GetString("LoadingFile");
+            updateStatusBar(true);
+            panelLoading.Visible = true;
+            panelLoading.BringToFront();
+            picLoading.Left = panelLoading.Width  / 2 - picLoading.Width  / 2;
+            picLoading.Top  = panelLoading.Height / 2 - picLoading.Height / 2;
+        }
+
+        private void hideLoading()
+        {
+            panelLoading.Visible = false;
+            panelLoading.SendToBack();
+        }
         #endregion
 
         #region Util Functions
+
 
         /// <summary> 
         /// 移除字符串末尾指定字符 
@@ -933,13 +986,24 @@ namespace NotepadSharp
             }
         }
 
-        private void updateStatusBar()
+        private void updateStatusBar(Boolean isClear=false)
         {
-            currFileEncoding = edit.Encoding?.EncodingName;
-            currCaretLine    = edit.TextArea.Caret.Line;
-            currCaretColumn  = edit.TextArea.Caret.Column;
-            currLength       = edit.Document.TextLength;
-            currLines        = edit.Document.LineCount;
+            if (isClear)
+            {
+                currFileEncoding = "Loading";
+                currCaretLine    =0;
+                currCaretColumn  = 0;
+                currLength       = 0;
+                currLines        = 0;
+            }
+            else
+            {
+                currFileEncoding = edit.Encoding?.EncodingName;
+                currCaretLine    = edit.TextArea.Caret.Line;
+                currCaretColumn  = edit.TextArea.Caret.Column;
+                currLength       = edit.Document.TextLength;
+                currLines        = edit.Document.LineCount;
+            }
         }
 
         private void UpdateTitle()
@@ -1282,6 +1346,8 @@ namespace NotepadSharp
             edit.Document.UpdateStarted         += Document_UpdateStarted;
             edit.Document.UpdateFinished        += Document_UpdateFinished;
             edit.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+            edit.DragEnter                      += Edit_DragEnter;
+            edit.Drop                           += Edit_Drop;
 
             #endregion
 
@@ -1311,7 +1377,7 @@ namespace NotepadSharp
             edit.ShowLineNumbers                             = true;
             edit.Encoding                                    = Encoding.UTF8;
             edit.TextArea.Options.EnableRectangularSelection = true;
-
+            edit.AllowDrop                                   = true;
             switch (Properties.Settings.Default.IndentMode)
             {
                 case 1:
@@ -1360,6 +1426,10 @@ namespace NotepadSharp
             updateStatusBar();
             UpdateMenuItem();
 
+            //Don't show the loading panel
+            panelLoading.Visible = false;
+            panelLoading.SendToBack();
+
             ElementHost host = new ElementHost
             {
                 Dock  = DockStyle.Fill,
@@ -1373,6 +1443,7 @@ namespace NotepadSharp
             if (Environment.GetCommandLineArgs().Length > 1    && Environment.GetCommandLineArgs()[1] != "" &&
                 !(Environment.GetCommandLineArgs()[1] is null) && File.Exists(Environment.GetCommandLineArgs()[1]))
             {
+                showLoading();
                 edit.SelectionLength   = 0;
                 edit.Document.FileName = Environment.GetCommandLineArgs()[1];
                 readFileToEdit(await textReaderTask);
@@ -1383,7 +1454,6 @@ namespace NotepadSharp
             Refresh();
         }
 
-
         private void readFileToEdit(TextWithEncoding t)
         {
             edit.Text     = t.Content;
@@ -1392,6 +1462,7 @@ namespace NotepadSharp
             edit.SetCurrentValue(TextEditor.IsModifiedProperty, false);
             edit.SetCurrentValue(TextEditor.EncodingProperty, t.TextEncoding);
             Refresh();
+            hideLoading();
         }
 
         async Task<TextWithEncoding> ReadFileAsync(string filePath)
@@ -1423,6 +1494,7 @@ namespace NotepadSharp
                 DialogResult dr = openFileDialog.ShowDialog();
                 if ((dr == DialogResult.OK) && (openFileDialog.FileName != "" && File.Exists(openFileDialog.FileName)))
                 {
+                    showLoading();
                     edit.Document.FileName = "\\Untitled\\"; //To ensure triggering FileNameChanged event
                     edit.SelectionLength   = 0;
                     edit.Document.FileName =
@@ -1632,6 +1704,7 @@ namespace NotepadSharp
 
         private async void reOpenMenuItem_Click(object sender, EventArgs e)
         {
+            showLoading();
             String preOpenedDocName = edit.Document.FileName;
             edit.Document.FileName = "\\Untitled\\"; //To ensure triggering FileNameChanged event
             edit.SelectionLength   = 0;
@@ -1967,7 +2040,7 @@ namespace NotepadSharp
             currZoomSize = 100;
         }
 
-        
+
         private void RestoreZoomTo100MenuItem_Click(object sender, EventArgs e)
         {
             currZoomSize = 100;
@@ -1992,12 +2065,15 @@ namespace NotepadSharp
         {
             currZoomSize = 500;
         }
+
         #endregion
 
         private void AboutMenuItem_Click(object sender, EventArgs e)
         {
-            frmAbout fa =new frmAbout() { Left = Left + 5, Top = Top + 44 }; ;
+            frmAbout fa = new frmAbout() {Left = Left + 5, Top = Top + 44};
+            ;
             fa.Show();
         }
+
     }
 }

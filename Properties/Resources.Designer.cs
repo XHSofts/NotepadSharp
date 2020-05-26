@@ -47,7 +47,7 @@ namespace NotepadSharp.Properties {
         }
         
         /// <summary>
-        ///   使用此强类型资源类，为所有资源查找
+        ///   重写当前线程的 CurrentUICulture 属性
         ///   重写当前线程的 CurrentUICulture 属性。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -57,6 +57,16 @@ namespace NotepadSharp.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap _18590465_140b53390cf171dd {
+            get {
+                object obj = ResourceManager.GetObject("18590465-140b53390cf171dd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
